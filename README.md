@@ -82,7 +82,7 @@ TABULAR_DOCKER_TESTS=1 uv run pytest -q --basetemp=.cache/pytest-docker
 ```
 
 默认测试无需模型或完整 UCI 数据；真实 Docker 测试默认跳过，设置上面的环境变量后启用。
-GitHub Actions 配置会分别检查普通测试和容器测试；远端运行结果以 Actions 页面为准。
+目前不配置 GitHub CI/CD；协作提交前在本地运行以上检查。
 
 应用默认配置为 [development.json](config/development.json)，仅审查阶段启用 thinking。
 [pilot-code-thinking-v12.json](config/pilot-code-thinking-v12.json) 是另一个开发实验候选，代码和审查阶段启用 thinking。

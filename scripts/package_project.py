@@ -12,7 +12,7 @@ MANIFEST = "SOURCE_MANIFEST.json"
 GUIDE = "START_HERE.md"
 REQUIRED = {
     "README.md", "CONTRIBUTING.md", "app.py", "pyproject.toml", "uv.lock",
-    ".gitignore", ".gitattributes", ".python-version", ".github/workflows/checks.yml",
+    ".gitignore", ".gitattributes", ".python-version",
     "config/development.json", "config/pilot-code-thinking-v12.json",
     "data/tutorial_rentals.csv", "docker/Dockerfile", "docker/worker.py",
     "src/tabular_agent/__init__.py", "scripts/package_project.py",
@@ -22,6 +22,8 @@ REQUIRED = {
 }
 # Prior v25 ZIPs remain verifiable; new snapshots do not require or include this local PDF.
 LEGACY_FILES = {"proposal/Formatting_Instructions_For_NeurIPS_2026.pdf"}
+# Verify earlier snapshots that included CI, without adding it to new snapshots.
+ARCHIVE_ONLY_FILES = {".github/workflows/checks.yml"}
 EXCLUDED = [
     "Virtual environments, model/runtime caches and local settings",
     "Raw downloaded UCI archives/CSVs (download script and metadata included)",
@@ -77,7 +79,7 @@ content or dependencies require investigation. Rebuilt references remain unrevie
 Do not fabricate a review receipt or run a formal study before genuine review.
 Follow evaluation/README.md and docs/EXPERIMENT_HANDOFF_ZH.md afterwards.
 
-This ZIP contains source, tests, team/CI setup, documentation, a draft report, tiny example
+This ZIP contains source, tests, team setup, documentation, a draft report, tiny example
 data and UCI metadata/field descriptions. It excludes installed dependencies/model
 weights, downloaded full datasets, private evaluation answers, human review/rating
 work and historical run directories. Documentation links to those local historical
@@ -103,7 +105,7 @@ def permitted(name):
         return False
     if PurePosixPath(name).is_absolute() or any(p in {".", ".."} for p in parts):
         return False
-    if name in REQUIRED or name in LEGACY_FILES or name in {
+    if name in REQUIRED or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
     }:
         return True
@@ -205,10 +207,10 @@ def verify(path):
         expected = manifest.get("files")
         if not isinstance(expected, dict) or set(names) != set(expected) | {MANIFEST}:
             raise ValueError("Archive contents differ from the manifest")
-        # Old v25 archives predate the team/CI files. Accept that original required
+        # Old v25 archives predate the team setup files. Accept that original required
         # shape while requiring the complete current shape for new archives.
         legacy_required = (REQUIRED - {
-            "CONTRIBUTING.md", ".gitattributes", ".python-version", ".github/workflows/checks.yml",
+            "CONTRIBUTING.md", ".gitattributes", ".python-version",
             "docs/README.md", "docs/TEAM_HANDOFF_ZH.md",
         }) | LEGACY_FILES
         if not (REQUIRED | {GUIDE} <= set(expected)

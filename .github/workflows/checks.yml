@@ -1,0 +1,45 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python tests and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen --extra dev
+      - run: uv run ruff check .
+      - run: uv run pytest -q
+        env:
+          MPLBACKEND: Agg
+          MPLCONFIGDIR: .cache/matplotlib
+          XDG_CACHE_HOME: .cache
+
+  docker:
+    name: Docker execution contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen --extra dev
+      - run: docker build -t tabular-agent-executor:dev docker
+      - run: uv run pytest -q tests/test_docker_integration.py --basetemp=.cache/pytest-docker
+        env:
+          TABULAR_DOCKER_TESTS: '1'
+          MPLBACKEND: Agg
+          MPLCONFIGDIR: .cache/matplotlib
+          XDG_CACHE_HOME: .cache

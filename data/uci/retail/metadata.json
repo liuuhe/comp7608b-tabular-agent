@@ -1,0 +1,20 @@
+{
+  "dataset": "retail",
+  "url": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+  "doi": "10.24432/C5BW33",
+  "license": "CC BY 4.0",
+  "archive_sha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+  "csv_sha256": "959c8b3847939247e4007cbbd6dfcf3fdc78bc8236a08eba94565e15679914d8",
+  "rows": 541909,
+  "columns": [
+    "InvoiceNo",
+    "StockCode",
+    "Description",
+    "Quantity",
+    "InvoiceDate",
+    "UnitPrice",
+    "CustomerID",
+    "Country"
+  ],
+  "documentation": "UCI Online Retail, DOI 10.24432/C5BW33, Daqing Chen, CC BY 4.0.\nInvoiceNo is an invoice identifier; prefix C means cancellation. StockCode is a product identifier.\nQuantity is units, UnitPrice is GBP per unit, InvoiceDate is a datetime, Country is customer country.\nRevenue is Quantity * UnitPrice, in GBP. Positive-sales tasks must specify exclusion of Quantity<=0,\nUnitPrice<=0 and cancelled invoices. CustomerID is an identifier, not a measured quantity.\nBlank cells remain missing. No currency conversion, imputation or deduplication has been applied.\n"
+}

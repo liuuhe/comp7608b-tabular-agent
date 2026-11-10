@@ -1,0 +1,6 @@
+UCI Online Retail, DOI 10.24432/C5BW33, Daqing Chen, CC BY 4.0.
+InvoiceNo is an invoice identifier; prefix C means cancellation. StockCode is a product identifier.
+Quantity is units, UnitPrice is GBP per unit, InvoiceDate is a datetime, Country is customer country.
+Revenue is Quantity * UnitPrice, in GBP. Positive-sales tasks must specify exclusion of Quantity<=0,
+UnitPrice<=0 and cancelled invoices. CustomerID is an identifier, not a measured quantity.
+Blank cells remain missing. No currency conversion, imputation or deduplication has been applied.

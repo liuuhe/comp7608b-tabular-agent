@@ -1,0 +1,13 @@
+observation,study_hours,score,unrelated
+1,0,50,
+2,1,55,ok
+3,1,60,ok
+4,2,65,ok
+5,3,70,ok
+6,4,75,ok
+7,5,80,ok
+8,6,85,ok
+9,7,,ok
+10,,90,ok
+11,8,95,ok
+12,8,95,ok

@@ -1,0 +1,2335 @@
+{
+  "status": "complete_development_grid_only",
+  "created_at": "2026-11-07T16:57:33.012280+00:00",
+  "root": "evaluation/runs/pilot-three-condition-v15",
+  "coverage": {
+    "complete": true,
+    "expected_run_count": 18,
+    "observed_run_count": 18,
+    "missing_runs": []
+  },
+  "formal_study_completed": false,
+  "reference_independently_reviewed": false,
+  "human_ratings_available": false,
+  "sources_sha256": {
+    "evaluation/runs/pilot-three-condition-v15/cohort.json": "ac343e9a99e016d3174f4b9d1fa2acbf38743d42bf4cda68afa77cd77748066a",
+    "evaluation/private/pilot-three-condition-v15-plan.json": "8b3926404fa3a77efb9fc2d149a5845586e2899a8bb2b86d59fe88ed41fd5607",
+    "evaluation/private/pilot-three-condition-v15-environment.json": "89944f8afc92671dce7fbef8c48014087a86a1404b895a6f64bdd14b81c48b58",
+    "evaluation/tasks.json": "045482ab62dca46bd5f363467c190eb971cf636f397e5949bbdc59fbb88ec9a2",
+    "config/pilot-code-thinking-v12.json": "2aaf0e7ec9915e978b09d7afbe0a05fc82e004de995fc636bf468099ba4b1f70",
+    "/Users/liuhe/hku/comp7608b_large-language-models/project/.cache/audit-three-condition-v15.py": "7763705b2f5df98ac6adff8c56577df1c43ffbc18fde1c28e464d9b3272f58a8",
+    "evaluation/private/pilot-v15-D3-scope-audit.json": "7a4c6c8f82688bb5d1f4edcaa1a554a410baf365af95c0012cfe1df80f2dacec",
+    "evaluation/private/pilot-v15-D6-replan-audit.json": "c8b6cc164d0ee8dcb2b3404d9ae75797e3ce152d1f57c7b25b3598deb7511e44",
+    "evaluation/private/pilot-three-condition-v15-final-environment.json": "7483ce98cb02ebb71b1dc8486fe0ad2630cce8e0e4d288a165df6cafc9cbce70",
+    "evaluation/private/pilot-three-condition-v15-offline-resume.json": "2361229acb09117f979c716c5aed72c63f643ab2db2fb21a5f904988a493127d",
+    "evaluation/private/pilot-three-condition-v15-blind-validation.json": "8055aa373bdee731c457cfbe82f9c176198eb284ee1cdf9a8b0c2a3ed337ae44",
+    "report/presentation-v15-validation.json": "69e706db7eae8ecd4365092427b1f031f9a7bef4d6bfcae341b8f895c807c201"
+  },
+  "runtime_fingerprint": "ba3f63e2dc8e80331cba67a166cdc6734f4dfb66489595ffe7726af3034ec618",
+  "runtime_environment": {
+    "image": {
+      "image_id": "sha256:5aee147e927570ccf19e8ed947340a245e37a2fe56756c5e68203d6459f0eaf2",
+      "image": "tabular-agent-executor:dev"
+    },
+    "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "ollama_version": "0.40.2",
+    "python": "3.12.14",
+    "installed_packages": {
+      "uvicorn": "0.54.0",
+      "xxhash": "4.0.2",
+      "jsonpointer": "3.6",
+      "pydantic": "2.14.2",
+      "kiwisolver": "1.5.1",
+      "starlette": "1.10.0",
+      "click": "8.5.0",
+      "packaging": "26.3",
+      "narwhals": "2.28.0",
+      "protobuf": "7.36.2",
+      "Pygments": "2.21.0",
+      "pyarrow": "26.0.0",
+      "jsonschema-specifications": "2025.9.1",
+      "requests": "2.34.2",
+      "openpyxl": "3.1.5",
+      "certifi": "2026.10.23",
+      "ruff": "0.17.3",
+      "ollama": "0.6.3",
+      "jsonschema": "4.26.0",
+      "websockets": "17.3",
+      "orjson": "3.13.0",
+      "et_xmlfile": "2.0.0",
+      "itsdangerous": "2.2.0",
+      "jsonpatch": "1.38",
+      "langgraph-checkpoint": "4.3.1",
+      "pydantic_core": "2.50.2",
+      "zstandard": "0.25.0",
+      "ormsgpack": "1.13.0",
+      "iniconfig": "2.3.1",
+      "httpcore": "1.0.9",
+      "numpy": "2.5.4",
+      "pillow": "13.0.0",
+      "langgraph-prebuilt": "1.1.1",
+      "contourpy": "1.4.0",
+      "pluggy": "1.7.0",
+      "langsmith": "0.14.16",
+      "langchain-ollama": "1.1.0",
+      "urllib3": "2.8.0",
+      "h11": "0.16.0",
+      "sniffio": "1.3.1",
+      "PyYAML": "6.0.3",
+      "httpcore2": "2.16.0",
+      "altair": "6.3.0",
+      "matplotlib": "3.11.2",
+      "truststore": "0.10.5",
+      "langgraph": "1.2.18",
+      "pydeck": "0.9.3",
+      "tabular-verification-agent": "0.1.0",
+      "httpx2": "2.16.0",
+      "pytest": "9.2.0",
+      "cycler": "0.12.1",
+      "Jinja2": "3.1.6",
+      "annotated-types": "0.8.0",
+      "referencing": "0.37.0",
+      "pandas": "2.3.3",
+      "fonttools": "4.68.0",
+      "tzdata": "2026.6",
+      "typing-inspection": "0.4.4",
+      "langchain-core": "1.7.3",
+      "distro": "1.9.0",
+      "rpds-py": "2026.9.1",
+      "attrs": "26.1.0",
+      "uuid_utils": "0.19.0",
+      "requests-toolbelt": "1.0.0",
+      "python-multipart": "0.0.33",
+      "httpx": "0.28.1",
+      "typing_extensions": "4.16.0",
+      "MarkupSafe": "3.0.4",
+      "python-dateutil": "4.0.0",
+      "psutil": "7.2.2",
+      "streamlit": "1.66.1",
+      "charset-normalizer": "3.5.2",
+      "langgraph-sdk": "0.4.10",
+      "langchain-protocol": "0.0.20",
+      "anyio": "4.15.1",
+      "pyparsing": "3.3.3",
+      "tenacity": "9.2.1",
+      "idna": "3.20",
+      "pytz": "2026.6"
+    },
+    "hardware": {
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "machine": "arm64",
+      "cpu_count": 10,
+      "memory_bytes": 25769803776
+    }
+  },
+  "total_model_tokens_including_failures": 437528,
+  "total_run_seconds_including_failures": 6845.398239917005,
+  "category_outcomes": [
+    {
+      "category": "explicit",
+      "condition": "one_shot",
+      "tasks": 2,
+      "selected_numerical_matches": 1,
+      "any_execution_ok": 2,
+      "report_available": 1,
+      "statuses": {
+        "failed": 1,
+        "completed_unverified": 1
+      }
+    },
+    {
+      "category": "explicit",
+      "condition": "no_verification",
+      "tasks": 2,
+      "selected_numerical_matches": 2,
+      "any_execution_ok": 2,
+      "report_available": 2,
+      "statuses": {
+        "completed_unverified": 2
+      }
+    },
+    {
+      "category": "explicit",
+      "condition": "full",
+      "tasks": 2,
+      "selected_numerical_matches": 2,
+      "any_execution_ok": 2,
+      "report_available": 2,
+      "statuses": {
+        "checks_passed": 2
+      }
+    },
+    {
+      "category": "visualization",
+      "condition": "one_shot",
+      "tasks": 2,
+      "selected_numerical_matches": 0,
+      "any_execution_ok": 0,
+      "report_available": 0,
+      "statuses": {
+        "failed": 2
+      }
+    },
+    {
+      "category": "visualization",
+      "condition": "no_verification",
+      "tasks": 2,
+      "selected_numerical_matches": 1,
+      "any_execution_ok": 1,
+      "report_available": 1,
+      "statuses": {
+        "failed": 1,
+        "completed_unverified": 1
+      }
+    },
+    {
+      "category": "visualization",
+      "condition": "full",
+      "tasks": 2,
+      "selected_numerical_matches": 0,
+      "any_execution_ok": 1,
+      "report_available": 0,
+      "statuses": {
+        "failed": 2
+      }
+    },
+    {
+      "category": "exploration",
+      "condition": "one_shot",
+      "tasks": 2,
+      "selected_numerical_matches": null,
+      "any_execution_ok": 1,
+      "report_available": 0,
+      "statuses": {
+        "failed": 2
+      }
+    },
+    {
+      "category": "exploration",
+      "condition": "no_verification",
+      "tasks": 2,
+      "selected_numerical_matches": null,
+      "any_execution_ok": 1,
+      "report_available": 1,
+      "statuses": {
+        "failed": 1,
+        "completed_unverified": 1
+      }
+    },
+    {
+      "category": "exploration",
+      "condition": "full",
+      "tasks": 2,
+      "selected_numerical_matches": null,
+      "any_execution_ok": 1,
+      "report_available": 1,
+      "statuses": {
+        "failed": 2
+      }
+    }
+  ],
+  "resources": [
+    {
+      "category": "explicit",
+      "condition": "full",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 246.99216722950223,
+        "model_tokens": 27032.0,
+        "tool_count": 4.0,
+        "repairs": 0.5,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 1.0,
+        "any_execution_ok": 1.0,
+        "selected_execution_ok": 1.0,
+        "execution_attempts": 1.0,
+        "execution_seconds": 0.8099223745011841,
+        "worker_peak_rss_mb": 176.8203125,
+        "controller_peak_rss_mb": 353.8125,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "explicit",
+      "condition": "no_verification",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 190.6874523544975,
+        "model_tokens": 18511.0,
+        "tool_count": 3.0,
+        "repairs": 0.5,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 1.0,
+        "any_execution_ok": 1.0,
+        "selected_execution_ok": 1.0,
+        "execution_attempts": 1.0,
+        "execution_seconds": 0.911803625007451,
+        "worker_peak_rss_mb": 176.740234375,
+        "controller_peak_rss_mb": 250.421875,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "explicit",
+      "condition": "one_shot",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 207.33530062500358,
+        "model_tokens": 15646.5,
+        "tool_count": 3.0,
+        "repairs": 0.0,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.5,
+        "any_execution_ok": 1.0,
+        "selected_execution_ok": 0.5,
+        "execution_attempts": 1.0,
+        "execution_seconds": 0.9694070625046152,
+        "worker_peak_rss_mb": 176.81640625,
+        "controller_peak_rss_mb": 270.3203125,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "exploration",
+      "condition": "full",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 637.7595089585084,
+        "model_tokens": 42035.5,
+        "tool_count": 4.5,
+        "repairs": 3.0,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.5,
+        "any_execution_ok": 0.5,
+        "selected_execution_ok": 0.5,
+        "execution_attempts": 2.0,
+        "execution_seconds": 0.9058285419960157,
+        "worker_peak_rss_mb": 97.18359375,
+        "controller_peak_rss_mb": 135.46875,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 1,
+          "runs": 1
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "exploration",
+      "condition": "no_verification",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 472.6047067919935,
+        "model_tokens": 28182.0,
+        "tool_count": 3.0,
+        "repairs": 2.5,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.5,
+        "any_execution_ok": 0.5,
+        "selected_execution_ok": 0.5,
+        "execution_attempts": 1.5,
+        "execution_seconds": 0.7149173749930924,
+        "worker_peak_rss_mb": 90.2734375,
+        "controller_peak_rss_mb": 114.2734375,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 1,
+          "runs": 1
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "exploration",
+      "condition": "one_shot",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 230.0113872494985,
+        "model_tokens": 13717.5,
+        "tool_count": 2.0,
+        "repairs": 0.0,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.0,
+        "any_execution_ok": 0.5,
+        "selected_execution_ok": 0.0,
+        "execution_attempts": 0.5,
+        "execution_seconds": 0.28622989599534776,
+        "worker_peak_rss_mb": 90.35546875,
+        "controller_peak_rss_mb": 118.2890625,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 1,
+          "runs": 1
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "visualization",
+      "condition": "full",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 654.238961562507,
+        "model_tokens": 37433.0,
+        "tool_count": 3.5,
+        "repairs": 2.0,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.0,
+        "any_execution_ok": 0.5,
+        "selected_execution_ok": 0.0,
+        "execution_attempts": 1.0,
+        "execution_seconds": 0.40055641700018896,
+        "worker_peak_rss_mb": 76.25,
+        "controller_peak_rss_mb": 239.0625,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 1,
+          "runs": 1
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "visualization",
+      "condition": "no_verification",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 578.4477354789924,
+        "model_tokens": 25620.5,
+        "tool_count": 2.5,
+        "repairs": 1.5,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.5,
+        "any_execution_ok": 0.5,
+        "selected_execution_ok": 0.5,
+        "execution_attempts": 1.0,
+        "execution_seconds": 0.41815412549476605,
+        "worker_peak_rss_mb": 76.25,
+        "controller_peak_rss_mb": 207.546875,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 1,
+          "runs": 1
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    },
+    {
+      "category": "visualization",
+      "condition": "one_shot",
+      "task_count": 2,
+      "run_count": 2,
+      "task_averaged_means": {
+        "seconds": 204.62189970799955,
+        "model_tokens": 10586.0,
+        "tool_count": 1.5,
+        "repairs": 0.0,
+        "clarification": 0.0,
+        "clarification_requested": 0.0,
+        "clarification_responses": 0.0,
+        "report_available": 0.0,
+        "any_execution_ok": 0.0,
+        "selected_execution_ok": 0.0,
+        "execution_attempts": 0.5,
+        "execution_seconds": 0.1952939585025888,
+        "worker_peak_rss_mb": null,
+        "controller_peak_rss_mb": 226.6796875,
+        "ollama_processes_peak_sum_rss_mb": null
+      },
+      "measurement_counts": {
+        "seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "model_tokens": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "tool_count": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "repairs": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_requested": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "clarification_responses": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "report_available": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "any_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "selected_execution_ok": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_attempts": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "execution_seconds": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "worker_peak_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        },
+        "controller_peak_rss_mb": {
+          "tasks": 2,
+          "runs": 2
+        },
+        "ollama_processes_peak_sum_rss_mb": {
+          "tasks": 0,
+          "runs": 0
+        }
+      },
+      "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+    }
+  ],
+  "diagnostics": {
+    "scope": "Recorded development exceptions, including recovered exceptions; not terminal failure attribution or task correctness. Truncation cost includes input/output tokens and client-call wall time; unknown cost is not zero.",
+    "reporter_sha256": "c0c4e18cb87f94d0c9eff57b986ee200da90ae5367ef29d7d12178f155274c91",
+    "inputs": [
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230149-0329e5a3",
+        "trace_sha256": "eeecae96e2669eacced87b698a1acf5fde51d6148278d1f8a5aa82ce4c49d651",
+        "evaluation_sha256": "7f936615b4cdb62537a96a71719496e0d48079fd48c8779f8e33571542c4f140"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230440-72e2d366",
+        "trace_sha256": "2539d2de8b959ee7f6f80e4e6dc28b54413fb2c139c92aae94f6a67bc3445b43",
+        "evaluation_sha256": "facf9bba184e85310059fa00a79cc2dd338ce9de87c9ca624e74942a44c8aa1c"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230715-44d3812f",
+        "trace_sha256": "9f84d79faef30073372a0c99656a02a5a461f6939d014f6d90b8b14d50ee7a3b",
+        "evaluation_sha256": "0714bbf63483afbfd15dbc56f43d34424fb289c5dccb8388556621f6afbbc772"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231044-3572de8c",
+        "trace_sha256": "02415878c323db0c89304e29f9cd0b19efd99b34783da4e23f02537a3271153c",
+        "evaluation_sha256": "b7bd4441c483e39f2086399bd4f9812cc2cfbdbe9df3b727573aae51db76144c"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231602-d8e584d4",
+        "trace_sha256": "5ed1ade0c41546ec70f97e4b648e358d60b429709dd727c42e3e9638ba8e08c0",
+        "evaluation_sha256": "8b268dd1f0d58b02f88523c93c29ac0508bbc67703b3e0b900d305fd0698f79e"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-232610-b15923f5",
+        "trace_sha256": "ed1a5465c9bbc83a8eb1738fc7fded160f0ba651298547363bf11d198a7087ae",
+        "evaluation_sha256": "9afb58f97040a6f71dcac329eedb222c24ee9d925b6e49133be74499bc1244a7"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233611-aab21b2d",
+        "trace_sha256": "589ed8222724d69c847793d072b05334fddebecf7d014584480b7afdfb3793c4",
+        "evaluation_sha256": "71311577c78ed6d935739762775e805c5a5a2eef355edc632795088441772b42"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233743-8b7498db",
+        "trace_sha256": "9d8ec718c99c153c33b84d462f2576fbfe3c620956abdf1462c18d602a1bf6ae",
+        "evaluation_sha256": "5a331b71532ac5eb016af81c8d10f04c958e6a4082d8fb62cd1e1031fc816ba1"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-234653-90b0c0bf",
+        "trace_sha256": "69cb2fb5163577c99423b1a429f7d819497cef19fdfff7f0ef8b8130cf562d3a",
+        "evaluation_sha256": "f6640e429d562aebf39fe6cff782757dba4b64df36bdc32d768760adab1905bd"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-235841-630aa1b7",
+        "trace_sha256": "7bd5950495ee3a5b9713138329558dda9e932a5813557a970ea0321cc19909aa",
+        "evaluation_sha256": "d03fbb7ce74dde68cf81f49294adff594fb76d5aad2a4718bd09ace11db1ce0e"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-000418-cde97108",
+        "trace_sha256": "e71cd30e3306e5e62b5e589348b7ded69ce7dfffb00558b1c3a16ea3a466a65d",
+        "evaluation_sha256": "f8ab84e5a91fe09b1e285ee6103bd9af65d2d348e0e1990af0846f7c8951b55a"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-001751-f3027874",
+        "trace_sha256": "27e86f445b6acf46842d1106f009597e8f4861cb910b8ecb703828182d4b75e8",
+        "evaluation_sha256": "bada33c68c6e85d26fb81d21a5cd4d217d0ff95ef4a74a26c055ecc94adf250b"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003109-b1458b8e",
+        "trace_sha256": "f496c1a68ad75383e2e405b9d7dab71f7aad7d35bc5d856fbe3ec05d680e949d",
+        "evaluation_sha256": "72a8bbb09e2fd0562aab7c6639604c1618f505731c1505b9640ab5c5d423cd98"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003513-ff105e4e",
+        "trace_sha256": "79eb0f89668b0f5bcc742748d67266bfe8b29ff5fa6c202fe23389d308e6392b",
+        "evaluation_sha256": "463f6363ed123ba737d517e187efb121cd023f2142e97025f2da883b68c867a6"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003859-4cdd8598",
+        "trace_sha256": "fa9a475580a42fc0a5002ea8d75576d1f19e5fa13f03f47b89e0cff3ac1c2dd2",
+        "evaluation_sha256": "1c28c5c38c8c5386073c8980b21c309e8f1c8b5519808637b3f14e7f4a40fe60"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004344-424d63f0",
+        "trace_sha256": "0ce96d186c373426dda4bfa7e42268ad48071cdc057a6d20186671b9782d4cee",
+        "evaluation_sha256": "51d2e381f0a21fd03543191eae23c8018fa543ade2c9cd8eb0a7888455673b0c"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004548-7d7d27b9",
+        "trace_sha256": "95f60032f774e0b9cc610f2d266a767d1a8eebd1f7b0ee33634b1b5b04e1fd8d",
+        "evaluation_sha256": "4cda53577712d668e2d5b910d3c9047460bd5af8b8078108c6a4078af1e7b5f7"
+      },
+      {
+        "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004800-15e8f27a",
+        "trace_sha256": "33eac433edc927885263e278dc750c0b1fb3c0355a285706013b8451fdda4e4f",
+        "evaluation_sha256": "e06a64ef073da7f812cbbd82c0b9b4dbb71ff28976cba2dd898b3b59a1817473"
+      }
+    ],
+    "stages": [
+      {
+        "condition": "one_shot",
+        "stage": "draft",
+        "node_errors": 2,
+        "model_calls": 3,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "one_shot",
+        "stage": "plan",
+        "node_errors": 0,
+        "model_calls": 6,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "one_shot",
+        "stage": "generate",
+        "node_errors": 2,
+        "model_calls": 6,
+        "failed_model_calls": 2,
+        "truncated_calls": 2,
+        "truncated_seconds_measured_calls": 2,
+        "truncated_seconds_measured": 602.4160014160007,
+        "truncated_tokens_accounted_calls": 2,
+        "truncated_tokens_accounted": 15600
+      },
+      {
+        "condition": "no_verification",
+        "stage": "draft",
+        "node_errors": 3,
+        "model_calls": 7,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "no_verification",
+        "stage": "plan",
+        "node_errors": 0,
+        "model_calls": 6,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "no_verification",
+        "stage": "generate",
+        "node_errors": 5,
+        "model_calls": 12,
+        "failed_model_calls": 5,
+        "truncated_calls": 5,
+        "truncated_seconds_measured_calls": 5,
+        "truncated_seconds_measured": 1479.0754052909906,
+        "truncated_tokens_accounted_calls": 5,
+        "truncated_tokens_accounted": 40712
+      },
+      {
+        "condition": "full",
+        "stage": "draft",
+        "node_errors": 4,
+        "model_calls": 8,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "full",
+        "stage": "plan",
+        "node_errors": 0,
+        "model_calls": 7,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "full",
+        "stage": "generate",
+        "node_errors": 5,
+        "model_calls": 13,
+        "failed_model_calls": 5,
+        "truncated_calls": 5,
+        "truncated_seconds_measured_calls": 5,
+        "truncated_seconds_measured": 1461.1327066680096,
+        "truncated_tokens_accounted_calls": 5,
+        "truncated_tokens_accounted": 40712
+      },
+      {
+        "condition": "full",
+        "stage": "verify",
+        "node_errors": 2,
+        "model_calls": 5,
+        "failed_model_calls": 2,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "one_shot",
+        "stage": "execute",
+        "node_errors": 1,
+        "model_calls": 0,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "no_verification",
+        "stage": "execute",
+        "node_errors": 3,
+        "model_calls": 0,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      },
+      {
+        "condition": "full",
+        "stage": "execute",
+        "node_errors": 3,
+        "model_calls": 0,
+        "failed_model_calls": 0,
+        "truncated_calls": 0,
+        "truncated_seconds_measured_calls": 0,
+        "truncated_seconds_measured": 0,
+        "truncated_tokens_accounted_calls": 0,
+        "truncated_tokens_accounted": 0
+      }
+    ]
+  },
+  "runs": [
+    {
+      "task": "D1",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230149-0329e5a3",
+      "status": "failed",
+      "model_calls": 3,
+      "model_tokens": 13899,
+      "reserved_only_calls": 0,
+      "seconds": 170.90205337500083,
+      "tools": 3,
+      "repairs": 0,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": false,
+        "execution_seconds": 1.3035018750088057,
+        "worker_peak_rss_mb": 259.203125,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": "Stopped: No cited result cell, request constant or saved filter constant supports '10000' in limitation.0. Bind an actual supporting cell, or remove the unsupported statement."
+    },
+    {
+      "task": "D1",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230440-72e2d366",
+      "status": "completed_unverified",
+      "model_calls": 4,
+      "model_tokens": 19628,
+      "reserved_only_calls": 0,
+      "seconds": 154.91094608399726,
+      "tools": 3,
+      "repairs": 1,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230440-72e2d366/attempt-01",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "requires_answer_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 1.2717339170048945,
+        "worker_peak_rss_mb": 259.0546875,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D1",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230715-44d3812f",
+      "status": "checks_passed",
+      "model_calls": 5,
+      "model_tokens": 27445,
+      "reserved_only_calls": 0,
+      "seconds": 209.0839548750082,
+      "tools": 4,
+      "repairs": 1,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230715-44d3812f/attempt-01",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "requires_answer_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 1.1362382079969393,
+        "worker_peak_rss_mb": 259.2109375,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D2",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231044-3572de8c",
+      "status": "failed",
+      "model_calls": 2,
+      "model_tokens": 12104,
+      "reserved_only_calls": 0,
+      "seconds": 317.11133574999985,
+      "tools": 1,
+      "repairs": 0,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 0,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D2",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231602-d8e584d4",
+      "status": "failed",
+      "model_calls": 3,
+      "model_tokens": 19876,
+      "reserved_only_calls": 0,
+      "seconds": 607.4287994579936,
+      "tools": 1,
+      "repairs": 1,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 0,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D2",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-232610-b15923f5",
+      "status": "failed",
+      "model_calls": 3,
+      "model_tokens": 19876,
+      "reserved_only_calls": 0,
+      "seconds": 600.6745265000063,
+      "tools": 1,
+      "repairs": 1,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 0,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D3",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233611-aab21b2d",
+      "status": "failed",
+      "model_calls": 2,
+      "model_tokens": 9068,
+      "reserved_only_calls": 0,
+      "seconds": 92.13246366599924,
+      "tools": 2,
+      "repairs": 0,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0.3905879170051776,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: Execution failed: Traceback (most recent call last):\n  File \"/worker.py\", line 46, in <module>\n    namespace = runpy.run_path(\n                ^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/input/analysis.py\", line 11, in <module>\n    valid_count_df.columns = ['hr', 'value', 'valid_count']\n    ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/generic.py\", line 6335, in __setattr__\n    return object.__setattr__(self, name, value)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"pandas/_libs/properties.pyx\", line 69, in pandas._libs.properties.AxisProperty.__set__\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/generic.py\", line 817, in _set_axis\n    self._mgr.set_axis(axis, labels)\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/internals/managers.py\", line 238, in set_axis\n    self._validate_set_axis(axis, new_labels)\n  File \"/usr/local/lib/python3.12/site-packages/pandas/core/internals/base.py\", line 98, in _validate_set_axis\n    raise ValueError(\nValueError: Length mismatch: Expected axis has 2 elements, new values have 3 elements\n"
+    },
+    {
+      "task": "D3",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233743-8b7498db",
+      "status": "completed_unverified",
+      "model_calls": 5,
+      "model_tokens": 31365,
+      "reserved_only_calls": 0,
+      "seconds": 549.4666714999912,
+      "tools": 4,
+      "repairs": 2,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233743-8b7498db/attempt-02",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "specified_chart_type": true,
+        "plotted_data_correct": true,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 2,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 0.8363082509895321,
+        "worker_peak_rss_mb": 76.25,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "specified_chart_type": true,
+            "plotted_data_correct": true,
+            "requires_human_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D3",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-234653-90b0c0bf",
+      "status": "failed",
+      "model_calls": 7,
+      "model_tokens": 54990,
+      "reserved_only_calls": 0,
+      "seconds": 707.8033966250077,
+      "tools": 6,
+      "repairs": 3,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": false,
+        "reference_available": true
+      },
+      "execution": {
+        "attempt_count": 2,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": false,
+        "execution_seconds": 0.8011128340003779,
+        "worker_peak_rss_mb": 76.25,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "specified_chart_type": true,
+            "plotted_data_correct": true,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-03",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "specified_chart_type": true,
+            "plotted_data_correct": true,
+            "requires_human_rating": true
+          }
+        }
+      ],
+      "error": "Stopped: Invalid semantic_review output: Failed to parse ReportReviewResponse from completion {\"semantic_status\": \"fail\", \"request_coverage\": {\"status\": \"fail\", \"evidence\": \"The request specifies including valid observation counts in the main mean rentals chart, but the plan separates valid counts into a distinct chart. The main chart for mean_cnt_by_hr does not include valid_count values, violating the explicit instruction to 'include valid observation counts'.\", \"target\": \"plan\"}, \"issues\": [{\"check\": \"chart_coverage\", \"status\": \"fail\", \"evidence\": \"The main mean rentals chart (mean_cnt_by_hr) does not include valid observation counts as requested. The valid_count column exists in the table but is not visualized in the chart specification.\", \"target\": \"plan\"}, {\"check\": \"report_references\", \"status\": \"fail\", \"evidence\": \"The rendered draft findings reference specific hours (0 and 17) but do not explicitly tie valid_count values to the mean values in the same chart, which was requested.\", \"target\": \"report\"}], \"statements\": {\"report.finding.0\": {\"status\": \"pass\", \"evidence\": \"The text 'The mean total rentals (cnt) for hour 0 is approximately 53.89807162534435, with 726 valid observations.' is supported by table.mean_cnt_by_hr.0.value and table.mean_cnt_by_hr.0.valid_count.\", \"suggestion\": \"\"}, \"report.finding.1\": {\"status\": \"pass\", \"evidence\": \"The text 'The mean total rentals (cnt) for hour 17 is approximately 461.45205479452056, with 730 valid observations.' is supported by table.mean_cnt_by_hr.17.value and table.mean_cnt_by_hr.17.valid_count.\", \"suggestion\": \"\"}, \"report.limitation.0\": {\"status\": \"pass\", \"evidence\": \"The limitation 'The results are based on the saved output rows after any limit, not the full source records.' is accurately described by the code's output behavior.\", \"suggestion\": \"\"}, \"report.limitation.1\": {\"status\": \"pass\", \"evidence\": \"The limitation 'The valid observation counts are included, but they do not represent the total population across all hours.' is correctly stated based on the analysis scope.\", \"suggestion\": \"\"}}}. Got: 1 validation error for ReportReviewResponse\nrequest_coverage\n  Value error, A request coverage failure needs a corrective action [type=value_error, input_value={'status': 'fail', 'evide...ts'.\", 'target': 'plan'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\nFor troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE "
+    },
+    {
+      "task": "D4",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-235841-630aa1b7",
+      "status": "failed",
+      "model_calls": 2,
+      "model_tokens": 13806,
+      "reserved_only_calls": 0,
+      "seconds": 337.0061083329929,
+      "tools": 1,
+      "repairs": 0,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 0,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D4",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-000418-cde97108",
+      "status": "failed",
+      "model_calls": 5,
+      "model_tokens": 31143,
+      "reserved_only_calls": 0,
+      "seconds": 812.7882980419963,
+      "tools": 3,
+      "repairs": 3,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 2,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0.8684093749907333,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-03",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D4",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-001751-f3027874",
+      "status": "failed",
+      "model_calls": 5,
+      "model_tokens": 31143,
+      "reserved_only_calls": 0,
+      "seconds": 797.3390632920054,
+      "tools": 3,
+      "repairs": 3,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 2,
+        "successful_attempt_count": 0,
+        "any_execution_ok": false,
+        "selected_execution_ok": false,
+        "execution_seconds": 0.7935234999895329,
+        "worker_peak_rss_mb": null,
+        "worker_memory_measurements": 0,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": false,
+          "score": {
+            "data_correct": false
+          }
+        },
+        {
+          "attempt": "attempt-03",
+          "execution_ok": null,
+          "score": {
+            "data_correct": false
+          }
+        }
+      ],
+      "error": "Stopped: code_generation reached the output-token limit; regenerate a concise, complete output"
+    },
+    {
+      "task": "D5",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003109-b1458b8e",
+      "status": "completed_unverified",
+      "model_calls": 3,
+      "model_tokens": 17394,
+      "reserved_only_calls": 0,
+      "seconds": 243.76854787500633,
+      "tools": 3,
+      "repairs": 0,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003109-b1458b8e/attempt-00",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "requires_answer_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 0.6353122500004247,
+        "worker_peak_rss_mb": 94.4296875,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D5",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003513-ff105e4e",
+      "status": "completed_unverified",
+      "model_calls": 3,
+      "model_tokens": 17394,
+      "reserved_only_calls": 0,
+      "seconds": 226.46395862499776,
+      "tools": 3,
+      "repairs": 0,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003513-ff105e4e/attempt-00",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "requires_answer_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 0.5518733330100076,
+        "worker_peak_rss_mb": 94.42578125,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D5",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003859-4cdd8598",
+      "status": "checks_passed",
+      "model_calls": 4,
+      "model_tokens": 26619,
+      "reserved_only_calls": 0,
+      "seconds": 284.90037958399625,
+      "tools": 4,
+      "repairs": 0,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003859-4cdd8598/attempt-00",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "data_correct": true,
+        "reference_reviewed": false,
+        "requires_answer_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 0.4836065410054289,
+        "worker_peak_rss_mb": 94.4296875,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "data_correct": true,
+            "reference_reviewed": false,
+            "requires_answer_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D6",
+      "condition": "one_shot",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004344-424d63f0",
+      "status": "failed",
+      "model_calls": 3,
+      "model_tokens": 13629,
+      "reserved_only_calls": 0,
+      "seconds": 123.01666616600414,
+      "tools": 3,
+      "repairs": 0,
+      "selected_attempt": null,
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "no_output",
+        "protocol_satisfied": false,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": false,
+        "execution_seconds": 0.5724597919906955,
+        "worker_peak_rss_mb": 90.35546875,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        }
+      ],
+      "error": "Stopped: No cited result cell, request constant or saved filter constant supports '5.73' in finding.0. Bind an actual supporting cell, or remove the unsupported statement."
+    },
+    {
+      "task": "D6",
+      "condition": "no_verification",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004548-7d7d27b9",
+      "status": "completed_unverified",
+      "model_calls": 5,
+      "model_tokens": 25221,
+      "reserved_only_calls": 0,
+      "seconds": 132.42111554199073,
+      "tools": 3,
+      "repairs": 2,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004548-7d7d27b9/attempt-02",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 1,
+        "successful_attempt_count": 1,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 0.5614253749954514,
+        "worker_peak_rss_mb": 90.2734375,
+        "worker_memory_measurements": 1,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        }
+      ],
+      "error": ""
+    },
+    {
+      "task": "D6",
+      "condition": "full",
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004800-15e8f27a",
+      "status": "failed",
+      "model_calls": 9,
+      "model_tokens": 52928,
+      "reserved_only_calls": 0,
+      "seconds": 478.1799546250113,
+      "tools": 6,
+      "repairs": 3,
+      "selected_attempt": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004800-15e8f27a/attempt-02",
+      "score": {
+        "expected_behavior": "answer",
+        "response_behavior": "answer",
+        "protocol_satisfied": true,
+        "clarifications_requested": 0,
+        "clarification_responses": 0,
+        "requires_human_rating": true
+      },
+      "execution": {
+        "attempt_count": 2,
+        "successful_attempt_count": 2,
+        "any_execution_ok": true,
+        "selected_execution_ok": true,
+        "execution_seconds": 1.0181335840024985,
+        "worker_peak_rss_mb": 97.18359375,
+        "worker_memory_measurements": 2,
+        "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM."
+      },
+      "candidate_scores": [
+        {
+          "attempt": "attempt-00",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-01",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-02",
+          "execution_ok": true,
+          "reused_execution": true,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        },
+        {
+          "attempt": "attempt-03",
+          "execution_ok": true,
+          "reused_execution": false,
+          "score": {
+            "expected_behavior": "answer",
+            "response_behavior": "answer",
+            "protocol_satisfied": true,
+            "clarifications_requested": 0,
+            "clarification_responses": 0,
+            "requires_human_rating": true
+          }
+        }
+      ],
+      "error": "Stopped: 2 validation errors for Draft\nfindings.0.text\n  Value error, Bind numeric claims using {{table.ID.ROW.COLUMN}}, {{request.numbers.INDEX}} or {{plan.filters.ID.INDEX}} for saved filter scope, {{result.rows.ID}} for saved output row counts; literal digits and malformed braces are not allowed in prose [type=value_error, input_value='The education level with...11.value}} individuals.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\nfindings.2.text\n  Value error, Bind numeric claims using {{table.ID.ROW.COLUMN}}, {{request.numbers.INDEX}} or {{plan.filters.ID.INDEX}} for saved filter scope, {{result.rows.ID}} for saved output row counts; literal digits and malformed braces are not allowed in prose [type=value_error, input_value='The race category with t....4.value}} individuals.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error"
+    }
+  ],
+  "limits": [
+    "One repeat, two development tasks per category, fixed sequential order.",
+    "Reference matches are not human whole-task or chart quality scores.",
+    "Environment differs from historical cohorts; no pooled or causal version comparison.",
+    "Missing model RSS remains unavailable, never imputed as zero.",
+    "No held-out inference, independent review, formal freeze or human ratings."
+  ],
+  "planning_estimate": {
+    "basis": "Current v15 development task/category/condition means, including failures; no formal inference.",
+    "tasks_by_category": {
+      "explicit": 22,
+      "visualization": 14,
+      "exploration": 6
+    },
+    "repeats": 2,
+    "runs": 252,
+    "estimated_seconds": 84709.80443418212,
+    "estimated_model_tokens": 5761464.0,
+    "limits": "Only two dev tasks per category; task difficulty, failures, runtime and load may differ. Excludes reviews, scoring and downtime.",
+    "catalog_sha256": "332130a260e7756b7933380a7e8ae3cda460502827ea9095bbe068be51be978a"
+  },
+  "presentation": {
+    "artifactRef": "artifact_M3C9M5OoMzDttlYtgkXaeCv1iEc2frDk",
+    "stateVersion": 4,
+    "slides": 10,
+    "validation": "report/presentation-v15-validation.json"
+  },
+  "post_hoc_diagnostics": {
+    "D3": "evaluation/private/pilot-v15-D3-scope-audit.json",
+    "D6": "evaluation/private/pilot-v15-D6-replan-audit.json",
+    "scope": "Developer facts only; primary outcomes unchanged; no human rubric scores."
+  }
+}

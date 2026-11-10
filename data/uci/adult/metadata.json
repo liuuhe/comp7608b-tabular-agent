@@ -1,0 +1,27 @@
+{
+  "dataset": "adult",
+  "url": "https://archive.ics.uci.edu/static/public/2/adult.zip",
+  "doi": "10.24432/C5XW20",
+  "license": "CC BY 4.0",
+  "archive_sha256": "7537312dd56c2b98035880805ce99e68183a30ee468aa5329d6df0fbb3cc21bb",
+  "csv_sha256": "ce5feb731adaef81b15c3dc42dbe982fec8f47700711d60760bc752b4079bf9e",
+  "rows": 48842,
+  "columns": [
+    "age",
+    "workclass",
+    "fnlwgt",
+    "education",
+    "education-num",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "capital-gain",
+    "capital-loss",
+    "hours-per-week",
+    "native-country",
+    "income"
+  ],
+  "documentation": "UCI Adult, DOI 10.24432/C5XW20, Barry Becker and Ronny Kohavi, CC BY 4.0.\nCombined adult.data and adult.test, excluding the test file comment header. Labels in test have\ntrailing periods removed; text whitespace stripped, ? treated as missing. No rows deduplicated.\nhours-per-week is weekly working hours; education is a category and education-num an ordinal code.\nincome is <=50K or >50K. fnlwgt is a survey weight, not income. Use unweighted sample summaries\nunless explicitly requested. Do not generalize these observed records as population estimates.\n"
+}

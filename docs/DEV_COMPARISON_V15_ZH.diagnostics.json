@@ -1,0 +1,254 @@
+{
+  "scope": "Recorded development exceptions, including recovered exceptions; not terminal failure attribution or task correctness. Truncation cost includes input/output tokens and client-call wall time; unknown cost is not zero.",
+  "reporter_sha256": "c0c4e18cb87f94d0c9eff57b986ee200da90ae5367ef29d7d12178f155274c91",
+  "inputs": [
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230149-0329e5a3",
+      "trace_sha256": "eeecae96e2669eacced87b698a1acf5fde51d6148278d1f8a5aa82ce4c49d651",
+      "evaluation_sha256": "7f936615b4cdb62537a96a71719496e0d48079fd48c8779f8e33571542c4f140"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230440-72e2d366",
+      "trace_sha256": "2539d2de8b959ee7f6f80e4e6dc28b54413fb2c139c92aae94f6a67bc3445b43",
+      "evaluation_sha256": "facf9bba184e85310059fa00a79cc2dd338ce9de87c9ca624e74942a44c8aa1c"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-230715-44d3812f",
+      "trace_sha256": "9f84d79faef30073372a0c99656a02a5a461f6939d014f6d90b8b14d50ee7a3b",
+      "evaluation_sha256": "0714bbf63483afbfd15dbc56f43d34424fb289c5dccb8388556621f6afbbc772"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231044-3572de8c",
+      "trace_sha256": "02415878c323db0c89304e29f9cd0b19efd99b34783da4e23f02537a3271153c",
+      "evaluation_sha256": "b7bd4441c483e39f2086399bd4f9812cc2cfbdbe9df3b727573aae51db76144c"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-231602-d8e584d4",
+      "trace_sha256": "5ed1ade0c41546ec70f97e4b648e358d60b429709dd727c42e3e9638ba8e08c0",
+      "evaluation_sha256": "8b268dd1f0d58b02f88523c93c29ac0508bbc67703b3e0b900d305fd0698f79e"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-232610-b15923f5",
+      "trace_sha256": "ed1a5465c9bbc83a8eb1738fc7fded160f0ba651298547363bf11d198a7087ae",
+      "evaluation_sha256": "9afb58f97040a6f71dcac329eedb222c24ee9d925b6e49133be74499bc1244a7"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233611-aab21b2d",
+      "trace_sha256": "589ed8222724d69c847793d072b05334fddebecf7d014584480b7afdfb3793c4",
+      "evaluation_sha256": "71311577c78ed6d935739762775e805c5a5a2eef355edc632795088441772b42"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-233743-8b7498db",
+      "trace_sha256": "9d8ec718c99c153c33b84d462f2576fbfe3c620956abdf1462c18d602a1bf6ae",
+      "evaluation_sha256": "5a331b71532ac5eb016af81c8d10f04c958e6a4082d8fb62cd1e1031fc816ba1"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-234653-90b0c0bf",
+      "trace_sha256": "69cb2fb5163577c99423b1a429f7d819497cef19fdfff7f0ef8b8130cf562d3a",
+      "evaluation_sha256": "f6640e429d562aebf39fe6cff782757dba4b64df36bdc32d768760adab1905bd"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261107-235841-630aa1b7",
+      "trace_sha256": "7bd5950495ee3a5b9713138329558dda9e932a5813557a970ea0321cc19909aa",
+      "evaluation_sha256": "d03fbb7ce74dde68cf81f49294adff594fb76d5aad2a4718bd09ace11db1ce0e"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-000418-cde97108",
+      "trace_sha256": "e71cd30e3306e5e62b5e589348b7ded69ce7dfffb00558b1c3a16ea3a466a65d",
+      "evaluation_sha256": "f8ab84e5a91fe09b1e285ee6103bd9af65d2d348e0e1990af0846f7c8951b55a"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-001751-f3027874",
+      "trace_sha256": "27e86f445b6acf46842d1106f009597e8f4861cb910b8ecb703828182d4b75e8",
+      "evaluation_sha256": "bada33c68c6e85d26fb81d21a5cd4d217d0ff95ef4a74a26c055ecc94adf250b"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003109-b1458b8e",
+      "trace_sha256": "f496c1a68ad75383e2e405b9d7dab71f7aad7d35bc5d856fbe3ec05d680e949d",
+      "evaluation_sha256": "72a8bbb09e2fd0562aab7c6639604c1618f505731c1505b9640ab5c5d423cd98"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003513-ff105e4e",
+      "trace_sha256": "79eb0f89668b0f5bcc742748d67266bfe8b29ff5fa6c202fe23389d308e6392b",
+      "evaluation_sha256": "463f6363ed123ba737d517e187efb121cd023f2142e97025f2da883b68c867a6"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-003859-4cdd8598",
+      "trace_sha256": "fa9a475580a42fc0a5002ea8d75576d1f19e5fa13f03f47b89e0cff3ac1c2dd2",
+      "evaluation_sha256": "1c28c5c38c8c5386073c8980b21c309e8f1c8b5519808637b3f14e7f4a40fe60"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004344-424d63f0",
+      "trace_sha256": "0ce96d186c373426dda4bfa7e42268ad48071cdc057a6d20186671b9782d4cee",
+      "evaluation_sha256": "51d2e381f0a21fd03543191eae23c8018fa543ade2c9cd8eb0a7888455673b0c"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004548-7d7d27b9",
+      "trace_sha256": "95f60032f774e0b9cc610f2d266a767d1a8eebd1f7b0ee33634b1b5b04e1fd8d",
+      "evaluation_sha256": "4cda53577712d668e2d5b910d3c9047460bd5af8b8078108c6a4078af1e7b5f7"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/pilot-three-condition-v15/20261108-004800-15e8f27a",
+      "trace_sha256": "33eac433edc927885263e278dc750c0b1fb3c0355a285706013b8451fdda4e4f",
+      "evaluation_sha256": "e06a64ef073da7f812cbbd82c0b9b4dbb71ff28976cba2dd898b3b59a1817473"
+    }
+  ],
+  "stages": [
+    {
+      "condition": "one_shot",
+      "stage": "draft",
+      "node_errors": 2,
+      "model_calls": 3,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "one_shot",
+      "stage": "plan",
+      "node_errors": 0,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "one_shot",
+      "stage": "generate",
+      "node_errors": 2,
+      "model_calls": 6,
+      "failed_model_calls": 2,
+      "truncated_calls": 2,
+      "truncated_seconds_measured_calls": 2,
+      "truncated_seconds_measured": 602.4160014160007,
+      "truncated_tokens_accounted_calls": 2,
+      "truncated_tokens_accounted": 15600
+    },
+    {
+      "condition": "no_verification",
+      "stage": "draft",
+      "node_errors": 3,
+      "model_calls": 7,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "plan",
+      "node_errors": 0,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "generate",
+      "node_errors": 5,
+      "model_calls": 12,
+      "failed_model_calls": 5,
+      "truncated_calls": 5,
+      "truncated_seconds_measured_calls": 5,
+      "truncated_seconds_measured": 1479.0754052909906,
+      "truncated_tokens_accounted_calls": 5,
+      "truncated_tokens_accounted": 40712
+    },
+    {
+      "condition": "full",
+      "stage": "draft",
+      "node_errors": 4,
+      "model_calls": 8,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "plan",
+      "node_errors": 0,
+      "model_calls": 7,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "generate",
+      "node_errors": 5,
+      "model_calls": 13,
+      "failed_model_calls": 5,
+      "truncated_calls": 5,
+      "truncated_seconds_measured_calls": 5,
+      "truncated_seconds_measured": 1461.1327066680096,
+      "truncated_tokens_accounted_calls": 5,
+      "truncated_tokens_accounted": 40712
+    },
+    {
+      "condition": "full",
+      "stage": "verify",
+      "node_errors": 2,
+      "model_calls": 5,
+      "failed_model_calls": 2,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "one_shot",
+      "stage": "execute",
+      "node_errors": 1,
+      "model_calls": 0,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "execute",
+      "node_errors": 3,
+      "model_calls": 0,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "execute",
+      "node_errors": 3,
+      "model_calls": 0,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    }
+  ]
+}

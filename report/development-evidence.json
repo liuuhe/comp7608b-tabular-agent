@@ -1,0 +1,997 @@
+{
+  "status": "development_evidence_only",
+  "created_at": "2026-11-02T20:37:52.058035+00:00",
+  "formal_study_completed": false,
+  "reference_independently_reviewed": false,
+  "human_ratings_available": false,
+  "sources_sha256": {
+    "Instrctions/COMP7608B_LLM_Project_Guideline.pdf": "6d41ab9f12a8281a72ece481cb584fa1836567e0866e446d10cfc51c7d53d0ee",
+    "proposal/Formatting_Instructions_For_NeurIPS_2026.pdf": "a1a91b6eb6a06b5e7dd839c245604e87b1de9ecc277aece861de2989e22ba8b7",
+    "evaluation/tasks.json": "045482ab62dca46bd5f363467c190eb971cf636f397e5949bbdc59fbb88ec9a2",
+    "evaluation/tasks.heldout.json": "332130a260e7756b7933380a7e8ae3cda460502827ea9095bbe068be51be978a",
+    "config/pilot-code-thinking-v12.json": "2aaf0e7ec9915e978b09d7afbe0a05fc82e004de995fc636bf468099ba4b1f70",
+    "evaluation/private/pilot-three-condition-v12-validation.json": "431fdd894c8b307f6e685cdf46ed1947568b73263eba8e902569ade84e73da6e",
+    "evaluation/private/pilot-reference-feedback-v13-validation.json": "4d8a9dcb1db1a8d401e881efa85fc87da95d9eb44352b54982270ebe1f5ddda8",
+    "evaluation/private/pilot-reference-feedback-v13-attribution.json": "53e9cb3abee352973bb80001273424fc3e2d65c51a89e1e81f7da007823a566e",
+    "evaluation/private/pilot-v12-D3-scope-audit.json": "f839781708cabd7b36e1b543494bcb24f7ccdcd5f17ee8f6ddd425717dc7c165"
+  },
+  "v12": {
+    "root": "evaluation/runs/pilot-three-condition-v12",
+    "coverage": {
+      "complete": true,
+      "expected_run_count": 18,
+      "observed_run_count": 18,
+      "missing_runs": []
+    },
+    "runs": 18,
+    "system_fingerprint": "5225acd99b8cf9f23d29e0acefb71ea219e283ae00c5b869f54032f95eb65172",
+    "total_seconds": 4681.28176004003,
+    "total_model_tokens": 389575,
+    "category_outcomes": [
+      {
+        "category": "explicit",
+        "condition": "one_shot",
+        "tasks": 2,
+        "numerical_matches": 1,
+        "any_execution_ok": 1,
+        "report_available": 1
+      },
+      {
+        "category": "explicit",
+        "condition": "no_verification",
+        "tasks": 2,
+        "numerical_matches": 2,
+        "any_execution_ok": 2,
+        "report_available": 2
+      },
+      {
+        "category": "explicit",
+        "condition": "full",
+        "tasks": 2,
+        "numerical_matches": 2,
+        "any_execution_ok": 2,
+        "report_available": 2
+      },
+      {
+        "category": "visualization",
+        "condition": "one_shot",
+        "tasks": 2,
+        "numerical_matches": 2,
+        "any_execution_ok": 2,
+        "report_available": 2
+      },
+      {
+        "category": "visualization",
+        "condition": "no_verification",
+        "tasks": 2,
+        "numerical_matches": 1,
+        "any_execution_ok": 2,
+        "report_available": 1
+      },
+      {
+        "category": "visualization",
+        "condition": "full",
+        "tasks": 2,
+        "numerical_matches": 1,
+        "any_execution_ok": 2,
+        "report_available": 1
+      },
+      {
+        "category": "exploration",
+        "condition": "one_shot",
+        "tasks": 2,
+        "numerical_matches": null,
+        "any_execution_ok": 2,
+        "report_available": 1
+      },
+      {
+        "category": "exploration",
+        "condition": "no_verification",
+        "tasks": 2,
+        "numerical_matches": null,
+        "any_execution_ok": 2,
+        "report_available": 1
+      },
+      {
+        "category": "exploration",
+        "condition": "full",
+        "tasks": 2,
+        "numerical_matches": null,
+        "any_execution_ok": 2,
+        "report_available": 1
+      }
+    ],
+    "resources": [
+      {
+        "category": "explicit",
+        "condition": "full",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 289.5216322079941,
+          "model_tokens": 24530.0,
+          "tool_count": 4.0,
+          "repairs": 0.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 1.0,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 1.0,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.8711143750115298,
+          "worker_peak_rss_mb": 170.201171875,
+          "controller_peak_rss_mb": 389.1640625,
+          "ollama_processes_peak_sum_rss_mb": 9735.5078125
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "explicit",
+        "condition": "no_verification",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 230.5589605210116,
+          "model_tokens": 16125.5,
+          "tool_count": 3.0,
+          "repairs": 0.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 1.0,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 1.0,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.9044274170009885,
+          "worker_peak_rss_mb": 170.240234375,
+          "controller_peak_rss_mb": 243.921875,
+          "ollama_processes_peak_sum_rss_mb": 9061.4765625
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "explicit",
+        "condition": "one_shot",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 212.22660200000973,
+          "model_tokens": 13049.5,
+          "tool_count": 2.5,
+          "repairs": 0.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 0.5,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.8473140209680423,
+          "worker_peak_rss_mb": 93.68359375,
+          "controller_peak_rss_mb": 281.5234375,
+          "ollama_processes_peak_sum_rss_mb": 8684.046875
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 1,
+            "runs": 1
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "exploration",
+        "condition": "full",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 221.90898868700606,
+          "model_tokens": 27719.5,
+          "tool_count": 3.5,
+          "repairs": 1.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.5056029164989013,
+          "worker_peak_rss_mb": 83.779296875,
+          "controller_peak_rss_mb": 118.015625,
+          "ollama_processes_peak_sum_rss_mb": 9577.078125
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "exploration",
+        "condition": "no_verification",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 182.59938204151695,
+          "model_tokens": 22414.0,
+          "tool_count": 3.0,
+          "repairs": 1.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.5214974794944283,
+          "worker_peak_rss_mb": 83.828125,
+          "controller_peak_rss_mb": 114.4609375,
+          "ollama_processes_peak_sum_rss_mb": 9527.2421875
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "exploration",
+        "condition": "one_shot",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 193.92727466698852,
+          "model_tokens": 16401.5,
+          "tool_count": 3.0,
+          "repairs": 0.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.4897033545130398,
+          "worker_peak_rss_mb": 83.830078125,
+          "controller_peak_rss_mb": 129.2109375,
+          "ollama_processes_peak_sum_rss_mb": 9747.1484375
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "visualization",
+        "condition": "full",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 412.8424078960088,
+          "model_tokens": 31614.0,
+          "tool_count": 3.5,
+          "repairs": 1.5,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.9210444790078327,
+          "worker_peak_rss_mb": 151.75,
+          "controller_peak_rss_mb": 215.4765625,
+          "ollama_processes_peak_sum_rss_mb": 9483.8671875
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "visualization",
+        "condition": "no_verification",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 378.66220516647445,
+          "model_tokens": 26143.5,
+          "tool_count": 3.0,
+          "repairs": 1.5,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 0.5,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 0.5,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.941956978989765,
+          "worker_peak_rss_mb": 151.783203125,
+          "controller_peak_rss_mb": 210.0546875,
+          "ollama_processes_peak_sum_rss_mb": 8991.046875
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      },
+      {
+        "category": "visualization",
+        "condition": "one_shot",
+        "task_count": 2,
+        "run_count": 2,
+        "task_averaged_means": {
+          "seconds": 218.39342683300492,
+          "model_tokens": 16790.0,
+          "tool_count": 3.0,
+          "repairs": 0.0,
+          "clarification": 0.0,
+          "clarification_requested": 0.0,
+          "clarification_responses": 0.0,
+          "report_available": 1.0,
+          "any_execution_ok": 1.0,
+          "selected_execution_ok": 1.0,
+          "execution_attempts": 1.0,
+          "execution_seconds": 0.7477096460061148,
+          "worker_peak_rss_mb": 151.869140625,
+          "controller_peak_rss_mb": 248.21875,
+          "ollama_processes_peak_sum_rss_mb": 8901.765625
+        },
+        "measurement_counts": {
+          "seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "model_tokens": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "tool_count": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "repairs": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_requested": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "clarification_responses": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "report_available": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "any_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "selected_execution_ok": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_attempts": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "execution_seconds": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "worker_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "controller_peak_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          },
+          "ollama_processes_peak_sum_rss_mb": {
+            "tasks": 2,
+            "runs": 2
+          }
+        },
+        "scope": "All runs, including failures and exploration. Memory scopes remain separate; unavailable samples are omitted with explicit counts, not imputed as zero. Host model RSS excludes Metal allocations and Docker VM memory."
+      }
+    ],
+    "record_sha256": {
+      "evaluation/runs/pilot-three-condition-v12/20261103-025710-9c395ad2/evaluation.json": "ad019ec5d2e8c79a879fe96005e54c61fe2402f7385302531f094191bcf0da74",
+      "evaluation/runs/pilot-three-condition-v12/20261103-030021-65bcb594/evaluation.json": "73b8415f88589c37285affbbd12c095393f26ece5e03bb300d2320726708c655",
+      "evaluation/runs/pilot-three-condition-v12/20261103-030418-51e42f3d/evaluation.json": "0db468e51c94231d1cea9388974ec7e36d0a388f8ff7a7a602ce5716c4e0ecab",
+      "evaluation/runs/pilot-three-condition-v12/20261103-030921-06e8581a/evaluation.json": "e3bbf915b2313c410877c13e05118a0c80c6cfba8f2ac1722a0dfc8b571e0cae",
+      "evaluation/runs/pilot-three-condition-v12/20261103-031244-b2eca36d/evaluation.json": "89755a59fdf84097b6bce01049a0c7629a8a0ceb1cffc933b744f67b80c4fa6c",
+      "evaluation/runs/pilot-three-condition-v12/20261103-032218-70853482/evaluation.json": "24e7c5022ec0065da4fabce62ecda23eb1dd44c87d4351522618f92818b5187d",
+      "evaluation/runs/pilot-three-condition-v12/20261103-033142-747b273b/evaluation.json": "83d9c6ff04548d69461b29e67afc475c617d9fc3abfdf0100da228fd051a7faa",
+      "evaluation/runs/pilot-three-condition-v12/20261103-033536-bdfd8360/evaluation.json": "a4cf90031d88498dea325237cf22538ae012213a143b845c3f24117fbc2320a7",
+      "evaluation/runs/pilot-three-condition-v12/20261103-033839-9baea906/evaluation.json": "ba48dc13c1975cf4101c88faa99ddbda7bbc3a41910d17cba6e5fe9e4821bdd1",
+      "evaluation/runs/pilot-three-condition-v12/20261103-034301-024eac3d/evaluation.json": "f15e98437a78b35d9b45a022e2f95b336791f705de75f381274b22427d34dc85",
+      "evaluation/runs/pilot-three-condition-v12/20261103-034708-91ca8c2e/evaluation.json": "b975fdf0362ce2ca7fd1d7a5c57382675dfd7a5540c8a4e8058c781c5307ec25",
+      "evaluation/runs/pilot-three-condition-v12/20261103-035042-ceaa47d9/evaluation.json": "806bc3af3c0d66a9d73df34b20503f519d76feeef818a6deb98a62bdc7bf7be4",
+      "evaluation/runs/pilot-three-condition-v12/20261103-035534-187b027e/evaluation.json": "c20e868a0ddcbe9e5041bcf418c95c1950386b302e9ea549c7bc30a1ecea3a4e",
+      "evaluation/runs/pilot-three-condition-v12/20261103-035928-979889ce/evaluation.json": "e782a9b93166d2178b36d3eb1bb060cb23926dda7b0e4b546a19cbd861ec4550",
+      "evaluation/runs/pilot-three-condition-v12/20261103-040312-52554c43/evaluation.json": "428e1373bef9f2b973613274cc0ec5029df1a6f82ba67e6074c9fb81317ca390",
+      "evaluation/runs/pilot-three-condition-v12/20261103-040749-c5ff3b00/evaluation.json": "82d32e546a99f9e817f3d4ffacc068f38b0cf9e2b8f1bce921471fb5c9ac7663",
+      "evaluation/runs/pilot-three-condition-v12/20261103-041009-0925bb1a/evaluation.json": "3b96cfa6945e69afc614f071a7afad5d9654b1338f2284b75b7557878cde5586",
+      "evaluation/runs/pilot-three-condition-v12/20261103-041241-649d88e0/evaluation.json": "fd20f39454502e28bab24356a1b1f1036dd4be2df822abd66d85ab0e647c2745"
+    },
+    "settings": {
+      "model": "qwen3:8b",
+      "base_url": "http://127.0.0.1:11434",
+      "thinking": false,
+      "code_thinking": true,
+      "review_thinking": true,
+      "temperature": 0.0,
+      "context_size": 16384,
+      "output_tokens": 6144,
+      "token_budget": 100000,
+      "max_tools": 12,
+      "max_repairs": 3,
+      "timeout": 120,
+      "image": "tabular-agent-executor:dev",
+      "memory": "2g",
+      "cpus": 2,
+      "condition": "one_shot",
+      "seed": 42
+    },
+    "environment": {
+      "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "ollama_version": "0.40.2",
+      "python": "3.12.14",
+      "hardware": {
+        "machine": "arm64",
+        "cpu_count": 10,
+        "memory_bytes": 25769803776
+      },
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "langgraph": "1.2.18",
+        "langchain-ollama": "1.1.0",
+        "pandas": "2.3.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "pydantic": "2.14.2"
+      },
+      "executor": {
+        "image_id": "sha256:590f3dd9e2e8325306b36b31876430ad43192284e172b13cb8bf456979ca9b31",
+        "image": "tabular-agent-executor:dev"
+      }
+    }
+  },
+  "v13": {
+    "root": "evaluation/runs/pilot-reference-feedback-v13",
+    "runs": 2,
+    "total_seconds": 535.2683453340433,
+    "total_model_tokens": 55152,
+    "outcomes": [
+      {
+        "task": "D2",
+        "status": "checks_passed",
+        "repairs": 0,
+        "tokens": 21257,
+        "tools": 4,
+        "seconds": 292.0830019590212
+      },
+      {
+        "task": "D6",
+        "status": "checks_passed",
+        "repairs": 2,
+        "tokens": 33895,
+        "tools": 4,
+        "seconds": 243.18534337502206
+      }
+    ],
+    "pool_with_v12": false
+  },
+  "planned_formal_study": {
+    "base_tasks_by_category": {
+      "explicit": 12,
+      "visualization": 12,
+      "exploration": 6
+    },
+    "variant_tasks_by_category": {
+      "explicit": 10,
+      "visualization": 2
+    },
+    "all_tasks_by_category": {
+      "explicit": 22,
+      "visualization": 14,
+      "exploration": 6
+    },
+    "conditions": [
+      "one_shot",
+      "no_verification",
+      "full"
+    ],
+    "repetitions": 2,
+    "runs": 252,
+    "projected_seconds": 67679.88942989649,
+    "projected_hours": 18.79996928608236,
+    "projected_model_tokens": 5248770.0,
+    "projection_scope": "Planning estimate only: sum over actual draft task-category counts times v12 per-category/condition mean times two repeats. Two dev tasks per category; held-out difficulty and v13 can differ. Excludes manual work and service downtime. No held-out inference performed.",
+    "candidate_config": "config/pilot-code-thinking-v12.json",
+    "candidate_config_is_frozen": false
+  }
+}

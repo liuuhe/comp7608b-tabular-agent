@@ -1,0 +1,14 @@
+{
+  "model": "qwen3:8b",
+  "context_size": 16384,
+  "output_tokens": 6144,
+  "token_budget": 100000,
+  "max_tools": 12,
+  "max_repairs": 3,
+  "timeout": 120,
+  "thinking": false,
+  "code_thinking": true,
+  "review_thinking": true,
+  "condition": "full",
+  "seed": 42
+}

@@ -1,0 +1,29 @@
+{
+  "dataset": "bike",
+  "url": "https://archive.ics.uci.edu/static/public/275/bike+sharing+dataset.zip",
+  "doi": "10.24432/C5W894",
+  "license": "CC BY 4.0",
+  "archive_sha256": "b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401",
+  "csv_sha256": "11e08374c448229649b93e64c7442558b93d516a008804bd70bdb8c82333c434",
+  "rows": 17379,
+  "columns": [
+    "instant",
+    "dteday",
+    "season",
+    "yr",
+    "mnth",
+    "hr",
+    "holiday",
+    "weekday",
+    "workingday",
+    "weathersit",
+    "temp",
+    "atemp",
+    "hum",
+    "windspeed",
+    "casual",
+    "registered",
+    "cnt"
+  ],
+  "documentation": "UCI Bike Sharing, DOI 10.24432/C5W894, Hadi Fanaee-T, CC BY 4.0. Only hour.csv.\nEach row is one observed hour. cnt=total rentals, casual and registered are component counts.\ndteday=date, hr=hour 0..23, yr=0 for 2011 and 1 for 2012, mnth=1..12, weekday=0..6.\nworkingday=1 means neither weekend nor holiday; holiday=1 means holiday.\nseason:1 spring,2 summer,3 fall,4 winter. weathersit:1 clear/partly cloudy,2 mist/cloudy,\n3 light snow/rain/thunderstorm,4 heavy rain/ice/snow/fog. Fields are normalized:\ntemp temperature divided by 41; atemp feels-like temperature divided by 50;\nhum humidity divided by 100; windspeed divided by 67 (as documented in the source Readme).\nDescribe relationships as associations; observations do not establish causation.\n"
+}

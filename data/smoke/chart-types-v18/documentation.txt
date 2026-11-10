@@ -1,0 +1,5 @@
+Synthetic software-integration fixture, created for this project; not a research dataset or held-out task.
+Each row is one observation. study_hours is a numeric number of study hours; score is a numeric score in points.
+observation is an identifier. unrelated is deliberately irrelevant and must not affect row inclusion.
+Blank cells are missing. The last two rows intentionally have the same study_hours/score pair and are distinct observations.
+No weights, joins, predictive model or causal interpretation are needed.

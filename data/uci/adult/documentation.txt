@@ -1,0 +1,6 @@
+UCI Adult, DOI 10.24432/C5XW20, Barry Becker and Ronny Kohavi, CC BY 4.0.
+Combined adult.data and adult.test, excluding the test file comment header. Labels in test have
+trailing periods removed; text whitespace stripped, ? treated as missing. No rows deduplicated.
+hours-per-week is weekly working hours; education is a category and education-num an ordinal code.
+income is <=50K or >50K. fnlwgt is a survey weight, not income. Use unweighted sample summaries
+unless explicitly requested. Do not generalize these observed records as population estimates.

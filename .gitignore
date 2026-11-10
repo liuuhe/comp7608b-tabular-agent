@@ -1,0 +1,67 @@
+# Python environments and generated caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage*
+htmlcov/
+coverage.xml
+build/
+dist/
+.cache/
+
+# Local settings, credentials and editor state
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+.aws/
+.codex/
+.agents/
+.ollama/
+.streamlit/secrets.toml
+.vscode/
+.idea/
+.DS_Store
+*.log
+*.pid
+*.tmp
+/config/*.local.json
+/config/frozen-experiment*.json
+
+# Keep raw runs, evaluation answers and human review work local
+/runs/
+/evaluation/runs/
+/evaluation/private/
+
+# Keep course handouts and proposal sources/PDFs local (contain student details)
+/Instrctions/
+/proposal/
+
+# Track only UCI provenance and field documentation; download full datasets locally
+/data/uci/*
+!/data/uci/adult/
+!/data/uci/bike/
+!/data/uci/retail/
+/data/uci/*/*
+!/data/uci/*/metadata.json
+!/data/uci/*/documentation.txt
+!/data/uci/*/Readme.txt
+!/data/uci/*/adult.names
+!/data/uci/*/old.adult.names
+
+# Keep generated slide editor snapshots and previews local
+/report/*
+!/report/DRAFT.md
+!/report/development-evidence.json
+!/report/development-evidence-v15.json

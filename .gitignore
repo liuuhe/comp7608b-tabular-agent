@@ -65,3 +65,4 @@ service-account*.json
 !/report/DRAFT.md
 !/report/development-evidence.json
 !/report/development-evidence-v15.json
+!/report/development-evidence-local-20261115.json

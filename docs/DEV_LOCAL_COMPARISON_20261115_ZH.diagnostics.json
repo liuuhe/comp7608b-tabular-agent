@@ -1,0 +1,230 @@
+{
+  "scope": "Recorded development exceptions, including recovered exceptions; not terminal failure attribution or task correctness. Truncation cost includes input/output tokens and client-call wall time; unknown cost is not zero.",
+  "reporter_sha256": "c0c4e18cb87f94d0c9eff57b986ee200da90ae5367ef29d7d12178f155274c91",
+  "inputs": [
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-170706-c2496fa4",
+      "trace_sha256": "af5aff42af9f873afc0c17a92ea1d9c16f0ca16fe7b384b9bd71eddcfd797828",
+      "evaluation_sha256": "073f5fcd556105d3946529ec5e5be59497a6e000e96c15b2e3eba4d8d3f4c3b6"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-171111-f07f28b6",
+      "trace_sha256": "d195fbec3172912dea3190f115f5f317325560c388b37435de13e178f985ebbe",
+      "evaluation_sha256": "ec41b2ac5ad10cc2bb6115d81bf8b042494b23e659c6895cfa0bf981058bc10a"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-171727-1d7e0427",
+      "trace_sha256": "92ff8092a2f7d667164827ec493865ecfa105d7a09affd8ac639b9fad0e8a92a",
+      "evaluation_sha256": "86eb0fa024d32974932388130d1d27eee53f1135654d6b1027def27c283e45b2"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-172805-7cfcfc9a",
+      "trace_sha256": "e9b931eafde9c25b0cc989f2d6b0e1ff07ddd5782b493edc8a8584c9a9943d42",
+      "evaluation_sha256": "37d88487f40ae81ed774fc5eaafc77b32b1815e60f36eb6403878c0304024a16"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-173116-afe9c730",
+      "trace_sha256": "47fdae2e425cdf3f91501ae2acec9236ece7045cd631c4afb442bfc75c66a4d2",
+      "evaluation_sha256": "4ea1fde67b8e343a17c69cde7ad06e23f3cadeebe26af7410d7e4ed1114e77b4"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-173409-f0c6a55f",
+      "trace_sha256": "fe0f36f39d7eb485ba27bd524b10286c029cb37a8aa0adad62426cd8aa9b8b49",
+      "evaluation_sha256": "fb9796b131c1b1f74077b71e11caa9ec56ab8dd03855ef660da294b624673a9b"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-174304-d7655938",
+      "trace_sha256": "2febf0cb48ab2b3a5c58e4c4430565d93149dae822fd23f434c550d1ffef4b5e",
+      "evaluation_sha256": "63c00035abcac1d1460531cc8794487f8dfe946d83d495dbe6e75b09b2fa2448"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-174751-a540fe71",
+      "trace_sha256": "e0d5e64492ebeb9b9de2b28af8552a9cd7c322497d7c7d31a6b6f1247a04260a",
+      "evaluation_sha256": "0a72c287dfb22873ea66b053076d09a44fe2504ef705b4cbd77f36861c1fea2d"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-175142-9a9f2241",
+      "trace_sha256": "e0b4565bf34a2205db208b8eeda88f6a20dff4c35816b62cfdf398330aadbe46",
+      "evaluation_sha256": "058133d7f700611b95af42c9ae63aaf70408413f32fc4db82c457b0d0afd221f"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-180920-c13a172c",
+      "trace_sha256": "88bd5bbf9fd6bd7d6b9b70b059dd2d9015fc1cb8373733b604dec8110d3d337d",
+      "evaluation_sha256": "08f29a0dc832f87bbd252f8f672f5791af0f8279911cb110044c693a9cfc7ced"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-180954-f92a286f",
+      "trace_sha256": "c3536cde4d8ca5ffaa9313a3fdc88896112c778fa300cafe11c4882dcda05356",
+      "evaluation_sha256": "7ff04f54db89b5b227d3ff9a0b04d2d8bd053463aa69110044b9661571679559"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-181430-8ee6d7c1",
+      "trace_sha256": "41585ee03e5bce67df665f44c45c1d4f0a7009c679904c2dbd8ee0a071da6949",
+      "evaluation_sha256": "6ea367629a9a5115d297ee1d6d45746636b0d6bbf82073c18ce1dd74d350626d"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-181959-84e7ca69",
+      "trace_sha256": "b35ce4cdc1c7e394fbdae9dc59e5dfedd058f4d9da95aa8b02c226209ea7b314",
+      "evaluation_sha256": "1ffd3ecb7fc20162c9b5744108a8e6ab246764e9882dcf9375287b86b9805d7b"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-182608-cf6bf04f",
+      "trace_sha256": "0551cc53526ae46f3f2cefbf6f215df12a320dc3bbf35cc152ab5ce9ee479317",
+      "evaluation_sha256": "c3a98ccb93311078185eb8d56da8a456ff4797d3321c5ba185815900a2cdd30d"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-183434-e43e0e17",
+      "trace_sha256": "b3185af890a623f3e35199c4ae037110bf256417271b6d07a4290af893ff3f24",
+      "evaluation_sha256": "8fadfef08407f397fb779dcd728df0bc597838ac79e49a63a4a526371b6f1c42"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-184337-365a2372",
+      "trace_sha256": "2ff892a6f9db7cd51af25f94eac3fd6f26322d6643059f1364a1985c39e14cda",
+      "evaluation_sha256": "4f2f5bb8c9df46a10044e0ca585bf75939bc55ff043505a2404e002b6533af96"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-185000-583ab355",
+      "trace_sha256": "875c1fcc361456c0cfcba898f0da39b3876ccf0703baa4e06c6d32ed468e7aa1",
+      "evaluation_sha256": "a3985f28b5836bb61a89a898aa047fb9615a08e7db5217d9f311b265dd4b5817"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/local-dev-20261115/20261115-190212-48b982f8",
+      "trace_sha256": "f40a7bfeeae254b5279c5e87ed18ca67ac5a3576ec9ffe182b1445eaeb36d28c",
+      "evaluation_sha256": "2f971290a7cf3e7867bd6d424fc4354e722f44d2aac5d64ed42ee8dbd091e546"
+    }
+  ],
+  "stages": [
+    {
+      "condition": "one_shot",
+      "stage": "plan",
+      "node_errors": 1,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "one_shot",
+      "stage": "generate",
+      "node_errors": 2,
+      "model_calls": 5,
+      "failed_model_calls": 2,
+      "truncated_calls": 2,
+      "truncated_seconds_measured_calls": 2,
+      "truncated_seconds_measured": 686.3158653329883,
+      "truncated_tokens_accounted_calls": 2,
+      "truncated_tokens_accounted": 16003
+    },
+    {
+      "condition": "one_shot",
+      "stage": "draft",
+      "node_errors": 0,
+      "model_calls": 3,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "execute",
+      "node_errors": 3,
+      "model_calls": 0,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "plan",
+      "node_errors": 1,
+      "model_calls": 7,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "generate",
+      "node_errors": 3,
+      "model_calls": 10,
+      "failed_model_calls": 3,
+      "truncated_calls": 3,
+      "truncated_seconds_measured_calls": 3,
+      "truncated_seconds_measured": 1024.2544218330004,
+      "truncated_tokens_accounted_calls": 3,
+      "truncated_tokens_accounted": 24074
+    },
+    {
+      "condition": "full",
+      "stage": "plan",
+      "node_errors": 1,
+      "model_calls": 10,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "generate",
+      "node_errors": 3,
+      "model_calls": 11,
+      "failed_model_calls": 3,
+      "truncated_calls": 3,
+      "truncated_seconds_measured_calls": 3,
+      "truncated_seconds_measured": 1113.3892790829996,
+      "truncated_tokens_accounted_calls": 3,
+      "truncated_tokens_accounted": 24074
+    },
+    {
+      "condition": "full",
+      "stage": "draft",
+      "node_errors": 1,
+      "model_calls": 7,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "verify",
+      "node_errors": 1,
+      "model_calls": 10,
+      "failed_model_calls": 1,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "draft",
+      "node_errors": 0,
+      "model_calls": 4,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    }
+  ]
+}

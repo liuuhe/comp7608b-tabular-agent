@@ -12,7 +12,8 @@
 
 - [开发状态](PROJECT_STATUS_ZH.md)：实现版本和后续实验缺口。
 - [工作报告](../report/DRAFT.md)：已有方法和开发结果，尚未定稿。
-- [最近完整开发比较](DEV_COMPARISON_V15_ZH.md)：18次运行及失败成本。
+- [11月15日本地开发基线](DEV_LOCAL_COMPARISON_20261115_ZH.md)：18次运行、失败诊断和资源开销，使用后续修复前的源码。
+- [历史v15开发比较](DEV_COMPARISON_V15_ZH.md)：18次运行及失败成本。
 - [人工复核与评分](HUMAN_REVIEW_GUIDE.md)：真实团队成员需要完成的工作。
 - [正式实验交接](EXPERIMENT_HANDOFF_ZH.md)：复核后冻结并执行完整网格的命令。
 - [演示流程](DEMO_RUNBOOK_ZH.md)：基于原本机保存运行的演示方案。

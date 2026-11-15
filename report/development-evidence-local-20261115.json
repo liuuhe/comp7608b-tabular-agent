@@ -1,0 +1,268 @@
+{
+  "by_condition": {
+    "one_shot": {
+      "runs": 6,
+      "statuses": {
+        "completed_unverified": 3,
+        "failed": 3
+      },
+      "selected_reports": 3,
+      "numeric_matches": 3,
+      "numeric_tasks": 4,
+      "seconds": 1507.7947801670525,
+      "tokens": 91954
+    },
+    "no_verification": {
+      "runs": 6,
+      "statuses": {
+        "failed": 2,
+        "completed_unverified": 4
+      },
+      "selected_reports": 4,
+      "numeric_matches": 3,
+      "numeric_tasks": 4,
+      "seconds": 2291.463598208007,
+      "tokens": 135907
+    },
+    "full": {
+      "runs": 6,
+      "statuses": {
+        "checks_passed": 3,
+        "failed": 2,
+        "budget_exhausted": 1
+      },
+      "selected_reports": 5,
+      "numeric_matches": 4,
+      "numeric_tasks": 4,
+      "seconds": 3931.1700904169993,
+      "tokens": 295180
+    }
+  },
+  "total_run_seconds": 7730.428468792059,
+  "total_model_tokens": 523041,
+  "truncations": [
+    {
+      "task": "D5",
+      "condition": "one_shot",
+      "phase": "code_generation",
+      "seconds": 339.38037991698366,
+      "usage": {
+        "input_tokens": 1804,
+        "output_tokens": 6144,
+        "total_tokens": 7948
+      },
+      "content_characters": 0,
+      "reasoning_characters": 29352
+    },
+    {
+      "task": "D5",
+      "condition": "no_verification",
+      "phase": "code_generation",
+      "seconds": 319.55075500000385,
+      "usage": {
+        "input_tokens": 1804,
+        "output_tokens": 6144,
+        "total_tokens": 7948
+      },
+      "content_characters": 0,
+      "reasoning_characters": 29352
+    },
+    {
+      "task": "D5",
+      "condition": "full",
+      "phase": "code_generation",
+      "seconds": 320.6824416249874,
+      "usage": {
+        "input_tokens": 1804,
+        "output_tokens": 6144,
+        "total_tokens": 7948
+      },
+      "content_characters": 0,
+      "reasoning_characters": 29352
+    },
+    {
+      "task": "D6",
+      "condition": "one_shot",
+      "phase": "code_generation",
+      "seconds": 346.93548541600467,
+      "usage": {
+        "input_tokens": 1911,
+        "output_tokens": 6144,
+        "total_tokens": 8055
+      },
+      "content_characters": 0,
+      "reasoning_characters": 30889
+    },
+    {
+      "task": "D6",
+      "condition": "no_verification",
+      "phase": "code_generation",
+      "seconds": 338.2514070000034,
+      "usage": {
+        "input_tokens": 1911,
+        "output_tokens": 6144,
+        "total_tokens": 8055
+      },
+      "content_characters": 0,
+      "reasoning_characters": 30889
+    },
+    {
+      "task": "D6",
+      "condition": "no_verification",
+      "phase": "code_generation",
+      "seconds": 366.45225983299315,
+      "usage": {
+        "input_tokens": 1927,
+        "output_tokens": 6144,
+        "total_tokens": 8071
+      },
+      "content_characters": 0,
+      "reasoning_characters": 27271
+    },
+    {
+      "task": "D6",
+      "condition": "full",
+      "phase": "code_generation",
+      "seconds": 429.0986042500008,
+      "usage": {
+        "input_tokens": 1911,
+        "output_tokens": 6144,
+        "total_tokens": 8055
+      },
+      "content_characters": 0,
+      "reasoning_characters": 30889
+    },
+    {
+      "task": "D6",
+      "condition": "full",
+      "phase": "code_generation",
+      "seconds": 363.60823320801137,
+      "usage": {
+        "input_tokens": 1927,
+        "output_tokens": 6144,
+        "total_tokens": 8071
+      },
+      "content_characters": 0,
+      "reasoning_characters": 27271
+    }
+  ],
+  "projected_formal": {
+    "scope": "Small-sample planning extrapolation, not measured held-out time. Excludes human review, scoring, interruptions and packaging.",
+    "tasks_by_category": {
+      "explicit": 22,
+      "visualization": 14,
+      "exploration": 6
+    },
+    "repeats": 2,
+    "catalog": "evaluation/tasks.heldout.json",
+    "catalog_sha256": "332130a260e7756b7933380a7e8ae3cda460502827ea9095bbe068be51be978a",
+    "runs": 252,
+    "seconds": 108986.37330076832,
+    "tokens": 7642222.0,
+    "cells": [
+      {
+        "category": "explicit",
+        "condition": "one_shot",
+        "projected_runs": 44,
+        "development_tasks": 2,
+        "development_mean_seconds": 307.1057358329999,
+        "projected_seconds": 13512.652376651997,
+        "projected_tokens": 692274.0
+      },
+      {
+        "category": "explicit",
+        "condition": "no_verification",
+        "projected_runs": 44,
+        "development_tasks": 2,
+        "development_mean_seconds": 440.5984301879944,
+        "projected_seconds": 19386.330928271753,
+        "projected_tokens": 992772
+      },
+      {
+        "category": "explicit",
+        "condition": "full",
+        "projected_runs": 44,
+        "development_tasks": 2,
+        "development_mean_seconds": 590.5091860834946,
+        "projected_seconds": 25982.40418767376,
+        "projected_tokens": 2068968
+      },
+      {
+        "category": "visualization",
+        "condition": "one_shot",
+        "projected_runs": 28,
+        "development_tasks": 2,
+        "development_mean_seconds": 238.60861791700881,
+        "projected_seconds": 6681.041301676247,
+        "projected_tokens": 570836
+      },
+      {
+        "category": "visualization",
+        "condition": "no_verification",
+        "projected_runs": 28,
+        "development_tasks": 2,
+        "development_mean_seconds": 201.67251474950172,
+        "projected_seconds": 5646.830412986048,
+        "projected_tokens": 569520
+      },
+      {
+        "category": "visualization",
+        "condition": "full",
+        "projected_runs": 28,
+        "development_tasks": 2,
+        "development_mean_seconds": 796.0298186255095,
+        "projected_seconds": 22288.834921514266,
+        "projected_tokens": 1963766.0
+      },
+      {
+        "category": "exploration",
+        "condition": "one_shot",
+        "projected_runs": 12,
+        "development_tasks": 2,
+        "development_mean_seconds": 208.18303633351752,
+        "projected_seconds": 2498.1964360022102,
+        "projected_tokens": 118278.0
+      },
+      {
+        "category": "exploration",
+        "condition": "no_verification",
+        "projected_runs": 12,
+        "development_tasks": 2,
+        "development_mean_seconds": 503.4608541665075,
+        "projected_seconds": 6041.53024999809,
+        "projected_tokens": 300606.0
+      },
+      {
+        "category": "exploration",
+        "condition": "full",
+        "projected_runs": 12,
+        "development_tasks": 2,
+        "development_mean_seconds": 579.0460404994956,
+        "projected_seconds": 6948.552485993947,
+        "projected_tokens": 365202.0
+      }
+    ]
+  },
+  "original_files_checked": 10784,
+  "new_development_artifact_count": 1127,
+  "date": "2026-11-15",
+  "scope": "Complete development cohort only; no independent human reference review or whole-task ratings. Failed runs retained. Browser smoke is a separate configuration and is not pooled.",
+  "cohort": "evaluation/runs/local-dev-20261115",
+  "config": "config/pilot-code-thinking-v12.json",
+  "config_sha256": "2aaf0e7ec9915e978b09d7afbe0a05fc82e004de995fc636bf468099ba4b1f70",
+  "tasks_sha256": "045482ab62dca46bd5f363467c190eb971cf636f397e5949bbdc59fbb88ec9a2",
+  "system_fingerprint": "c316028ddb274463a7cac7da0a78af984b22077cd2bdb38f18e1463a7cb3b644",
+  "report": "docs/DEV_LOCAL_COMPARISON_20261115_ZH.md",
+  "local_validation_receipt": ".cache/local-baseline-20261115/final-validation.json",
+  "smoke": {
+    "status": "failed",
+    "run": "runs/20261115-170417-10ed83bf",
+    "config": "config/development.json",
+    "seconds": 86.51573983300477,
+    "model_tokens": 8385,
+    "zip_entries_matched": 49
+  },
+  "reference_self_check": "Automated alternate-method development reference self-check matched four numeric tasks; not independent human review.",
+  "heldout_inference_runs": 0,
+  "human_ratings_assigned": false
+}

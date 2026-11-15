@@ -107,6 +107,7 @@ def permitted(name):
         return False
     if name in REQUIRED or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
+        "report/development-evidence-local-20261115.json",
     }:
         return True
     if len(parts) == 3 and parts[:2] == ("src", "tabular_agent"):
@@ -133,6 +134,7 @@ def source_paths(root):
         "tutorials/*.py", "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
         "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md",
         "report/development-evidence.json", "report/development-evidence-v15.json",
+        "report/development-evidence-local-20261115.json",
     ]
     for pattern in patterns:
         candidates.update(p.relative_to(root).as_posix() for p in root.glob(pattern)

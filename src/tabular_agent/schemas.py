@@ -178,6 +178,7 @@ class ProgramLines(StrictModel):
 BOUND_TEXT_PATTERN = (
     r"^(?:[^0-9{}\u00b2\u00b3\u00b9\u2070-\u209f\uff10-\uff19]|\{\{(?:table\.[a-z][a-z0-9_]{0,39}\.[0-9]+\.[^{}]+"
     r"|chart\.[a-z][a-z0-9_]{0,39}\.(?:observations|bin_count|bins\.[0-9]+\.(?:lower|upper|count))"
+    r"|plan\.labels\.[a-z][a-z0-9_]{0,39}\.(?:measure|other_measure|group\.[0-9]+|filter\.[0-9]+\.column)"
     r"|request\.numbers\.[0-9]+|result\.rows\.[a-z][a-z0-9_]{0,39}|plan\.filters\.[a-z][a-z0-9_]{0,39}\.[0-9]+(?:\.[0-9]+)?)\}\})*$"
 )
 

@@ -19,6 +19,7 @@ from .executor import DockerExecutor
 from .grounding import ground_candidate
 from .model import BudgetExceeded, InvalidOutput, Ledger, OllamaModel, ollama_version
 from .profile import profile_data
+from .report_facts import fact_catalog
 from .reports import (
     binding_examples,
     evidence_preview,
@@ -191,6 +192,7 @@ class Agent:
             "tool_contract_version": 4,
             "verification_schedule": "full only: calculations before charts/report; report review continues the same tool invocation",
             "analysis_helper_contract": 2,
+            "report_contract": "selected-facts-v2",
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()
             },
@@ -477,10 +479,12 @@ class Agent:
         def draft(state):
             nonlocal completed_attempt
             results = state["execution"]["result"]
+            facts = fact_catalog(results, state["plan"], state["charts"])
+            write_json(folder(state) / "fact_catalog.json", facts)
             write_json(folder(state) / "chart_evidence.json", histogram_evidence(state["charts"]))
             candidate = model.call(
                 CandidateDraft,
-                prompts.DRAFT,
+                prompts.FACT_DRAFT,
                 {
                     "request": question,
                     "documentation": documentation,
@@ -489,6 +493,7 @@ class Agent:
                     "executed_code": state["code"],
                     "execution_status": "succeeded",
                     "results": evidence_preview(results),
+                    "fact_catalog": facts,
                     "chart_evidence": histogram_evidence(state["charts"], limit=40),
                     "reference_examples": reference_examples(results),
                     "binding_examples": binding_examples(results),

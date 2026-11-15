@@ -55,6 +55,22 @@ def resolve(
         if reference not in constants:
             raise ValueError(f"Invalid plan filter constant reference: {reference}")
         return constants[reference]
+    if reference.startswith("plan.labels."):
+        parts = reference.split(".")
+        analysis = next((a for a in plan.analyses if a.id == parts[2]), None) if plan else None
+        if analysis is None:
+            raise ValueError(f"Unknown plan label reference: {reference}")
+        if len(parts) == 4 and parts[3] in {"measure", "other_measure"}:
+            return analysis.column if parts[3] == "measure" else analysis.other_column
+        try:
+            if len(parts) == 5 and parts[3] == "group" and parts[4].isdigit():
+                return analysis.group_by[int(parts[4])]
+            if (len(parts) == 6 and parts[3] == "filter" and parts[4].isdigit()
+                    and parts[5] == "column"):
+                return analysis.filters[int(parts[4])].column
+        except IndexError:
+            pass
+        raise ValueError(f"Invalid plan label reference: {reference}")
     parts = reference.split(".", 3)
     if len(parts) not in {2, 3, 4} or parts[0] != "table":
         raise ValueError(f"Invalid evidence reference: {reference}")

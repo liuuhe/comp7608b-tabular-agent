@@ -4,8 +4,10 @@ from pathlib import Path
 from urllib.request import urlopen
 
 from langchain_ollama import ChatOllama as LangChainChatOllama
+from pydantic import ValidationError
 
 from .draft_contract import draft_model_payload, draft_response_schema, normalize_draft
+from .report_facts import fact_model_payload, fact_response_schema, normalize_fact_draft
 from .schemas import (
     CandidateDraft,
     Plan,
@@ -50,6 +52,22 @@ class InvalidOutput(ValueError):
     def __init__(self, message: str, candidate=None):
         super().__init__(message)
         self.candidate = candidate if isinstance(candidate, dict) else None
+
+
+def validation_feedback(schema, candidate, error) -> str:
+    """Return bounded field-level feedback; complete output/errors stay in saved artifacts."""
+    if candidate is not None:
+        try:
+            schema.model_validate(candidate)
+        except ValidationError as exc:
+            problems = []
+            for item in exc.errors(include_input=False, include_url=False)[:6]:
+                location = ".".join(map(str, item["loc"])) or "response"
+                message = ("Select an actual supplied reference/identifier for this field"
+                           if item["type"] == "literal_error" else item["msg"])
+                problems.append(f"{location}: {message[:220]}")
+            return "; ".join(problems)[:1800]
+    return str(error or "No structured response was returned")[:1000]
 
 
 class Ledger:
@@ -130,13 +148,18 @@ class OllamaModel:
         structured_program = schema is Program and phase == "code_generation"
         structured_review = schema is Review and phase == "semantic_review"
         structured_draft = schema is CandidateDraft and phase == "report_drafting"
+        selected_facts = structured_draft and "fact_catalog" in payload
+        fact_source = payload if selected_facts else None
         if structured_plan:
             schema = PlanningPlan
         if structured_program:
             schema = ProgramLines
         if structured_review:
             schema = review_response_schema(payload["required_report_checks"])
-        if structured_draft:
+        if selected_facts:
+            schema = fact_response_schema(payload)
+            payload = fact_model_payload(payload)
+        elif structured_draft:
             payload = draft_model_payload(payload)
             schema = draft_response_schema(payload)
         content = json.dumps(payload, ensure_ascii=False, allow_nan=False)
@@ -230,7 +253,12 @@ class OllamaModel:
                     json.dumps(candidate, allow_nan=False)
                 except (ValueError, TypeError):
                     candidate = None
-                raise InvalidOutput(f"Invalid {phase} output: {response.get('parsing_error')}", candidate)
+                write_json(
+                    self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.validation.json",
+                    {"error": str(response.get("parsing_error")), "candidate": candidate},
+                )
+                detail = validation_feedback(schema, candidate, response.get("parsing_error"))
+                raise InvalidOutput(f"Invalid {phase} output: {detail}", candidate)
             parsed = response["parsed"]
             if structured_plan:
                 parsed = Plan.model_validate(parsed.model_dump())
@@ -251,7 +279,7 @@ class OllamaModel:
                     self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.structured.json",
                     parsed.model_dump(),
                 )
-                parsed = normalize_draft(parsed)
+                parsed = normalize_fact_draft(parsed, fact_source) if selected_facts else normalize_draft(parsed)
             write_json(
                 self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.json",
                 parsed.model_dump(),

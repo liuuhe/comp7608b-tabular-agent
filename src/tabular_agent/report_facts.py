@@ -14,6 +14,7 @@ from .schemas import CandidateDraft, Plan, StrictModel, has_terminal_controls
 class FactInterpretation(StrictModel):
     interpretation: str = Field(
         max_length=400,
+        pattern=r"^[^0-9{}]*$",
         description="Brief qualitative explanation, or empty. Select facts for numbers and group labels; never retype them here.",
     )
 
@@ -126,6 +127,10 @@ def fact_model_payload(payload):
         projected.pop(key, None)
     projected["results"].pop("tables", None)  # Computed rows are already rendered in the fact catalog.
     projected["report_contract"] = "selected-facts-v2"
+    projected["format_example"] = {
+        "findings": [{"facts": [projected["fact_catalog"][0]["id"]], "interpretation": ""}],
+        "limitations": [],
+    }
     return projected
 
 

@@ -92,6 +92,32 @@ def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
     start = datetime(year, month, 1)
     end = datetime(year + int(month == 12), month % 12 + 1, 1)
     candidates = [c.column for c in plan.conversions if c.kind == "datetime"]
+    # A declared ISO range does not become temporal merely because its strings look like dates.
+    # CSV date columns remain text without conversion, so different timestamp separators can
+    # move the boundary. Reject this concrete omission without guessing the intended source field.
+    missing_conversion = []
+    for analysis in plan.analyses:
+        columns = set()
+        for condition in analysis.filters:
+            if (condition.column in candidates or condition.operator not in {"gt", "ge", "lt", "le"}
+                    or not isinstance(condition.value, str)
+                    or not re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:[T ].*)?", condition.value)):
+                continue
+            try:
+                date(condition.value)
+            except (ValueError, TypeError):
+                continue
+            columns.add(condition.column)
+        if columns:
+            missing_conversion.append(Issue(
+                check=f"request.calendar_scope.{analysis.id}", status="fail", target="plan",
+                evidence=f"Requested calendar month has ISO date range filters on {sorted(columns)}, "
+                         "but no datetime conversion for those columns; text comparison does not establish calendar scope",
+                suggestion="Declare datetime conversion for the intended date column, then select the complete requested month. "
+                           "Do not compare CSV date strings as calendar timestamps.",
+            ))
+    if missing_conversion:
+        return missing_conversion
     named = [c for c in candidates if c.lower() in request.lower()]
     candidates = named if len(named) == 1 else candidates
     if len(candidates) != 1:

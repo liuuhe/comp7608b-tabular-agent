@@ -47,6 +47,24 @@ def test_other_date_expressions_and_ambiguous_requests_are_not_newly_claimed_as_
     assert calendar_scope_checks("Before January 2011 compute sales.", plan) == []
 
 
+@pytest.mark.parametrize("kind", [None, "numeric", "string"])
+def test_declared_iso_calendar_range_requires_datetime_conversion(kind):
+    specification = scoped_plan("2011-01-01", "2011-02-01", "lt").model_dump()
+    specification["conversions"] = [] if kind is None else [{"column": "date", "kind": kind}]
+    plan = Plan.model_validate(specification)
+    issue = calendar_scope_checks("For January 2011 compute sales.", plan)[0]
+    assert issue.status == "fail" and issue.target == "plan"
+    assert "text comparison" in issue.evidence and "datetime conversion" in issue.suggestion
+
+
+@pytest.mark.parametrize("value,operator", [("2011-01", "starts_with"), ("2011-01-99", "ge"), ("1000", "ge")])
+def test_non_date_filters_do_not_create_new_temporal_type_coverage(value, operator):
+    plan = Plan(analyses=[Analysis(id="sales", operation="sum", column="revenue", filters=[
+        Filter(column="category", operator=operator, value=value),
+    ])])
+    assert calendar_scope_checks("For January 2011 compute sales.", plan)[0].status == "uncovered"
+
+
 @pytest.mark.parametrize("operation,group_by,expected", [
     ("rows", [], "fail"), ("count", [], "fail"), ("mean", [], "fail"),
     ("sum", ["weather"], "fail"), ("sum", [], "pass"),

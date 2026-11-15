@@ -1,4 +1,5 @@
 import json
+import re
 from copy import deepcopy
 
 import pytest
@@ -142,7 +143,29 @@ def test_actual_adapter_preserves_raw_response_and_compiles_facts_in_all_conditi
     assert ledger.tokens == 15 and payload == original
     wire = read_json(tmp_path / "model_inputs/000-report_drafting.json")["payload"]
     assert wire["report_contract"] == "selected-facts-v2"
+    assert wire["format_example"] == {
+        "findings": [{"facts": ["table.total.0"], "interpretation": ""}], "limitations": [],
+    }
     assert "text" not in wire["fact_catalog"][0] and "tables" not in wire["results"]
+
+
+def test_interpretation_decode_pattern_blocks_observed_numeric_restatements_and_keeps_prose():
+    plan = Plan(analyses=[Analysis(id="hours", operation="mean", column="hours-per-week")])
+    results = {"tables": {"hours": [{"value": 40, "valid_count": 6}]}}
+    payload = payload_for(plan, results)
+    schema = fact_response_schema(payload)
+    pattern = schema.model_json_schema()["$defs"]["FactFinding"]["properties"]["interpretation"]["pattern"]
+    for text in ["January 2011 sales", "France exceeding 18,000 GBP.", "Mean hours: 40.", "{value}"]:
+        assert re.fullmatch(pattern, text) is None
+        with pytest.raises(ValueError):
+            selected(payload, ["table.hours.0"], text)
+    for text in ["", "This describes the observed sample.", "该差异仅描述样本。"]:
+        assert re.fullmatch(pattern, text) is not None
+        selected(payload, ["table.hours.0"], text)
+    # The short decoding pattern covers ASCII; runtime validation still rejects Unicode numbers.
+    for text in ["２ hours", "Ⅳ groups", "² observations"]:
+        with pytest.raises(ValueError, match="qualitative prose"):
+            selected(payload, ["table.hours.0"], text)
 
 
 def test_empty_result_fact_remains_supported_without_fabricating_a_scalar():

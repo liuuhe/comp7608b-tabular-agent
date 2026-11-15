@@ -150,6 +150,9 @@ interpretation is a short QUALITATIVE explanation without numeric characters or 
 it may be empty when the selected facts answer a direct calculation. Do not leave blanks where
 numbers should go. Select meaningful facts, such as supported extrema or contrasting groups,
 rather than arbitrarily repeating the first rows. Full tables/charts remain part of the answer.
+format_example demonstrates valid syntax using an actual ID, not a recommended factual selection.
+For direct statistics prefer an empty interpretation to repeating a date, amount, hour or category
+label already in the selected facts. Numeric labels belong only in the rendered facts.
 Cover every substantive subject of the original request within the finding budget. plan.requirements
 is only a proposed checklist. Do not replace a requested numeric finding with empty general prose.
 Use actual units and documented meanings in prose where needed; values are in the selected facts.
@@ -159,6 +162,8 @@ Use numeric_summaries to check rankings over complete saved output, not just the
 Do not invent confidence intervals, significance tests, statistical significance, sampling, weighting,
 causal mechanisms or population conclusions. Distinguish missing counts from rates; rates need
 an evidenced denominator. A raw plotted observation is not a correlation or population statistic.
+Use higher/lower for descriptive differences, not significant/significantly. Do not infer commuting,
+work schedules or motivations from an hour label alone.
 For histograms select chart facts for bins/counts, not raw point facts. A plotted or output count
 does not establish source dataset size. Respect declared filters and result limits.
 Previous criticism may be repaired by selecting different facts or correcting the qualitative

@@ -1,0 +1,23 @@
+{
+  "model": "qwen3.5:9b-q4_K_M",
+  "base_url": "http://127.0.0.1:11434",
+  "thinking": false,
+  "code_thinking": false,
+  "review_thinking": false,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "repeat_penalty": 1.0,
+  "presence_penalty": 1.5,
+  "context_size": 16384,
+  "output_tokens": 6144,
+  "token_budget": 100000,
+  "max_tools": 12,
+  "max_repairs": 3,
+  "timeout": 120,
+  "image": "tabular-agent-executor:dev",
+  "memory": "2g",
+  "cpus": 2,
+  "condition": "full",
+  "seed": 42
+}

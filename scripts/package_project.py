@@ -53,7 +53,7 @@ uv run tabular-agent build-executor
 TABULAR_DOCKER_TESTS=1 uv run pytest -q --basetemp=.cache/pytest-docker
 ollama serve
 # In another terminal, if not already installed:
-ollama pull qwen3:8b
+ollama pull qwen3.5:9b-q4_K_M
 uv run tabular-agent doctor
 uv run streamlit run app.py --server.address 127.0.0.1
 ```
@@ -61,8 +61,9 @@ uv run streamlit run app.py --server.address 127.0.0.1
 Open http://127.0.0.1:8501 and upload `data/tutorial_rentals.csv`.
 Example question: "What is the total number of rentals? Report the valid count."
 Generated analysis code runs only inside Docker. New analyses require the model
-and Docker services. The included default config and experimental candidate differ;
-see README.md and docs/DEVELOPMENT_CUTOFF_ZH.md before selecting a study config.
+and Docker services. The default config uses Qwen3.5-9B Q4 with thinking disabled
+in every stage. See README.md and docs/LOCAL_COMPLETION_PLAN_ZH.md for task goals
+and known limits; the formal evaluation source/parameter snapshot is not frozen.
 
 ## Restore evaluation inputs
 
@@ -107,7 +108,12 @@ def permitted(name):
         return False
     if name in REQUIRED or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
-        "report/development-evidence-local-20261115.json",
+        "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
+        "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
+        "config/model-selection-v28-qwen35-9b.json",
+        "config/model-selection-v29-qwen35-9b.json",
+        "config/legacy-development-qwen3-8b.json",
+        "config/model-selection-v28-qwen38-27b.json",
     }:
         return True
     if len(parts) == 3 and parts[:2] == ("src", "tabular_agent"):
@@ -134,7 +140,12 @@ def source_paths(root):
         "tutorials/*.py", "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
         "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md",
         "report/development-evidence.json", "report/development-evidence-v15.json",
-        "report/development-evidence-local-20261115.json",
+        "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
+        "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
+        "config/model-selection-v28-qwen35-9b.json",
+        "config/model-selection-v29-qwen35-9b.json",
+        "config/legacy-development-qwen3-8b.json",
+        "config/model-selection-v28-qwen38-27b.json",
     ]
     for pattern in patterns:
         candidates.update(p.relative_to(root).as_posix() for p in root.glob(pattern)

@@ -1,5 +1,25 @@
 # Evaluation protocol (development stage)
 
+Planning update, 15 November 2026: run locally under Liu He's lead; handing over the codebase is
+not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH.md) records the
+25 November submission and the pending choice between the original reviewed/two-rater protocol
+below and a documented self-reviewed/single-rater protocol. Current tools implement the original
+protocol only; a different protocol needs explicit tool support and honest result labels.
+
+The [15 November local development cohort](../docs/DEV_LOCAL_COMPARISON_20261115_ZH.md) now
+contains all 18 terminal observations, including failures, with its archived pre-fix source and candidate
+configuration archived before the later fixes. Selected numerical matches are 3/4, 3/4 and 4/4; full has three internal passes
+and two matching visualization candidates whose workflows still fail or exhaust the budget.
+There are no human whole-task scores or held-out inference results. The associated browser smoke
+with application defaults fails analysis; failure display and the ZIP download are verified.
+
+On 16 November the user selected Qwen3.5-9B Q4 as the main model. The default
+`config/development.json` now matches the retained v29 nonthinking policy; the old 8B default
+is saved as `config/legacy-development-qwen3-8b.json`. Tiers 1/2 prioritize reliable calculations,
+charts and reports. Tier 3 remains an exploration objective with successes, sample limitations
+and failures measured honestly, without requiring perfect completion. Formal source/parameter
+freeze and reference/rater work remain pending; historical cohorts keep their original settings.
+
 `tasks.json` contains the six proposal development tasks. These are not held-out results.
 `build_references.py` computes independent task-specific answers into ignored `private/` storage.
 The agent sees only the question, dataset documentation and CSV snapshot. Neither reference scripts

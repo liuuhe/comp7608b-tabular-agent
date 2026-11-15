@@ -336,7 +336,9 @@ def normalize_review(response: BaseModel) -> Review:
 
 
 class Settings(StrictModel):
-    model: str = "qwen3:8b"
+    model: str = "qwen3.5:9b-q4_K_M"
+    # CLI/UI load the full policy from development.json; retain other fallback
+    # values so historical explicit-model configs keep their omitted settings.
     base_url: str = "http://127.0.0.1:11434"
     thinking: bool = False
     code_thinking: bool | None = None

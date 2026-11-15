@@ -1,9 +1,68 @@
 # Implementation and verification ledger
 
-Authority: final submitted proposal in proposal/Formatting_Instructions_For_NeurIPS_2026.pdf.
+Design reference: the submitted proposal in proposal/Formatting_Instructions_For_NeurIPS_2026.pdf.
+Current user-supplied deadlines and requirements are recorded in [the local completion plan](LOCAL_COMPLETION_PLAN_ZH.md).
 The tutorials are retained separately. Status below records actual implementation, not results.
 
-Latest v18: planning responses explicitly require the chart ordinate; omitted fields are rejected
+On 16 November the user selected Qwen3.5-9B Q4 as the main model for local resource/quality
+tradeoffs. CLI/UI defaults now load the complete v29 nonthinking policy from development.json;
+the previous 8B file is preserved as config/legacy-development-qwen3-8b.json. The library model
+fallback also names 9B; other omitted-field fallbacks are retained for historical explicit-model
+configs. Tier 1/2 reliability is the immediate priority; tier 3 remains a measured exploration
+goal with explicit sample limits and failures. Main-model selection does not claim task success
+or a frozen formal evaluation snapshot.
+
+Latest v29 makes clarification, analyses and requirements explicit required fields in the
+model-facing planning schema; historical canonical plans retain their defaults. A final HTTP
+transport check found that the installed structured-output raw wrapper discarded invocation
+options, so earlier presence-penalty ledgers recorded intent rather than explicit transmission.
+The adapter now binds all sampling fields at construction and extends native chat parameters
+for presence_penalty. Tests exercise the real structured runnable and SDK through serialized
+HTTP requests for omitted, zero and 1.5 values, retaining the raw response and budget fields.
+675 tests including real Docker pass; all three final HTTP cases pass. Historical outputs and
+costs remain intact, with parameter interpretations corrected in [v29](DEV_QWEN35_V29_ZH.md).
+The final fixed 9B/Q4 nonthinking three-task development cohort completes all cells: D1 fails
+declared filters despite repair; D3 matches tables/chart arrays but report repair cannot reserve
+another call after 60,080 measured tokens; D6 matches three tables but retains unsupported prose,
+a one-observation group claim and failed replanning. None is a whole-task pass. The cohort uses
+161,488 tokens and 972.34 seconds, with actual native parameters and 312 artifacts verified.
+Report/feedback simplification and numerical verification before drafting remain proposals.
+
+v28 adds request excerpts linked to intended analyses, while explicitly keeping semantic
+coverage unverified. Code instructions expose only relevant operations, with scalar/grouped
+examples and declared sorting/limits. Draft examples distinguish category/statistic/valid-count
+roles; terminal controls are rejected without rewriting raw responses. Sampling intent was
+logged; the v29 correction above establishes actual forwarding. Additional review issues require a compatible
+repair destination; historical canonical reviews remain readable. Local candidate evidence and
+unresolved semantic failures are recorded in [the v28 record](DEV_MODEL_UPGRADE_V28_ZH.md).
+The final helper contract provides tested conversion/filter functions to all conditions. Referenced
+definitions are prepended to the effective Docker script, with raw generated code and assembly hashes
+saved separately. Drafting/review see the effective code; repair sees the raw model code. Independent
+CSV verification does not reuse these helpers. No worker-image change is required.672 tests including
+real Docker and Ruff pass. The fixed 14B six-task cohort predates the helper addition: four explicit/
+chart numerical matches and two exploration failures. A later single code probe matches three tables;
+it is not a demonstrated whole exploration recovery. Full configuration selection is available through
+TABULAR_AGENT_CONFIG in Streamlit; the former default is now preserved in a separate legacy file.
+
+Historical v27: the model-facing additional review issue IDs are restricted to plan.*, code.* or
+chart.* during decoding; required statement/request verdicts retain their separate fields.
+Deterministic failures now defer semantic calls and route directly to bounded repair. Pending
+semantic coverage stays uncovered, and a partially inspected candidate cannot replace an earlier
+reviewed report.616tests including real Docker and Ruff pass. A real browser run replans the
+missing sum without review, but two scalar-table generation errors prevent completion. One
+separate saved-payload review truncates in thinking; live format success remains unproven. See [the v27 record](DEV_REVIEW_ROUTING_V27_ZH.md).
+
+Historical v26: model code responses use one Python line per array item, mechanically joined into
+the existing code contract. Syntax is parsed before container execution; invalid code and costs
+remain available to bounded recovery. A new candidate disables code thinking. A narrow explicit
+scalar-sum request check prevents an internally accepted row-count substitution from passing
+without the requested sum analysis.606tests including Docker and Ruff pass. Fixed probes still
+expose report-meaning and exploration-coverage failures. A subsequent browser run detects the
+missing sum, but three malformed semantic reviews prevent replanning and exhaust repairs. One
+D5/full follow-up repairs an empty count table and internally passes; both final 16-group tables
+match independent CSV/Decimal calculations. Human scores remain absent; see [the v26 record](DEV_STABILITY_V26_ZH.md).
+
+Historical v18: planning responses explicitly require the chart ordinate; omitted fields are rejected
 with original JSON and billed usage retained. Local Plan defaults and histogram serialization stay
 compatible. Clarified raw histogram input versus wrapper binning.431tests including Docker and
 Ruff pass. Six synthetic integration workflows all fail overall; histogram candidate data/plots

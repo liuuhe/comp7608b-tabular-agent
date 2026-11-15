@@ -1,5 +1,8 @@
 # GitHub上传准备
 
+2026-11-15：下文记录11月10日上传整理的历史。当前转为本地验收、评价与交付优先，
+不再暂停等待交接；以[本地完成计划](LOCAL_COMPLETION_PLAN_ZH.md)和当前CONTRIBUTING.md为准。
+
 2026-11-10整理。项目已上传至`liuuhe/comp7608b-tabular-agent`的`main`分支。
 功能开发暂缓，当前先供队友运行和讨论；按团队当前选择，不配置GitHub CI/CD。
 

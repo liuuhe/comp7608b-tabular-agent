@@ -59,9 +59,21 @@ def test_transmitted_pattern_covers_the_full_runtime_unicode_numeric_category():
     mismatches = []
     for codepoint in range(0x110000):
         char = chr(codepoint)
-        expected = char not in "{}" and not unicodedata.category(char).startswith("N")
+        control = (codepoint < 32 and char not in "\n\t\r") or codepoint == 127
+        expected = char not in "{}" and not unicodedata.category(char).startswith("N") and not control
         if bool(pattern.fullmatch(char)) != expected:
             mismatches.append(f"U+{codepoint:04X}")
             if len(mismatches) == 10:
                 break
     assert not mismatches, mismatches
+
+
+@pytest.mark.parametrize("control", ["\b", "\x00", "\x1b", "\x7f"])
+def test_terminal_controls_from_real_model_output_are_rejected(control):
+    from tabular_agent.schemas import validate_bound_text
+
+    assert not transmitted_pattern().fullmatch("The result is " + control + "available.")
+    with pytest.raises(ValueError):
+        ProsePart(text="The result is " + control + "available.")
+    with pytest.raises(ValueError, match="control characters"):
+        validate_bound_text("The result is " + control + "available.")

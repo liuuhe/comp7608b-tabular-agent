@@ -23,12 +23,15 @@ def test_explicit_axis_planning_preserves_scalar_clarification_and_plan_constrai
     from pydantic import ValidationError
 
     scalar = {"id": "average", "operation": "mean", "column": "a"}
-    assert PlanningPlan(analyses=[scalar]).model_dump() == Plan(analyses=[scalar]).model_dump()
-    assert PlanningPlan(clarification="Which measure?").clarification == "Which measure?"
+    requirements = [{"quote": "average", "analysis_ids": ["average"]}]
+    assert PlanningPlan(clarification="", analyses=[scalar], requirements=requirements).model_dump() == Plan(
+        analyses=[scalar], requirements=requirements,
+    ).model_dump()
+    assert PlanningPlan(clarification="Which measure?", analyses=[], requirements=[]).clarification == "Which measure?"
     with pytest.raises(ValidationError, match="either analyses"):
-        PlanningPlan(clarification="Which measure?", analyses=[scalar])
+        PlanningPlan(clarification="Which measure?", analyses=[scalar], requirements=[])
     with pytest.raises(ValidationError):
-        PlanningPlan(analyses=[{**scalar, "id": f"analysis_{i}"} for i in range(4)])
+        PlanningPlan(clarification="", analyses=[{**scalar, "id": f"analysis_{i}"} for i in range(4)], requirements=[])
 
 
 @pytest.mark.parametrize("kind", ["bar", "line", "scatter", "histogram"])
@@ -43,7 +46,7 @@ def test_planning_adapter_requires_explicit_y_and_keeps_invalid_response_for_rep
              "title": "Observations", "x_label": "X", "y_label": "Y"}
     if include_y:
         chart["y"] = "y" if kind == "scatter" else "value"
-    candidate = {"analyses": [{
+    candidate = {"clarification": "", "requirements": [{"quote": "observations", "analysis_ids": ["observations"]}], "analyses": [{
         "id": "observations", "operation": "raw" if raw else "mean",
         "column": "a", "other_column": "b" if kind == "scatter" else "",
         "group_by": [] if raw else ["category"], "chart": chart,
@@ -99,6 +102,46 @@ def test_server_version_works_without_sdk_version_method(monkeypatch, payload):
     else:
         assert model_module.ollama_version("http://localhost:11434/") == "0.24.0"
     assert calls == [("http://localhost:11434/api/version", 10)]
+
+
+@pytest.mark.parametrize("presence_penalty", [None, 0.0, 1.5])
+def test_explicit_sampling_reaches_http_request_through_raw_structured_output(
+    tmp_path, monkeypatch, presence_penalty,
+):
+    import httpx
+
+    requests = []
+
+    def send(client, request, **kwargs):
+        assert request.url.path == "/api/chat"
+        requests.append(json.loads(request.content))
+        response = {
+            "model": "transport-mock", "message": {"role": "assistant", "content": '{"lines":["pass"]}'},
+            "done": True, "done_reason": "stop", "prompt_eval_count": 7, "eval_count": 3,
+            "total_duration": 1000, "load_duration": 0, "prompt_eval_duration": 100, "eval_duration": 900,
+        }
+        return httpx.Response(200, content=json.dumps(response) + "\n", request=request,
+                              headers={"content-type": "application/x-ndjson"})
+
+    # Exercise the real structured runnable, SDK serialization and parser; intercept
+    # only HTTP I/O. Mocking with_structured_output itself hid the dropped options.
+    monkeypatch.setattr(httpx.Client, "send", send)
+    settings = Settings(temperature=0.7, top_p=0.8, top_k=20, repeat_penalty=1,
+                        presence_penalty=presence_penalty, context_size=16384, output_tokens=6144)
+    ledger = Ledger(settings, tmp_path)
+    assert OllamaModel(settings, ledger).call(Program, "Write Python", {}, "code_generation").code == "pass\n"
+    assert len(requests) == 1
+    request = requests[0]
+    expected = {"temperature": 0.7, "seed": 42, "num_ctx": 16384, "num_predict": 6144,
+                "top_p": 0.8, "top_k": 20, "repeat_penalty": 1}
+    if presence_penalty is not None:
+        expected["presence_penalty"] = presence_penalty
+    assert request["options"] == expected
+    assert request["think"] is False and request["stream"] is True
+    assert "lines" in request["format"]["properties"]
+    assert ledger.tokens == 10
+    assert ledger.models[0]["sampling"].get("presence_penalty") == presence_penalty
+    assert read_json(tmp_path / "model_responses/000-code_generation.json")["content"] == '{"lines":["pass"]}'
 
 
 @pytest.mark.parametrize("reason", ["stop", "length"])
@@ -272,7 +315,8 @@ def test_invalid_structured_draft_is_billed_and_retained_for_repair(tmp_path, mo
 
 
 @pytest.mark.parametrize("duplicate", [False, True])
-def test_actual_review_adapter_uses_required_schema_and_keeps_auditable_outputs(tmp_path, monkeypatch, duplicate):
+@pytest.mark.parametrize("correction", ["valid", "missing", "blank"])
+def test_actual_review_adapter_uses_required_schema_and_keeps_auditable_outputs(tmp_path, monkeypatch, duplicate, correction):
     checks = ["report.finding.0", "report.limitation.0"]
     payload = {
         "semantic_status": "uncovered",
@@ -280,10 +324,14 @@ def test_actual_review_adapter_uses_required_schema_and_keeps_auditable_outputs(
                              "suggestion": "Add that analysis", "target": "plan"},
         "statements": {
             checks[0]: {"status": "fail", "evidence": "Claim conflicts with the table", "suggestion": "Correct ranking"},
-            checks[1]: {"status": "uncovered", "evidence": "Insufficient evidence to establish exclusion"},
+            checks[1]: {"status": "uncovered", "evidence": "Insufficient evidence to establish exclusion", "suggestion": ""},
         },
         "issues": ([{"check": checks[0], "status": "pass", "evidence": "Duplicate"}] if duplicate else []),
     }
+    if correction == "missing":
+        del payload["statements"][checks[0]]["suggestion"]
+    elif correction == "blank":
+        payload["statements"][checks[0]]["suggestion"] = "   "
 
     class Client:
         def with_structured_output(self, schema, **kwargs):
@@ -294,20 +342,27 @@ def test_actual_review_adapter_uses_required_schema_and_keeps_auditable_outputs(
             return self
 
         def invoke(self, messages):
+            try:
+                parsed, error = self.schema.model_validate(payload), None
+            except ValueError as exc:
+                parsed, error = None, exc
             return {"raw": AIMessage(
-                content="Saved raw structured response",
+                content=json.dumps(payload),
                 usage_metadata={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
                 response_metadata={"done_reason": "stop"},
-            ), "parsed": self.schema.model_validate(payload), "parsing_error": None}
+            ), "parsed": parsed, "parsing_error": error}
 
     monkeypatch.setattr(model_module, "ChatOllama", lambda **kwargs: Client())
     settings = Settings()
     ledger = Ledger(settings, tmp_path)
     model = OllamaModel(settings, ledger)
-    if duplicate:
-        with pytest.raises(ValueError, match="required statements object"):
+    if duplicate or correction != "valid":
+        expected_error = "issues.0.check" if duplicate else "report.finding.0"
+        with pytest.raises(InvalidOutput, match=expected_error) as caught:
             model.call(Review, "Review", {"required_report_checks": checks}, "semantic_review")
+        assert caught.value.candidate == payload
         assert not (tmp_path / "model_outputs/000-semantic_review.json").exists()
+        assert not (tmp_path / "model_outputs/000-semantic_review.structured.json").exists()
         assert ledger.models[0]["status"] == "failed"
     else:
         review = model.call(Review, "Review", {"required_report_checks": checks}, "semantic_review")
@@ -317,8 +372,9 @@ def test_actual_review_adapter_uses_required_schema_and_keeps_auditable_outputs(
         assert all(issue.target == "report" for issue in review.issues[1:])
         assert read_json(tmp_path / "model_outputs/000-semantic_review.json") == review.model_dump()
         assert ledger.models[0]["status"] == "finished"
-    assert read_json(tmp_path / "model_outputs/000-semantic_review.structured.json")["statements"] == {
-        name: {"suggestion": "", **verdict} for name, verdict in payload["statements"].items()
-    }
+        assert read_json(tmp_path / "model_outputs/000-semantic_review.structured.json")["statements"] == {
+            name: {"suggestion": "", **verdict} for name, verdict in payload["statements"].items()
+        }
+    assert read_json(tmp_path / "model_responses/000-semantic_review.json")["content"] == json.dumps(payload)
     assert ledger.tokens == 15
     assert "reserved_tokens_charged" not in ledger.models[0]

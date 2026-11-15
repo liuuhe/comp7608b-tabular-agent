@@ -91,7 +91,11 @@ def reference_examples(results: dict) -> list[str]:
 
 def binding_examples(results: dict) -> list[dict]:
     return [
-        {"text": "The saved value is {{" + reference + "}}.", "evidence": [reference]}
+        {"text": (
+            "The valid observation count is " if reference.rsplit(".", 1)[-1] == "valid_count"
+            else "The computed statistic is " if reference.rsplit(".", 1)[-1] == "value"
+            else "The category label is "
+        ) + "{{" + reference + "}}.", "evidence": [reference]}
         for reference in reference_examples(results)
         if len(reference.split(".", 3)) == 4
     ][:3]

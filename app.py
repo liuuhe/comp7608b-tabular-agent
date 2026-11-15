@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import tempfile
 import zipfile
 from pathlib import Path
@@ -20,7 +21,8 @@ def show_calculations(attempt):
 
 
 st.set_page_config(page_title="Tabular Analysis Agent", layout="wide")
-defaults = Settings.model_validate_json(Path("config/development.json").read_text())
+config_path = Path(os.environ.get("TABULAR_AGENT_CONFIG") or "config/development.json")
+defaults = Settings.model_validate_json(config_path.read_text())
 st.title("表格数据分析与可视化")
 st.write("上传 CSV，用自然语言提出分析问题。系统会保存结果、图表、分析代码和检查记录。")
 with st.sidebar:

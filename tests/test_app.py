@@ -7,6 +7,18 @@ from tabular_agent.storage import write_json
 APP = Path(__file__).resolve().parents[1] / "app.py"
 
 
+def test_app_can_select_a_complete_candidate_configuration(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    write_json(tmp_path / "config/development.json", {"model": "qwen3:8b"})
+    candidate = tmp_path / "config/candidate.json"
+    write_json(candidate, {"model": "qwen3:14b", "thinking": False,
+                           "review_thinking": False, "presence_penalty": 1.5})
+    monkeypatch.setenv("TABULAR_AGENT_CONFIG", str(candidate))
+    app = AppTest.from_file(str(APP)).run()
+    assert not app.exception
+    assert next(item for item in app.text_input if item.label == "本地模型").value == "qwen3:14b"
+
+
 def saved_run(root, identifier, question):
     folder = root / "runs" / identifier
     write_json(folder / "summary.json", {

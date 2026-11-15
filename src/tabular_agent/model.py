@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 from urllib.request import urlopen
 
-from langchain_ollama import ChatOllama
+from langchain_ollama import ChatOllama as LangChainChatOllama
 
 from .draft_contract import draft_model_payload, draft_response_schema, normalize_draft
 from .schemas import (
@@ -18,6 +18,18 @@ from .schemas import (
     review_response_schema,
 )
 from .storage import write_json
+
+
+class ChatOllama(LangChainChatOllama):
+    """Keep presence sampling in the native request when raw structured output is used."""
+
+    presence_penalty: float | None = None
+
+    def _chat_params(self, messages, stop=None, **kwargs):
+        params = super()._chat_params(messages, stop=stop, **kwargs)
+        if self.presence_penalty is not None:
+            params["options"] = {**params["options"], "presence_penalty": self.presence_penalty}
+        return params
 
 
 def ollama_version(base_url: str) -> str:
@@ -119,6 +131,11 @@ class OllamaModel:
             "semantic_review": self.settings.review_thinking,
         }.get(phase)
         thinking = self.settings.thinking if override is None else override
+        sampling = {
+            name: getattr(self.settings, name)
+            for name in ("top_p", "top_k", "repeat_penalty", "presence_penalty")
+            if getattr(self.settings, name) is not None
+        }
         model = ChatOllama(
             model=self.settings.model,
             base_url=self.settings.base_url,
@@ -128,6 +145,7 @@ class OllamaModel:
             num_predict=maximum,
             seed=self.settings.seed,
             client_kwargs={"timeout": float(self.settings.timeout)},
+            **sampling,
         )
         start = time.monotonic()
         call_id = len(self.ledger.models)
@@ -141,7 +159,8 @@ class OllamaModel:
             },
         )
         record = {"phase": phase, "status": "started", "input_artifact": str(prompt_path),
-                  "thinking": thinking, "output_token_cap": maximum}
+                  "thinking": thinking, "output_token_cap": maximum,
+                  "sampling": {"temperature": self.settings.temperature, **sampling}}
         self.ledger.models.append(record)
         self.ledger.save()
         accounted = False
@@ -157,7 +176,7 @@ class OllamaModel:
                         + json.dumps(schema.model_json_schema()),
                     ),
                     ("human", content),
-                ]
+                ],
             )
             raw = response["raw"]
             write_json(

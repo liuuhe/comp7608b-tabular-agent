@@ -7,7 +7,7 @@ from typing import Literal
 from pydantic import Field, create_model, model_validator
 
 from .reports import PATTERN
-from .schemas import CandidateDraft, StrictModel, validate_bound_text
+from .schemas import CandidateDraft, StrictModel, has_terminal_controls, validate_bound_text
 
 
 def _prose_pattern() -> str:
@@ -28,7 +28,7 @@ def _prose_pattern() -> str:
     excluded = "".join(
         chr(first) if first == last else chr(first) + "-" + chr(last) for first, last in ranges
     )
-    return "^[^{}" + excluded + "]*$"
+    return r"^[^{}\x00-\x08\x0b\x0c\x0e-\x1f\x7f" + excluded + "]*$"
 
 
 PROSE_PATTERN = _prose_pattern()
@@ -43,6 +43,8 @@ class ProsePart(StrictModel):
 
     @model_validator(mode="after")
     def reject_other_numeric_characters(self):
+        if has_terminal_controls(self.text):
+            raise ValueError("Prose parts cannot contain terminal control characters")
         if any(unicodedata.category(char).startswith("N") for char in self.text):
             raise ValueError(
                 "Prose parts cannot contain numeric characters; select a reference part"

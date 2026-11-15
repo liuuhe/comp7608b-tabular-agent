@@ -332,7 +332,8 @@ def test_binding_examples_use_real_cells_and_bare_evidence_refs():
     results = {"tables": {"actual": [{"value": 7, "valid_count": 2}], "empty": []}}
     examples = binding_examples(results)
     assert len(examples) == 2
-    assert "saved value is 7" in render_draft(Draft(findings=[Finding(**examples[0])]), results)
+    assert "computed statistic is 7" in render_draft(Draft(findings=[Finding(**examples[0])]), results)
+    assert "valid observation count is 2" in render_draft(Draft(findings=[Finding(**examples[1])]), results)
     assert examples[0]["evidence"] == ["table.actual.0.value"]
 
 

@@ -13,6 +13,32 @@ SCOPED_PERIOD = re.compile(r"\b(?:for|in|during)\s+(?:the\s+month\s+of\s+)?(" +
                            "|".join(MONTHS) + r")\s+(\d{4})\b", re.I)
 
 
+def request_coverage_map(request: str, plan: Plan) -> dict:
+    """Validate declared links, without treating a model's coverage claims as true."""
+    normalized = " ".join(request.casefold().split())
+    analyses = {analysis.id: analysis for analysis in plan.analyses}
+    mapped = []
+    for requirement in plan.requirements:
+        quote = " ".join(requirement.quote.casefold().split())
+        if not quote or quote not in normalized:
+            raise ValueError(
+                f"Requirement quote {requirement.quote!r} is not an excerpt of the request. "
+                "Copy the actual requested component; do not invent or paraphrase a requirement."
+            )
+        mapped.append({
+            "quote": requirement.quote,
+            "analysis_ids": requirement.analysis_ids,
+            "outputs": [{"table": identifier, "chart": analyses[identifier].chart is not None}
+                        for identifier in requirement.analysis_ids],
+        })
+    return {
+        "status": "declared" if mapped else "unavailable",
+        "semantic_coverage": "unverified",
+        "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+        "requirements": mapped,
+    }
+
+
 def scalar_sum_scope_checks(request: str, plan: Plan, numeric_columns: list[str]) -> list[Issue]:
     """Recognize narrow explicit scalar-sum clauses, never arbitrary metric synonyms.
 

@@ -7,6 +7,7 @@ from tabular_agent.schemas import (
     Analysis,
     CandidateDraft,
     Draft,
+    Filter,
     Finding,
     Issue,
     Plan,
@@ -74,6 +75,48 @@ class StubExecutor:
         # Initial wrong result, repaired second result. No generated code runs here.
         value = 60 if attempt.name == "attempt-00" else 20
         return {"ok": True, "result": {"tables": {"mean": [{"value": value, "valid_count": 3}]}}}
+
+
+@pytest.mark.parametrize("condition", ["one_shot", "no_verification", "full"])
+def test_helper_code_is_auditable_in_all_conditions_and_repair_receives_only_generated_code(
+    tmp_path, condition,
+):
+    raw = """import pandas as pd
+data = ta_filter(df,'rentals','ge',0)
+tables = {'mean':pd.DataFrame([{'value':data['rentals'].mean(),'valid_count':int(data['rentals'].count())}])}
+"""
+    previous = []
+
+    class HelperModel(StubModel):
+        def call(self, schema, instructions, payload, phase):
+            value = super().call(schema, instructions, payload, phase)
+            if phase == "planning":
+                value.analyses[0].filters = [Filter(column="rentals", operator="ge", value=0)]
+            if phase == "code_generation":
+                previous.append(payload["previous_code"])
+                return Program(code=raw)
+            if phase == "report_drafting":
+                assert "def ta_filter(" in payload["executed_code"]
+            return value
+
+    class HelperExecutor(StubExecutor):
+        def execute(self, csv, plan, code, attempt):
+            assert "def ta_filter(" in code and code.endswith(raw)
+            return super().execute(csv, plan, code, attempt)
+
+    csv = tmp_path / "data.csv"
+    csv.write_text("rentals\n10\n20\n30\n")
+    summary = Agent(Settings(condition=condition), HelperModel, HelperExecutor).run(
+        csv, "Mean nonnegative rentals", tmp_path / "runs",
+    )
+    assert previous == (["", raw] if condition == "full" else [""])
+    root = Path(summary["directory"])
+    assert read_json(root / "manifest.json")["analysis_helper_contract"] == 1
+    for attempt in root.glob("attempt-*"):
+        assert (attempt / "generated_code.py").read_text() == raw
+        metadata = read_json(attempt / "code_assembly.json")
+        assert metadata["helpers"] == ["ta_filter"]
+        assert metadata["generated_sha256"] != metadata["effective_sha256"]
 
 
 @pytest.mark.parametrize(
@@ -264,6 +307,40 @@ class BadCitationModel(StubModel):
 class CorrectExecutor(StubExecutor):
     def execute(self, csv, plan, code, attempt):
         return {"ok": True, "result": {"tables": {"mean": [{"value": 20, "valid_count": 3}]}}}
+
+
+def test_invented_request_requirement_replans_before_execution(tmp_path):
+    from tabular_agent.schemas import RequestRequirement
+
+    planning_calls = []
+    executions = []
+
+    class Model(StubModel):
+        def call(self, schema, instructions, payload, phase):
+            result = super().call(schema, instructions, payload, phase)
+            if schema is Plan:
+                planning_calls.append(payload)
+                result.requirements = [RequestRequirement(
+                    quote="Invented histogram" if len(planning_calls) == 1 else "mean rentals",
+                    analysis_ids=["mean"],
+                )]
+            return result
+
+    class Executor(CorrectExecutor):
+        def execute(self, csv, plan, code, attempt):
+            executions.append(attempt.name)
+            return super().execute(csv, plan, code, attempt)
+
+    csv = tmp_path / "input.csv"
+    csv.write_text("rentals\n10\n20\n30\n")
+    summary = Agent(Settings(), Model, Executor).run(csv, "Report mean rentals.", tmp_path / "runs")
+    assert summary["status"] == "checks_passed" and summary["repairs"] == 1
+    assert executions == ["attempt-01"]
+    assert "not an excerpt" in planning_calls[1]["feedback"]
+    directory = Path(summary["directory"])
+    assert read_json(directory / "attempt-00/plan.json")["requirements"][0]["quote"] == "Invented histogram"
+    coverage = read_json(directory / "attempt-01/request_coverage_map.json")
+    assert coverage["semantic_coverage"] == "unverified"
 
 
 @pytest.mark.parametrize("condition", ["one_shot", "no_verification", "full"])

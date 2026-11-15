@@ -30,7 +30,9 @@ from .reports import (
     result_preview,
     save_tables,
 )
+from .request_checks import request_coverage_map
 from .resources import MemoryMonitor
+from .runtime_helpers import assemble_program
 from .schemas import (
     CandidateDraft,
     Draft,
@@ -70,8 +72,8 @@ class InvalidProgram(ValueError):
         super().__init__(
             f"Generated Python syntax error at line {error.lineno}, column {error.offset}: "
             f"{error.msg}. Source: {(error.text or '').rstrip()!r}. "
-            "Regenerate valid Python lines; use parentheses for a multiline expression, "
-            "not literal backslash-n characters between statements."
+            "Regenerate valid short Python lines, one physical line per array item. "
+            "Do not enclose assignments in parentheses or use literal backslash-n separators."
         )
 
 
@@ -79,6 +81,7 @@ class State(TypedDict, total=False):
     profile: dict
     plan: Plan
     code: str
+    generated_code: str
     execution: dict
     charts: list
     draft: Draft
@@ -175,6 +178,7 @@ class Agent:
                 ]
             },
             "tool_contract_version": 3,
+            "analysis_helper_contract": 1,
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()
             },
@@ -223,6 +227,7 @@ class Agent:
                         update["previous_plan"] = exc.candidate.model_dump()
                     if isinstance(exc, InvalidProgram):
                         update["code"] = exc.code
+                        update["generated_code"] = exc.code
                     if function.__name__ == "plan" and isinstance(exc, InvalidOutput) and exc.candidate:
                         folder(state).mkdir(exist_ok=True)
                         write_json(folder(state) / "invalid_plan.json", exc.candidate)
@@ -285,8 +290,10 @@ class Agent:
                 write_json(directory / "plan.json", result.model_dump())
                 try:
                     validate_columns(result, state["profile"])
+                    coverage = request_coverage_map(question, result)
                 except ValueError as exc:
                     raise InvalidPlan(result, str(exc)) from exc
+                write_json(directory / "request_coverage_map.json", coverage)
                 if not result.clarification:
                     break
                 reply = clarification_response if clarification_responses == 0 else None
@@ -333,7 +340,7 @@ class Agent:
             # Keep planning feedback in saved inputs/trace, out of the next code call.
             return {
                 "plan": result, "error": "", "previous_plan": {}, "feedback": "",
-                "code": "", "execution": {}, "charts": [], "previous_draft": {},
+                "code": "", "generated_code": "", "execution": {}, "charts": [], "previous_draft": {},
                 "report_review": {},
             }
 
@@ -343,26 +350,36 @@ class Agent:
             write_json(folder(state) / "plan.json", state["plan"].model_dump())
             result = model.call(
                 Program,
-                prompts.CODE,
+                prompts.code_instructions(state["plan"]),
                 {
                     "plan": state["plan"].model_dump(),
                     "required_tables": {a.id: output_columns(a) for a in state["plan"].analyses},
                     "column_types": {column["name"]: column["dtype"] for column in state["profile"]["columns"]},
                     "execution_contract": "df, plan, required_tables and initial column_types are provided; assign tables to DataFrames; worker writes JSON",
                     "feedback": state.get("feedback", ""),
-                    "previous_code": state.get("code", ""),
+                    "previous_code": state.get("generated_code", state.get("code", "")),
                     "previous_results": result_preview(
                         state.get("execution", {}).get("result", {"tables": {}})
                     ),
                 },
                 "code_generation",
             )
+            (folder(state) / "generated_code.py").write_text(result.code)
             (folder(state) / "analysis.py").write_text(result.code)
             try:
-                ast.parse(result.code, filename="analysis.py")
+                tree = ast.parse(result.code, filename="analysis.py")
             except SyntaxError as exc:
                 raise InvalidProgram(result.code, exc) from exc
-            return {"code": result.code, "error": "", "previous_draft": {}, "report_review": {}}
+            effective, helpers = assemble_program(result.code, tree)
+            (folder(state) / "analysis.py").write_text(effective)
+            write_json(folder(state) / "code_assembly.json", {
+                "helper_contract": 1, "helpers": helpers,
+                "generated_sha256": hashlib.sha256(result.code.encode()).hexdigest(),
+                "effective_sha256": hashlib.sha256(effective.encode()).hexdigest(),
+                "note": "generated_code.py is the model response; analysis.py includes referenced helper definitions and is executed in Docker.",
+            })
+            return {"code": effective, "generated_code": result.code,
+                    "error": "", "previous_draft": {}, "report_review": {}}
 
         @guarded
         def execute(state):
@@ -575,7 +592,7 @@ class Agent:
                 source = folder(state)
                 destination = run_dir / f"attempt-{state['attempt'] + 1:02d}"
                 destination.mkdir()
-                names = ["analysis.py", "plan.json", "execution.json", "tables", "charts"]
+                names = ["analysis.py", "generated_code.py", "code_assembly.json", "plan.json", "execution.json", "tables", "charts"]
                 if target == "verify":
                     names += ["candidate_draft.json", "grounding.json", "draft.json", "report.md", "chart_evidence.json"]
                 for name in names:

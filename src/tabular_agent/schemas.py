@@ -98,6 +98,11 @@ class Analysis(StrictModel):
         return self
 
 
+class RequestRequirement(StrictModel):
+    quote: str = Field(min_length=1, description="Short verbatim excerpt of the user's request, not an invented requirement.")
+    analysis_ids: list[str] = Field(min_length=1, max_length=3, description="Analyses intended to answer this requested component; a table can also supply valid counts.")
+
+
 class Plan(StrictModel):
     clarification: str = Field(
         default="",
@@ -107,6 +112,7 @@ class Plan(StrictModel):
     conversions: list[Conversion] = Field(default_factory=list)
     derived: list[Derived] = Field(default_factory=list)
     analyses: list[Analysis] = Field(default_factory=list, max_length=3)
+    requirements: list[RequestRequirement] = Field(default_factory=list, max_length=12)
 
     @model_validator(mode="after")
     def check_plan(self):
@@ -121,13 +127,18 @@ class Plan(StrictModel):
             raise ValueError("analysis IDs must be unique")
         if not self.clarification and not self.analyses:
             raise ValueError("provide analyses or an essential clarification")
+        for requirement in self.requirements:
+            if len(requirement.analysis_ids) != len(set(requirement.analysis_ids)):
+                raise ValueError("requirement analysis_ids must be unique")
+            if not set(requirement.analysis_ids) <= set(ids):
+                raise ValueError("Every requirement must reference existing analysis IDs")
         return self
 
 
 class PlanningChart(Chart):
     # Model output must choose an axis explicitly; the saved/local Chart default
     # remains compatible with existing aggregate plans and histogram serialization.
-    y: str = Field(description=Chart.model_fields["y"].description)
+    y: Literal["value", "valid_count", "y"] = Field(description=Chart.model_fields["y"].description)
 
 
 class PlanningAnalysis(Analysis):
@@ -135,7 +146,20 @@ class PlanningAnalysis(Analysis):
 
 
 class PlanningPlan(Plan):
-    analyses: list[PlanningAnalysis] = Field(default_factory=list, max_length=3)
+    # The decoding schema must require the decision and analyses, even for clarification.
+    # Canonical Plan defaults above remain compatible with historical saved artifacts.
+    clarification: str = Field(description=Plan.model_fields["clarification"].description)
+    analyses: list[PlanningAnalysis] = Field(max_length=3)
+    requirements: list[RequestRequirement] = Field(
+        max_length=12,
+        description="Map each requested computation, constraint, chart or exploration topic to analysis IDs. Quote the request. Use [] only when asking an essential clarification. This is a proposed coverage map, not proof that the analyses are suitable.",
+    )
+
+    @model_validator(mode="after")
+    def require_coverage_map(self):
+        if not self.clarification and not self.requirements:
+            raise ValueError("Map the requested components to analyses in requirements")
+        return self
 
 
 class Program(StrictModel):
@@ -157,7 +181,13 @@ BOUND_TEXT_PATTERN = (
     r"|request\.numbers\.[0-9]+|result\.rows\.[a-z][a-z0-9_]{0,39}|plan\.filters\.[a-z][a-z0-9_]{0,39}\.[0-9]+(?:\.[0-9]+)?)\}\})*$"
 )
 
+def has_terminal_controls(text: str) -> bool:
+    return any((ord(char) < 32 and char not in "\n\t\r") or ord(char) == 127 for char in text)
+
+
 def validate_bound_text(text: str) -> str:
+    if has_terminal_controls(text):
+        raise ValueError("Report prose cannot contain terminal control characters")
     if not re.fullmatch(BOUND_TEXT_PATTERN, text):
         raise ValueError(
             "Bind numeric claims using {{table.ID.ROW.COLUMN}}, {{request.numbers.INDEX}} "
@@ -219,7 +249,17 @@ class Review(StrictModel):
 class StatementVerdict(StrictModel):
     status: Literal["pass", "fail", "uncovered"]
     evidence: str = Field(min_length=1)
-    suggestion: str = ""
+    suggestion: str = Field(
+        description="Always include this key. For fail, give a concrete nonblank correction for the actual error; otherwise an empty string is allowed.",
+    )
+
+    @model_validator(mode="after")
+    def actionable_verdict(self):
+        if not self.evidence.strip():
+            raise ValueError("Review verdicts need concrete evidence")
+        if self.status == "fail" and not self.suggestion.strip():
+            raise ValueError("A failed review verdict needs a corrective action")
+        return self
 
 
 class RequestCoverageVerdict(StatementVerdict):
@@ -239,12 +279,37 @@ class RequestCoverageVerdict(StatementVerdict):
         return self
 
 
+class AdditionalReviewIssue(Issue):
+    check: str = Field(
+        pattern=r"^(?:plan|code|chart)\.[a-z][a-z0-9_]{0,63}$",
+        description="Additional concern ID, such as code.filter or chart.units. Only plan.*, code.* or chart.*; required statement and request verdicts have their own fields.",
+    )
+    target: Literal["plan", "code"] = Field(
+        description="Required repair destination: code.* targets code; plan.* and chart.* target plan. Report wording belongs in statement verdicts, never here.",
+    )
+    evidence: str = Field(min_length=1)
+    suggestion: str = Field(
+        description="Always include this key. For fail, give a concrete nonblank repair for this additional plan/code/chart problem; otherwise an empty string is allowed.",
+    )
+
+    @model_validator(mode="after")
+    def check_destination(self):
+        if not self.evidence.strip():
+            raise ValueError("Additional review issues need concrete evidence")
+        if self.status == "fail" and not self.suggestion.strip():
+            raise ValueError("A failed additional review issue needs a corrective action")
+        expected = "code" if self.check.startswith("code.") else "plan"
+        if self.target != expected:
+            raise ValueError(f"Additional issue {self.check} must target {expected}")
+        return self
+
+
 class StructuredReview(StrictModel):
     semantic_status: Literal["pass", "fail", "uncovered"]
     request_coverage: RequestCoverageVerdict = Field(
         description="Assess the ENTIRE user request independently of the truth of written statements. Map every substantive requested component to actual plan/results/report evidence, and identify omissions. Correct individual statements alone do not establish full coverage."
     )
-    issues: list[Issue] = Field(description="Additional material plan/code/chart issues, not copies of statement or programmatic checks")
+    issues: list[AdditionalReviewIssue] = Field(description="Additional material plan/code/chart issues, not copies of statement or programmatic checks. Use [] if none.")
 
 
 def review_response_schema(checks: list[str]) -> type[BaseModel]:
@@ -277,6 +342,10 @@ class Settings(StrictModel):
     code_thinking: bool | None = None
     review_thinking: bool | None = None
     temperature: float = 0.0
+    top_p: float | None = Field(default=None, gt=0, le=1)
+    top_k: int | None = Field(default=None, ge=0)
+    repeat_penalty: float | None = Field(default=None, gt=0)
+    presence_penalty: float | None = Field(default=None, ge=-2, le=2)
     context_size: int = 16384
     output_tokens: int = 3072
     token_budget: int = 100000  # Development default; freeze only after the pilot.

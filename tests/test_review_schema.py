@@ -20,10 +20,11 @@ def review_payload():
         "request_coverage": {"status": "pass", "evidence": "All requested parts have saved evidence",
                              "suggestion": "", "target": "plan"},
         "statements": {
-            name: {"status": status, "evidence": f"Evidence for {name}"}
+            name: {"status": status, "evidence": f"Evidence for {name}",
+                   "suggestion": "Correct this unsupported statement" if status == "fail" else ""}
             for name, status in zip(CHECKS, ["pass", "fail", "uncovered"], strict=True)
         },
-        "issues": [{"check": "code.filter", "status": "fail", "evidence": "Filter absent", "target": "code"}],
+        "issues": [{"check": "code.filter", "status": "fail", "evidence": "Filter absent", "target": "code", "suggestion": "Apply the declared filter"}],
     }
 
 
@@ -44,7 +45,7 @@ def test_required_report_fields_preserve_verdicts_and_actual_statement_names():
         ("code.filter", "fail", "code"),
     ]
     assert structured.model_dump(by_alias=True)["statements"] == {
-        name: {**verdict, "suggestion": ""}
+        name: verdict
         for name, verdict in review_payload()["statements"].items()
     }
 
@@ -96,8 +97,45 @@ def test_invalid_required_check_names_are_rejected(checks):
 def test_report_checks_cannot_be_duplicated_in_additional_issues():
     payload = review_payload()
     payload["issues"].append({"check": CHECKS[0], "status": "fail", "evidence": "Contradicts required verdict", "target": "report"})
-    with pytest.raises(ValueError, match="required statements object"):
-        normalize_review(review_response_schema(CHECKS).model_validate(payload))
+    with pytest.raises(ValidationError, match="issues.1.check"):
+        review_response_schema(CHECKS).model_validate(payload)
+
+
+@pytest.mark.parametrize("name,valid", [
+    ("code.filter", True), ("plan.measure_choice", True), ("chart.units", True),
+    ("report.finding.0", False), ("report.limitation.0", False),
+    ("request_coverage", False), ("request_review_coverage", False),
+    ("semantic_suitability", False), ("calculation.total", False),
+])
+def test_additional_review_names_are_constrained_in_the_decoding_schema(name, valid):
+    import json
+    import re
+
+    schema = review_response_schema(CHECKS)
+    pattern = schema.model_json_schema()["$defs"]["AdditionalReviewIssue"]["properties"]["check"]["pattern"]
+    assert bool(re.fullmatch(pattern, name)) == valid
+    payload = review_payload()
+    payload["issues"][0]["check"] = name
+    payload["issues"][0]["target"] = "code" if name.startswith("code.") else "plan"
+    if valid:
+        result = normalize_review(schema.model_validate_json(json.dumps(payload)))
+        assert result.issues[-1].check == name and result.issues[-1].status == "fail"
+    else:
+        with pytest.raises(ValidationError, match="issues.0.check"):
+            schema.model_validate_json(json.dumps(payload))
+
+
+@pytest.mark.parametrize("target", [None, "plan", "report"])
+def test_code_review_issue_cannot_default_or_route_to_an_unrelated_repair(target):
+    payload = review_payload()
+    if target is None:
+        del payload["issues"][0]["target"]
+    else:
+        payload["issues"][0]["target"] = target
+    with pytest.raises(ValidationError):
+        review_response_schema(CHECKS).model_validate(payload)
+    # Historical canonical reviews retain their old defaults for read-only replay.
+    assert Issue(check="code.filter", status="fail", evidence="Old saved review").target == "plan"
 
 
 def test_empty_report_still_allows_plan_or_code_review():
@@ -130,8 +168,8 @@ def test_request_coverage_must_be_present_and_actionable(change):
 def test_additional_issue_cannot_spoof_request_coverage(name):
     payload = review_payload()
     payload["issues"].append({"check": name, "status": "pass", "evidence": "Duplicate"})
-    with pytest.raises(ValueError, match="required request_coverage object"):
-        normalize_review(review_response_schema(CHECKS).model_validate(payload))
+    with pytest.raises(ValidationError, match="issues.1.check"):
+        review_response_schema(CHECKS).model_validate(payload)
 
 
 @pytest.mark.parametrize("verdicts", [[], ["uncovered"], ["pass", "pass"]])
@@ -157,3 +195,20 @@ def test_request_omission_fails_even_if_overall_and_all_statements_pass(target):
               suggestion="Supply the requested comparison", target=target),
     ]), draft)
     assert issues[-1].status == "fail" and issues[-1].target == target
+
+
+@pytest.mark.parametrize("subject", ["statement", "additional"])
+@pytest.mark.parametrize("change", ["missing", "blank", "whitespace_evidence"])
+def test_model_failure_requires_action_and_evidence(subject, change):
+    payload = review_payload()
+    item = payload["statements"][CHECKS[1]] if subject == "statement" else payload["issues"][0]
+    if change == "missing":
+        del item["suggestion"]
+    elif change == "blank":
+        item["suggestion"] = "   "
+    else:
+        item["evidence"] = "   "
+    with pytest.raises(ValidationError):
+        review_response_schema(CHECKS).model_validate(payload)
+    # Old canonical records are evidence, not new wire responses.
+    assert Issue(check="report.finding.0", status="fail", evidence="Old verdict").suggestion == ""

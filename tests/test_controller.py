@@ -82,7 +82,7 @@ def test_helper_code_is_auditable_in_all_conditions_and_repair_receives_only_gen
     tmp_path, condition,
 ):
     raw = """import pandas as pd
-data = ta_filter(df,'rentals','ge',0)
+data = inputs['mean'].copy()
 tables = {'mean':pd.DataFrame([{'value':data['rentals'].mean(),'valid_count':int(data['rentals'].count())}])}
 """
     previous = []
@@ -96,12 +96,12 @@ tables = {'mean':pd.DataFrame([{'value':data['rentals'].mean(),'valid_count':int
                 previous.append(payload["previous_code"])
                 return Program(code=raw)
             if phase == "report_drafting":
-                assert "def ta_filter(" in payload["executed_code"]
+                assert "def ta_prepare_inputs(" in payload["executed_code"]
             return value
 
     class HelperExecutor(StubExecutor):
         def execute(self, csv, plan, code, attempt):
-            assert "def ta_filter(" in code and code.endswith(raw)
+            assert "def ta_prepare_inputs(" in code and raw in code
             return super().execute(csv, plan, code, attempt)
 
     csv = tmp_path / "data.csv"
@@ -111,11 +111,11 @@ tables = {'mean':pd.DataFrame([{'value':data['rentals'].mean(),'valid_count':int
     )
     assert previous == (["", raw] if condition == "full" else [""])
     root = Path(summary["directory"])
-    assert read_json(root / "manifest.json")["analysis_helper_contract"] == 1
+    assert read_json(root / "manifest.json")["analysis_helper_contract"] == 2
     for attempt in root.glob("attempt-*"):
         assert (attempt / "generated_code.py").read_text() == raw
         metadata = read_json(attempt / "code_assembly.json")
-        assert metadata["helpers"] == ["ta_filter"]
+        assert metadata["helpers"] == ["ta_convert", "ta_filter", "ta_prepare_inputs"]
         assert metadata["generated_sha256"] != metadata["effective_sha256"]
 
 

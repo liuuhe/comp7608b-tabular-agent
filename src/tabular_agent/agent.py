@@ -32,7 +32,7 @@ from .reports import (
 )
 from .request_checks import request_coverage_map
 from .resources import MemoryMonitor
-from .runtime_helpers import assemble_program
+from .runtime_helpers import assemble_program, validate_prepared_input_code
 from .schemas import (
     CandidateDraft,
     Draft,
@@ -78,6 +78,12 @@ class InvalidProgram(ValueError):
             "Regenerate valid short Python lines, one physical line per array item. "
             "Do not enclose assignments in parentheses or use literal backslash-n separators."
         )
+
+
+class InvalidInputContract(ValueError):
+    def __init__(self, code: str, message: str):
+        self.code = code
+        super().__init__(message)
 
 
 class State(TypedDict, total=False):
@@ -184,7 +190,7 @@ class Agent:
             },
             "tool_contract_version": 4,
             "verification_schedule": "full only: calculations before charts/report; report review continues the same tool invocation",
-            "analysis_helper_contract": 1,
+            "analysis_helper_contract": 2,
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()
             },
@@ -231,7 +237,7 @@ class Agent:
                     }
                     if isinstance(exc, InvalidPlan):
                         update["previous_plan"] = exc.candidate.model_dump()
-                    if isinstance(exc, InvalidProgram):
+                    if isinstance(exc, (InvalidProgram, InvalidInputContract)):
                         update["code"] = exc.code
                         update["generated_code"] = exc.code
                     if function.__name__ == "plan" and isinstance(exc, InvalidOutput) and exc.candidate:
@@ -362,7 +368,7 @@ class Agent:
                     "plan": state["plan"].model_dump(),
                     "required_tables": {a.id: output_columns(a) for a in state["plan"].analyses},
                     "column_types": {column["name"]: column["dtype"] for column in state["profile"]["columns"]},
-                    "execution_contract": "df, plan, required_tables and initial column_types are provided; assign tables to DataFrames; worker writes JSON",
+                    "execution_contract": "inputs[analysis_id] contains that analysis's converted, derived, filtered and missing-policy-selected rows. Copy it to data; generate aggregation/sorting/limit only. Assign tables to DataFrames; worker writes JSON.",
                     "feedback": state.get("feedback", ""),
                     "previous_code": state.get("generated_code", state.get("code", "")),
                     "previous_results": result_preview(
@@ -377,13 +383,17 @@ class Agent:
                 tree = ast.parse(result.code, filename="analysis.py")
             except SyntaxError as exc:
                 raise InvalidProgram(result.code, exc) from exc
-            effective, helpers = assemble_program(result.code, tree)
+            try:
+                validate_prepared_input_code(tree)
+            except ValueError as exc:
+                raise InvalidInputContract(result.code, str(exc)) from exc
+            effective, helpers = assemble_program(result.code, tree, prepare_inputs=True)
             (folder(state) / "analysis.py").write_text(effective)
             write_json(folder(state) / "code_assembly.json", {
-                "helper_contract": 1, "helpers": helpers,
+                "helper_contract": 2, "helpers": helpers,
                 "generated_sha256": hashlib.sha256(result.code.encode()).hexdigest(),
                 "effective_sha256": hashlib.sha256(effective.encode()).hexdigest(),
-                "note": "generated_code.py is the model response; analysis.py includes referenced helper definitions and is executed in Docker.",
+                "note": "generated_code.py is the model aggregation; analysis.py prepares per-analysis inputs from the declared plan, executes that aggregation, and preserves preparation notes. Independent CSV checks use a separate implementation.",
             })
             return {"code": effective, "generated_code": result.code,
                     "error": "", "previous_draft": {}, "report_review": {},

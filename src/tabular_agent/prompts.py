@@ -75,7 +75,11 @@ The runtime provides df, plan (a dict), required_tables (ID to output columns), 
 These describe inputs and contracts; they do not perform conversions or calculate results for you.
 Use actual column names exactly as supplied. Write direct calculations; do not append contract-validation loops.
 The worker serializes tables to JSON. Do not read/write files, import json, or plot.
-Return only the code field, no Markdown fences. Start with import pandas as pd.
+Return only the lines array, no Markdown fences. Each item is ONE physical Python source line,
+including its leading indentation. Start with import pandas as pd. Use an empty item for a blank line.
+Do not embed newlines inside an item or put literal backslash-n characters between statements.
+Keep method chains on one line, or enclose the entire multiline expression in parentheses.
+For scalar analyses write the direct Series calculation; no loops over plan or generic dispatcher.
 Write short direct calculations for the declared analyses, without a generic framework or repeated cleanup.
 Initialize tables = {}. After EACH analysis, immediately save tables[its_actual_id] = result.copy().
 Do not wait until the end to assign several IDs to a reused temporary variable: a later analysis

@@ -1,6 +1,6 @@
 import pytest
 
-from tabular_agent.request_checks import calendar_scope_checks
+from tabular_agent.request_checks import calendar_scope_checks, scalar_sum_scope_checks
 from tabular_agent.schemas import Analysis, Filter, Plan
 
 
@@ -45,3 +45,42 @@ def test_other_date_expressions_and_ambiguous_requests_are_not_newly_claimed_as_
     assert calendar_scope_checks("For January 2011 compute sales.", plan)[0].status == "uncovered"
     assert calendar_scope_checks("Compare January 2011 and February 2011.", plan) == []
     assert calendar_scope_checks("Before January 2011 compute sales.", plan) == []
+
+
+@pytest.mark.parametrize("operation,group_by,expected", [
+    ("rows", [], "fail"), ("count", [], "fail"), ("mean", [], "fail"),
+    ("sum", ["weather"], "fail"), ("sum", [], "pass"),
+])
+def test_named_scalar_sum_requires_the_measure_sum_not_rows_or_grouped_values(operation, group_by, expected):
+    plan = Plan(analyses=[Analysis(id="totals", operation=operation, column="rentals", group_by=group_by)])
+    question = "What is the total number of rentals? Report the valid count, and draw totals by weather."
+    checks = scalar_sum_scope_checks(question, plan, ["rentals"])
+    assert len(checks) == 1 and checks[0].status == expected and checks[0].target == "plan"
+    assert "152" not in checks[0].model_dump_json()
+    if expected == "fail":
+        assert "ungrouped" in checks[0].suggestion and "rentals" in checks[0].suggestion
+
+
+@pytest.mark.parametrize("question,columns", [
+    ("What is the total rentals by weather?", ["rentals"]),
+    ("Report the sum of rentals per weather.", ["rentals"]),
+    ("Do not report the total rentals.", ["rentals"]),
+    ("What is the total number of rentals?", ["rentals"]),
+    ("How many records are there?", ["rentals"]),
+    ("What is the total rentals_extra?", ["rentals"]),
+    ("What is the total rental units?", ["rentals"]),
+    ("What is the total rentals?", []),
+    ("What is the total rentals?", ["rentals", "Rentals"]),
+])
+def test_scalar_sum_check_does_not_invent_coverage_for_grouped_ambiguous_or_unnamed_requests(question, columns):
+    plan = Plan(analyses=[Analysis(id="rows", operation="rows", column="rentals")])
+    assert scalar_sum_scope_checks(question, plan, columns) == []
+
+
+def test_scalar_sum_check_respects_literal_column_names_and_leaves_filters_to_other_checks():
+    plan = Plan(analyses=[Analysis(id="totals", operation="sum", column="net.sales", filters=[
+        Filter(column="weather", operator="eq", value="Clear"),
+    ])])
+    checks = scalar_sum_scope_checks("Report the sum of `net.sales` for Clear weather.", plan, ["net.sales"])
+    assert len(checks) == 1 and checks[0].status == "pass"
+    assert "not filters" in checks[0].evidence

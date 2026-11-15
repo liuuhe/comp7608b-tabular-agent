@@ -94,7 +94,7 @@ def test_conditions_and_recovery(tmp_path, condition, attempts, status):
     assert result["last_generated_attempt"] + 1 == attempts
     trace = read_json(Path(result["directory"]) / "trace.json")
     review_count = sum(c["phase"] == "semantic_review" for c in trace["model_calls"])
-    assert review_count == (2 if condition == "full" else 0)
+    assert review_count == (1 if condition == "full" else 0)
     if condition == "full":
         assert result["tool_count"] == 5
         assert "Mean 20" in (Path(result["directory"]) / "report.md").read_text()
@@ -109,7 +109,12 @@ def test_exhausted_budget_does_not_accept_bad_result(tmp_path):
     assert result["status"] == "failed"
     assert result["repairs"] == 0
     assert any(v["status"] == "fail" for v in result["issues"])
-    assert result["selected_attempt"].endswith("attempt-00")
+    assert result["selected_attempt"] is None
+    assert result["last_inspected_attempt"].endswith("attempt-00")
+    assert result["has_unchecked_candidate"]
+    assert next(v for v in result["issues"] if v["check"] == "semantic_suitability")["status"] == "uncovered"
+    trace = read_json(Path(result["directory"]) / "trace.json")
+    assert not any(c["phase"] == "semantic_review" for c in trace["model_calls"])
 
 
 def test_calculation_differences_reach_code_repair(tmp_path):
@@ -188,17 +193,56 @@ class ReviewBudgetModel(StubModel):
             self.reviews += 1
             if self.reviews == 2:
                 raise BudgetExceeded("Review budget exhausted")
-        return super().call(schema, instructions, payload, phase)
+        result = super().call(schema, instructions, payload, phase)
+        if schema is Review:
+            verdict = next(issue for issue in result.issues if issue.check == "report.finding.0")
+            verdict.status = "fail"
+            verdict.evidence = "A scope qualifier is missing"
+            verdict.suggestion = "Qualify the finding"
+        return result
 
 
 def test_unchecked_revision_cannot_replace_checked_result(tmp_path):
     csv = tmp_path / "input.csv"
     csv.write_text("rentals\n10\n20\n30\n")
-    summary = Agent(Settings(), ReviewBudgetModel, StubExecutor).run(csv, "mean", tmp_path / "runs")
+    summary = Agent(Settings(), ReviewBudgetModel, CorrectExecutor).run(csv, "mean", tmp_path / "runs")
     assert summary["status"] == "budget_exhausted"
     assert summary["has_unchecked_candidate"]
     assert summary["selected_attempt"].endswith("attempt-00")
     assert any(v["status"] == "fail" for v in summary["issues"])
+
+
+def test_deferred_inspection_cannot_replace_an_earlier_semantically_checked_candidate(tmp_path):
+    class Model(StubModel):
+        def call(self, schema, instructions, payload, phase):
+            result = super().call(schema, instructions, payload, phase)
+            if schema is Review:
+                verdict = next(issue for issue in result.issues if issue.check == "request_coverage")
+                verdict.status = "fail"
+                verdict.target = "plan"
+                verdict.evidence = "Synthetic reviewer asks for a revised scope"
+                verdict.suggestion = "Reconsider the scope in the plan"
+            return result
+
+    class Executor(StubExecutor):
+        def execute(self, csv, plan, code, attempt):
+            value = 20 if attempt.name == "attempt-00" else 60
+            return {"ok": True, "result": {"tables": {"mean": [{"value": value, "valid_count": 3}]}}}
+
+    csv = tmp_path / "input.csv"
+    csv.write_text("rentals\n10\n20\n30\n")
+    summary = Agent(Settings(max_repairs=1), Model, Executor).run(csv, "mean", tmp_path / "runs")
+    root = Path(summary["directory"])
+    assert summary["status"] == "failed" and summary["repairs"] == 1
+    assert summary["selected_attempt"] == str(root / "attempt-00")
+    assert summary["last_inspected_attempt"] == str(root / "attempt-01")
+    assert summary["has_unchecked_candidate"]
+    assert "Mean 20" in (root / "report.md").read_text()
+    latest = read_json(root / "attempt-01/verification.json")
+    assert next(i for i in latest if i["check"] == "calculation.mean")["status"] == "fail"
+    assert next(i for i in latest if i["check"] == "semantic_suitability")["status"] == "uncovered"
+    trace = read_json(root / "trace.json")
+    assert sum(c["phase"] == "semantic_review" for c in trace["model_calls"]) == 1
 
 
 class BadCitationModel(StubModel):
@@ -220,6 +264,90 @@ class BadCitationModel(StubModel):
 class CorrectExecutor(StubExecutor):
     def execute(self, csv, plan, code, attempt):
         return {"ok": True, "result": {"tables": {"mean": [{"value": 20, "valid_count": 3}]}}}
+
+
+@pytest.mark.parametrize("condition", ["one_shot", "no_verification", "full"])
+def test_invalid_python_is_retained_and_repaired_before_any_container_call(tmp_path, condition):
+    bad_code = "import pandas as pd\nresult = df['rentals']\\n    .mean()\n"
+    generated = []
+    executed = []
+
+    class SyntaxModel(StubModel):
+        def call(self, schema, instructions, payload, phase):
+            result = super().call(schema, instructions, payload, phase)
+            if phase == "code_generation":
+                generated.append(payload)
+                if len(generated) == 1:
+                    return Program(code=bad_code)
+                assert payload["previous_code"] == bad_code
+                assert "syntax error at line 2" in payload["feedback"]
+                # Valid Python, whose body must only be passed to the stub executor.
+                return Program(code="raise AssertionError('generated code ran on host')\n")
+            return result
+
+    class Executor(CorrectExecutor):
+        def execute(self, csv, plan, code, attempt):
+            assert "generated code ran on host" in code
+            executed.append(code)
+            return super().execute(csv, plan, code, attempt)
+
+    csv = tmp_path / "input.csv"
+    csv.write_text("rentals\n10\n20\n30\n")
+    summary = Agent(Settings(condition=condition), SyntaxModel, Executor).run(csv, "mean", tmp_path / "runs")
+    directory = Path(summary["directory"])
+    assert (directory / "attempt-00/analysis.py").read_text() == bad_code
+    trace = read_json(directory / "trace.json")
+    assert any(e.get("node") == "generate" and "syntax error" in e.get("error", "")
+               for e in trace["events"])
+    if condition == "one_shot":
+        assert summary["status"] == "failed" and summary["repairs"] == 0
+        assert not executed and len(generated) == 1 and summary["model_tokens"] == 20
+    else:
+        assert summary["status"] == ("checks_passed" if condition == "full" else "completed_unverified")
+        assert summary["repairs"] == 1 and len(executed) == 1 and len(generated) == 2
+        assert sum(t["name"] == "execute_python" for t in trace["tools"]) == 1
+        assert summary["model_tokens"] == (50 if condition == "full" else 40)
+
+
+def test_scalar_sum_omission_replans_before_calling_the_reviewer(tmp_path):
+    class Model(StubModel):
+        plans = 0
+
+        def call(self, schema, instructions, payload, phase):
+            if phase == "semantic_review":
+                assert not any(v["status"] == "fail" for v in payload["programmatic_checks"])
+            result = super().call(schema, instructions, payload, phase)
+            if schema is Plan:
+                self.plans += 1
+                if self.plans > 1:
+                    assert "request.scalar_sum.rentals" in payload["feedback"]
+                    result.analyses[0].operation = "sum"
+            if schema is CandidateDraft:
+                result.findings[0].text = "Total {{table.mean.0.value}}"
+            return result
+
+    class Executor(CorrectExecutor):
+        def execute(self, csv, plan, code, attempt):
+            value = 60 if plan["analyses"][0]["operation"] == "sum" else 20
+            return {"ok": True, "result": {"tables": {"mean": [{"value": value, "valid_count": 3}]}}}
+
+    csv = tmp_path / "input.csv"
+    csv.write_text("rentals\n10\n20\n30\n")
+    summary = Agent(Settings(), Model, Executor).run(csv, "What is the sum of rentals?", tmp_path / "runs")
+    directory = Path(summary["directory"])
+    assert summary["status"] == "checks_passed" and summary["repairs"] == 1
+    for attempt, expected in [("attempt-00", "fail"), ("attempt-01", "pass")]:
+        issues = read_json(directory / attempt / "verification.json")
+        assert next(i for i in issues if i["check"] == "request.scalar_sum.rentals")["status"] == expected
+        assert next(i for i in issues if i["check"] == "semantic_suitability")["status"] == (
+            "uncovered" if attempt == "attempt-00" else "pass"
+        )
+    trace = read_json(directory / "trace.json")
+    assert sum(c["phase"] == "semantic_review" for c in trace["model_calls"]) == 1
+    deferred = read_json(directory / "attempt-00/semantic_review_deferred.json")
+    assert deferred["failed_checks"][0]["check"] == "request.scalar_sum.rentals"
+    assert any(e["event"] == "semantic_review_deferred" for e in trace["events"])
+    assert "Total 60" in (directory / "report.md").read_text()
 
 
 @pytest.mark.parametrize("interruption", [None, "draft", "review"])
@@ -592,7 +720,7 @@ class GroupedExecutor(StubExecutor):
         ]}}}
 
 
-def test_false_extremum_is_repaired_even_if_model_reviewer_passes(tmp_path):
+def test_false_extremum_is_repaired_before_model_review(tmp_path):
     csv = tmp_path / "input.csv"
     csv.write_text("group,rentals\nA,10\nB,20\n")
     summary = Agent(Settings(max_tools=4), ExtremumReportModel, GroupedExecutor).run(
@@ -602,7 +730,7 @@ def test_false_extremum_is_repaired_even_if_model_reviewer_passes(tmp_path):
     root = Path(summary["directory"])
     first = read_json(root / "attempt-00/verification.json")
     assert next(i for i in first if i["check"] == "report_comparison.finding.0.0")["status"] == "fail"
-    assert next(i for i in first if i["check"] == "semantic_suitability")["status"] == "pass"
+    assert next(i for i in first if i["check"] == "semantic_suitability")["status"] == "uncovered"
     trace = read_json(root / "trace.json")
     assert sum(t["name"] == "execute_python" for t in trace["tools"]) == 1
     assert sum(t["name"] == "verify_result" for t in trace["tools"]) == 2
@@ -719,7 +847,7 @@ class MonthBoundaryExecutor(StubExecutor):
         return {"ok": True, "result": {"tables": {"mean": [{"value": 10 if wrong else 15, "valid_count": 1 if wrong else 2}]}}}
 
 
-def test_incomplete_month_plan_is_repaired_despite_matching_calculation_and_model_pass(tmp_path):
+def test_incomplete_month_plan_is_repaired_before_model_review_despite_matching_calculation(tmp_path):
     csv = tmp_path / "input.csv"
     csv.write_text("date,rentals\n2011-01-01,10\n2011-01-31T12:00:00,20\n2011-02-01,30\n")
     summary = Agent(Settings(), MonthBoundaryModel, MonthBoundaryExecutor).run(csv, "For January 2011 average rentals.", tmp_path / "runs")
@@ -727,7 +855,7 @@ def test_incomplete_month_plan_is_repaired_despite_matching_calculation_and_mode
     root = Path(summary["directory"])
     initial = read_json(root / "attempt-00/verification.json")
     assert next(x for x in initial if x["check"] == "calculation.mean")["status"] == "pass"
-    assert next(x for x in initial if x["check"] == "semantic_suitability")["status"] == "pass"
+    assert next(x for x in initial if x["check"] == "semantic_suitability")["status"] == "uncovered"
     assert next(x for x in initial if x["check"] == "request.calendar_scope.mean")["status"] == "fail"
     assert summary["selected_attempt"].endswith("attempt-01")
     assert "Mean 15" in (root / "report.md").read_text()

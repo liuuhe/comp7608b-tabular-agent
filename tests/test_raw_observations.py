@@ -259,7 +259,8 @@ def test_raw_calculation_feedback_repairs_code_instead_of_only_replotting(csv, t
 
     result = Agent(Settings(), Model, Executor).run(csv, "Plot hours.", tmp_path / "runs")
     assert result["status"] == "checks_passed" and result["repairs"] == 1
-    assert result["tool_count"] == 7 and result["model_tokens"] == 70
+    assert result["tool_count"] == 7 and result["model_tokens"] == 60
+    assert sum(phase == "semantic_review" for phase, _ in payloads) == 1
     codes = [payload for phase, payload in payloads if phase == "code_generation"]
     assert len(codes) == 2 and "missing_observation_examples" in codes[1]["feedback"]
     root = tmp_path / "runs" / result["directory"].split("/")[-1]

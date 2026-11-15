@@ -142,6 +142,15 @@ class Program(StrictModel):
     code: str = Field(min_length=1)
 
 
+class ProgramLines(StrictModel):
+    """Model transport only; joining lines does not repair or execute Python."""
+
+    lines: list[Annotated[str, Field(pattern=r"^[^\r\n]*$")]] = Field(
+        min_length=1,
+        description="Python source lines in order, one physical line per item; preserve indentation.",
+    )
+
+
 BOUND_TEXT_PATTERN = (
     r"^(?:[^0-9{}\u00b2\u00b3\u00b9\u2070-\u209f\uff10-\uff19]|\{\{(?:table\.[a-z][a-z0-9_]{0,39}\.[0-9]+\.[^{}]+"
     r"|chart\.[a-z][a-z0-9_]{0,39}\.(?:observations|bin_count|bins\.[0-9]+\.(?:lower|upper|count))"

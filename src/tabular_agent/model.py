@@ -10,6 +10,8 @@ from .schemas import (
     CandidateDraft,
     Plan,
     PlanningPlan,
+    Program,
+    ProgramLines,
     Review,
     Settings,
     normalize_review,
@@ -91,10 +93,13 @@ class OllamaModel:
 
     def call(self, schema, instructions: str, payload: dict, phase: str):
         structured_plan = schema is Plan and phase == "planning"
+        structured_program = schema is Program and phase == "code_generation"
         structured_review = schema is Review and phase == "semantic_review"
         structured_draft = schema is CandidateDraft and phase == "report_drafting"
         if structured_plan:
             schema = PlanningPlan
+        if structured_program:
+            schema = ProgramLines
         if structured_review:
             schema = review_response_schema(payload["required_report_checks"])
         if structured_draft:
@@ -188,6 +193,12 @@ class OllamaModel:
             parsed = response["parsed"]
             if structured_plan:
                 parsed = Plan.model_validate(parsed.model_dump())
+            if structured_program:
+                write_json(
+                    self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.structured.json",
+                    parsed.model_dump(),
+                )
+                parsed = Program(code="\n".join(parsed.lines) + "\n")
             if structured_review:
                 write_json(
                     self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.structured.json",

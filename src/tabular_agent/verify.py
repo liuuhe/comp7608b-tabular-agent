@@ -15,7 +15,7 @@ from .reference import (
     table_differences,
 )
 from .reports import render_draft
-from .request_checks import calendar_scope_checks
+from .request_checks import calendar_scope_checks, scalar_sum_scope_checks
 from .schemas import Draft, Issue, Plan, Review
 
 
@@ -23,6 +23,21 @@ def report_check_ids(draft: Draft) -> list[str]:
     return [
         *[f"report.finding.{i}" for i in range(len(draft.findings))],
         *[f"report.limitation.{i}" for i in range(len(draft.limitations))],
+    ]
+
+
+def deferred_semantic_checks(draft: Draft) -> list[Issue]:
+    """An inspection failure is actionable, but has not reviewed the report's meaning."""
+    return [
+        Issue(
+            check=check, status="uncovered", target="verification",
+            evidence="Semantic review deferred until deterministic failures are repaired. " + detail,
+        )
+        for check, detail in [
+            ("report_review_coverage", f"Pending statements: {report_check_ids(draft)}"),
+            ("request_review_coverage", "Whole-request model judgment remains pending."),
+            ("semantic_suitability", "No semantic model call was made for this candidate."),
+        ]
     ]
 
 
@@ -111,7 +126,8 @@ class ProgrammaticReview:
 
 
 def inspect_result(
-    csv: Path, plan: Plan, results: dict, charts: list, draft: Draft, request: str = ""
+    csv: Path, plan: Plan, results: dict, charts: list, draft: Draft, request: str = "",
+    numeric_columns: list[str] | None = None,
 ) -> ProgrammaticReview:
     findings = []
     selection = {}
@@ -126,6 +142,7 @@ def inspect_result(
         )
     )
     findings.extend(calendar_scope_checks(request, plan))
+    findings.extend(scalar_sum_scope_checks(request, plan, numeric_columns or []))
     try:
         rows = prepare_rows(csv, plan)
     except (ValueError, TypeError, KeyError) as exc:

@@ -1,4 +1,5 @@
 import io
+import json
 
 import pytest
 from langchain_core.messages import AIMessage
@@ -10,6 +11,7 @@ from tabular_agent.schemas import (
     Plan,
     PlanningPlan,
     Program,
+    ProgramLines,
     Review,
     Settings,
     validate_columns,
@@ -108,11 +110,11 @@ def test_truncated_structured_code_is_billed_but_never_accepted(tmp_path, monkey
         def invoke(self, messages):
             return {
                 "raw": AIMessage(
-                    content='{"code":"import pandas as pd"}',
+                    content='{"lines":["import pandas as pd"]}',
                     usage_metadata={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
                     response_metadata={"done_reason": reason},
                 ),
-                "parsed": Program(code="import pandas as pd"),
+                "parsed": ProgramLines(lines=["import pandas as pd"]),
                 "parsing_error": None,
             }
 
@@ -139,7 +141,8 @@ def test_reasoning_override_only_applies_to_review_and_is_logged(tmp_path, monke
         def __init__(self, **kwargs):
             requests.append(kwargs)
 
-        def with_structured_output(self, *args, **kwargs):
+        def with_structured_output(self, schema, **kwargs):
+            self.schema = schema
             return self
 
         def invoke(self, messages):
@@ -147,7 +150,8 @@ def test_reasoning_override_only_applies_to_review_and_is_logged(tmp_path, monke
                 content='{"code":"pass"}',
                 usage_metadata={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
                 response_metadata={"done_reason": "stop"},
-            ), "parsed": Program(code="pass"), "parsing_error": None}
+            ), "parsed": ProgramLines(lines=["pass"]) if self.schema is ProgramLines
+                else Program(code="pass"), "parsing_error": None}
 
     monkeypatch.setattr(model_module, "ChatOllama", Client)
     settings = Settings(thinking=False, review_thinking=True)
@@ -176,7 +180,8 @@ def test_code_reasoning_has_an_independent_logged_override_and_shared_billing(
         def __init__(self, **kwargs):
             requests.append(kwargs)
 
-        def with_structured_output(self, *args, **kwargs):
+        def with_structured_output(self, schema, **kwargs):
+            self.schema = schema
             return self
 
         def invoke(self, messages):
@@ -184,7 +189,8 @@ def test_code_reasoning_has_an_independent_logged_override_and_shared_billing(
                 content='{"code":"pass"}',
                 usage_metadata={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
                 response_metadata={"done_reason": "stop"},
-            ), "parsed": Program(code="pass"), "parsing_error": None}
+            ), "parsed": ProgramLines(lines=["pass"]) if self.schema is ProgramLines
+                else Program(code="pass"), "parsing_error": None}
 
     monkeypatch.setattr(model_module, "ChatOllama", Client)
     settings = Settings(thinking=thinking, code_thinking=code, review_thinking=review)
@@ -197,6 +203,50 @@ def test_code_reasoning_has_an_independent_logged_override_and_shared_billing(
     assert all(call["output_token_cap"] == settings.output_tokens for call in ledger.models)
     assert ledger.tokens == 60
     assert read_json(tmp_path / "trace.json")["tokens"] == 60
+
+
+@pytest.mark.parametrize("lines", [
+    ["import pandas as pd", "", "for column in ['rentals']:", "    note = r'\\n'"],
+    ["pass\nraise RuntimeError('embedded newline')"],
+])
+def test_program_wire_preserves_python_lines_and_escapes_and_retains_invalid_responses(
+    tmp_path, monkeypatch, lines,
+):
+    candidate = {"lines": lines}
+
+    class Client:
+        def with_structured_output(self, schema, **kwargs):
+            assert schema is ProgramLines
+            self.schema = schema
+            return self
+
+        def invoke(self, messages):
+            try:
+                parsed, error = self.schema.model_validate_json(json.dumps(candidate)), None
+            except ValueError as exc:
+                parsed, error = None, exc
+            return {"raw": AIMessage(
+                content=json.dumps(candidate),
+                usage_metadata={"input_tokens": 10, "output_tokens": 5, "total_tokens": 15},
+                response_metadata={"done_reason": "stop"},
+            ), "parsed": parsed, "parsing_error": error}
+
+    monkeypatch.setattr(model_module, "ChatOllama", lambda **kwargs: Client())
+    ledger = Ledger(Settings(), tmp_path)
+    model = OllamaModel(Settings(), ledger)
+    if len(lines) == 1:
+        with pytest.raises(InvalidOutput) as caught:
+            model.call(Program, "Write Python lines", {}, "code_generation")
+        assert caught.value.candidate == candidate
+        assert not (tmp_path / "model_outputs/000-code_generation.json").exists()
+        assert ledger.models[0]["status"] == "failed"
+    else:
+        result = model.call(Program, "Write Python lines", {}, "code_generation")
+        assert result.code == "\n".join(lines) + "\n"
+        assert read_json(tmp_path / "model_outputs/000-code_generation.structured.json") == candidate
+        assert read_json(tmp_path / "model_outputs/000-code_generation.json") == {"code": result.code}
+    assert read_json(tmp_path / "model_responses/000-code_generation.json")["content"] == json.dumps(candidate)
+    assert ledger.tokens == 15 and "reserved_tokens_charged" not in ledger.models[0]
 
 
 def test_invalid_structured_draft_is_billed_and_retained_for_repair(tmp_path, monkeypatch):

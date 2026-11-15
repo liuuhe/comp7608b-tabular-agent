@@ -13,6 +13,49 @@ SCOPED_PERIOD = re.compile(r"\b(?:for|in|during)\s+(?:the\s+month\s+of\s+)?(" +
                            "|".join(MONTHS) + r")\s+(\d{4})\b", re.I)
 
 
+def scalar_sum_scope_checks(request: str, plan: Plan, numeric_columns: list[str]) -> list[Issue]:
+    """Recognize narrow explicit scalar-sum clauses, never arbitrary metric synonyms.
+
+    Numeric source names come from the profile/conversions, not evaluation answers.
+    Ambiguous 'number of' wording is checked only when a valid count is also requested.
+    A pass establishes the operation/grouping only; filter and report meaning remain separate.
+    """
+    checks = []
+    for column in sorted(set(numeric_columns)):
+        if sum(name.casefold() == column.casefold() for name in set(numeric_columns)) != 1:
+            continue
+        pattern = re.compile(
+            r"\b(?:what\s+is|compute|calculate|report|give)\s+(?:the\s+)?"
+            r"(?:(?:overall|grand)\s+)?(?:sum(?:\s+of)?|total(?:\s+number\s+of)?)\s+"
+            r"[`\"]?" + re.escape(column) + r"[`\"]?(?![\w-])", re.I,
+        )
+        for match in pattern.finditer(request):
+            before = re.split(r"[?;.!]", request[:match.start()])[-1]
+            after = re.split(r"[?;.!]", request[match.end():], maxsplit=1)[0]
+            if re.search(r"\b(?:not|without|instead|don't)\b", before, re.I):
+                continue
+            if re.search(r"\b(?:by|per|each|grouped|or)\b", after, re.I):
+                continue
+            if re.search(r"number\s+of", match[0], re.I) and not re.search(
+                r"\bvalid\s+(?:observation\s+)?counts?\b", request, re.I,
+            ):
+                continue
+            sums = [a.id for a in plan.analyses
+                    if a.column == column and a.operation == "sum" and not a.group_by]
+            checks.append(Issue(
+                check=f"request.scalar_sum.{column}", status="pass" if sums else "fail", target="plan",
+                evidence=f"Explicit scalar request {match[0]!r}; ungrouped sum analyses: {sums}. "
+                         "This checks operation/grouping, not filters or prose correctness.",
+                suggestion="" if sums else (
+                    f"Add an ungrouped operation='sum', column={column!r} analysis with valid_count. "
+                    "Keep the requested grouped/chart results. A rows/count table cannot replace "
+                    "the sum of the named measure; no second analysis is needed just for its valid_count."
+                ),
+            ))
+            break
+    return checks
+
+
 def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
     match = SCOPED_PERIOD.search(request)
     if not match or len(PERIOD.findall(request)) != 1:

@@ -1,3 +1,4 @@
+import ast
 import fcntl
 import hashlib
 import json
@@ -41,7 +42,13 @@ from .schemas import (
     validate_columns,
 )
 from .storage import digest, read_json, write_json
-from .verify import inspect_result, report_check_ids, report_revision_context, semantic_checks
+from .verify import (
+    deferred_semantic_checks,
+    inspect_result,
+    report_check_ids,
+    report_revision_context,
+    semantic_checks,
+)
 
 
 def package_sources():
@@ -55,6 +62,17 @@ class InvalidPlan(ValueError):
     def __init__(self, candidate: Plan, message: str):
         super().__init__(message)
         self.candidate = candidate
+
+
+class InvalidProgram(ValueError):
+    def __init__(self, code: str, error: SyntaxError):
+        self.code = code
+        super().__init__(
+            f"Generated Python syntax error at line {error.lineno}, column {error.offset}: "
+            f"{error.msg}. Source: {(error.text or '').rstrip()!r}. "
+            "Regenerate valid Python lines; use parentheses for a multiline expression, "
+            "not literal backslash-n characters between statements."
+        )
 
 
 class State(TypedDict, total=False):
@@ -178,6 +196,7 @@ class Agent:
         started = time.monotonic()
         completed_attempt = None
         checked_attempt = None
+        inspected_attempt = None
         failure_signatures = []
 
         def folder(state):
@@ -202,6 +221,8 @@ class Agent:
                     }
                     if isinstance(exc, InvalidPlan):
                         update["previous_plan"] = exc.candidate.model_dump()
+                    if isinstance(exc, InvalidProgram):
+                        update["code"] = exc.code
                     if function.__name__ == "plan" and isinstance(exc, InvalidOutput) and exc.candidate:
                         folder(state).mkdir(exist_ok=True)
                         write_json(folder(state) / "invalid_plan.json", exc.candidate)
@@ -337,6 +358,10 @@ class Agent:
                 "code_generation",
             )
             (folder(state) / "analysis.py").write_text(result.code)
+            try:
+                ast.parse(result.code, filename="analysis.py")
+            except SyntaxError as exc:
+                raise InvalidProgram(result.code, exc) from exc
             return {"code": result.code, "error": "", "previous_draft": {}, "report_review": {}}
 
         @guarded
@@ -406,7 +431,7 @@ class Agent:
 
         @guarded
         def verify(state):
-            nonlocal checked_attempt
+            nonlocal checked_attempt, inspected_attempt
 
             def check():
                 inspection = inspect_result(
@@ -416,11 +441,24 @@ class Agent:
                     state["charts"],
                     state["draft"],
                     request=question,
+                    numeric_columns=[c["name"] for c in state["profile"]["columns"] if "statistics" in c]
+                    + [c.column for c in state["plan"].conversions if c.kind == "numeric"]
+                    + [d.name for d in state["plan"].derived],
                 )
                 write_json(
                     folder(state) / "programmatic_checks.json", [v.model_dump() for v in inspection.issues]
                 )
                 write_json(folder(state) / "selection_accounting.json", inspection.selection)
+                failures = [issue for issue in inspection.issues if issue.status == "fail"]
+                if failures:
+                    deferred = {
+                        "reason": "Repair deterministic failures before requesting semantic review",
+                        "failed_checks": [issue.model_dump() for issue in failures],
+                        "pending_report_checks": report_check_ids(state["draft"]),
+                    }
+                    write_json(folder(state) / "semantic_review_deferred.json", deferred)
+                    ledger.event("semantic_review_deferred", attempt=state["attempt"], **deferred)
+                    return inspection.issues + deferred_semantic_checks(state["draft"]), False
                 payload = {
                     "request": question,
                     "documentation": documentation,
@@ -453,11 +491,13 @@ class Agent:
                     payload,
                     "semantic_review",
                 )
-                return inspection.issues + semantic_checks(review, state["draft"])
+                return inspection.issues + semantic_checks(review, state["draft"]), True
 
-            issues = ledger.tool("verify_result", check)
+            issues, reviewed = ledger.tool("verify_result", check)
             write_json(folder(state) / "verification.json", [v.model_dump() for v in issues])
-            checked_attempt = folder(state)
+            inspected_attempt = folder(state)
+            if reviewed:
+                checked_attempt = folder(state)
             bad = [v for v in issues if v.status == "fail"]
             semantic_pass = any(
                 v.check == "semantic_suitability" and v.status == "pass" for v in issues
@@ -574,6 +614,7 @@ class Agent:
 
         def finish(state):
             selected = checked_attempt if self.settings.condition == "full" else completed_attempt
+            evidence_attempt = selected or inspected_attempt
             # Never promote a later unchecked candidate over a fully checked attempt.
             status = state.get("status", "failed")
             if not state.get("error") and status == "running":
@@ -582,14 +623,15 @@ class Agent:
                 "status": status,
                 "directory": str(run_dir),
                 "selected_attempt": str(selected) if selected else None,
+                "last_inspected_attempt": str(inspected_attempt) if inspected_attempt else None,
                 "last_generated_attempt": state["attempt"],
                 "repairs": state["repairs"],
                 "error": state.get("error", ""),
                 "tool_count": len(ledger.tools),
                 "model_tokens": ledger.tokens,
                 "seconds": time.monotonic() - started,
-                "issues": read_json(selected / "verification.json")
-                if selected and (selected / "verification.json").exists()
+                "issues": read_json(evidence_attempt / "verification.json")
+                if evidence_attempt and (evidence_attempt / "verification.json").exists()
                 else [],
                 "clarification": state["plan"].clarification if state.get("plan") else "",
                 "clarification_history": clarification_history,

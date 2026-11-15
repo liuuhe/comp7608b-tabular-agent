@@ -120,7 +120,7 @@ def test_full_verification_keeps_numerically_correct_counts_but_rejects_wrong_ra
 
 
 @pytest.mark.parametrize("condition", ["full", "one_shot", "no_verification"])
-def test_controller_detects_false_model_pass_and_repairs_only_report(tmp_path, monkeypatch, condition):
+def test_controller_repairs_missing_rate_claim_before_model_review(tmp_path, monkeypatch, condition):
     monkeypatch.chdir(tmp_path)
     csv = tmp_path / "data.csv"
     csv.write_text("g,x\na,?\na,1\na,2\na,3\nb,?\nb,?\nb,1\n")
@@ -148,7 +148,7 @@ def test_controller_detects_false_model_pass_and_repairs_only_report(tmp_path, m
                         if calls.count(phase) == 1 else "Group a has {{table.missing_x.0.value}} missing entries.")
                 return Draft(findings=[Finding(text=text, evidence=["table.missing_x"])])
             if phase == "semantic_review":
-                # Deliberately reproduce a false semantic pass. It must not erase the concrete failure.
+                assert not any(i["status"] == "fail" for i in payload["programmatic_checks"])
                 return Review(semantic_status="pass", issues=[Issue(
                     check="request_coverage", status="pass", evidence="Stub coverage verdict",
                 )] + [
@@ -178,7 +178,8 @@ def test_controller_detects_false_model_pass_and_repairs_only_report(tmp_path, m
         assert (directory / "attempt-01/reused_execution.json").is_file()
         initial = read_json(directory / "attempt-00/verification.json")
         assert any(i["check"].startswith("missing_rate.") and i["status"] == "fail" for i in initial)
-        assert calls.count("semantic_review") == 2
+        assert calls.count("semantic_review") == 1
+        assert next(i for i in initial if i["check"] == "semantic_suitability")["status"] == "uncovered"
     else:
         assert summary["status"] == "completed_unverified"
         assert "semantic_review" not in calls

@@ -2,7 +2,8 @@
 
 Design reference: the submitted proposal in proposal/Formatting_Instructions_For_NeurIPS_2026.pdf.
 Current user-supplied deadlines and requirements are recorded in [the local completion plan](LOCAL_COMPLETION_PLAN_ZH.md).
-The tutorials are retained separately. Status below records actual implementation, not results.
+Teaching examples were removed on 16 November; the tiny demo CSV remains for application use.
+Status below records actual implementation, not results.
 
 On 16 November the user selected Qwen3.5-9B Q4 as the main model for local resource/quality
 tradeoffs. CLI/UI defaults now load the complete v29 nonthinking policy from development.json;

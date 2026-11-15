@@ -9,7 +9,7 @@
 # Tabular Analysis Agent with Iterative Verification
 
 按照 COMP7608B 已提交 proposal 开发的单表数据分析与可视化 Agent。
-正式代码位于 `src/tabular_agent/`；之前的入门例子保留在 `tutorials/`。
+正式代码位于 `src/tabular_agent/`；入门教学示例已于2026-11-16按用户要求移除。
 简明开发状态与下一阶段事项见 [PROJECT_STATUS_ZH.md](../docs/PROJECT_STATUS_ZH.md)。
 已准备 [英文报告初稿](../report/DRAFT.md)、[演示流程](../docs/DEMO_RUNBOOK_ZH.md) 和
 [正式实验交接](../docs/EXPERIMENT_HANDOFF_ZH.md)；报告清楚区分开发证据与尚缺的正式结果。

@@ -15,7 +15,7 @@ def project(tmp_path):
     for name in REQUIRED | {
         "src/tabular_agent/agent.py", "evaluation/run.py", "tests/test_core.py",
         "data/uci/bike/metadata.json", "data/uci/bike/documentation.txt",
-        "docs/screenshots/demo.png", "tutorials/01_example.py",
+        "docs/screenshots/demo.png",
     }:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -40,6 +40,7 @@ def test_bundle_excludes_private_data_and_is_byte_identical_after_rebuild(projec
         "data/uci/bike/data.csv", "data/uci/bike/source.zip", "dist/old.zip",
         "src/tabular_agent/__pycache__/agent.pyc", "scripts/credentials.txt",
         "config/frozen-experiment.json",
+        "tutorials/01_example.py", "data/tutorial_rentals.csv",
         "proposal/Formatting_Instructions_For_NeurIPS_2026.pdf",
         "proposal/proposal_draft.md", "Instrctions/COMP7608B_LLM_Project_Guideline.pdf",
     ]

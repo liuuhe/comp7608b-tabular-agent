@@ -23,7 +23,7 @@
 
 ```bash
 uv sync --frozen --extra dev
-uv run tabular-agent profile data/tutorial_rentals.csv
+uv run tabular-agent profile data/demo_rentals.csv
 uv run ruff check .
 uv run pytest -q
 ```

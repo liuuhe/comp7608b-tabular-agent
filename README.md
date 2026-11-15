@@ -46,7 +46,7 @@ uv run tabular-agent doctor
 uv run streamlit run app.py --server.address 127.0.0.1
 ```
 
-打开 <http://127.0.0.1:8501>，上传仓库自带的 [tutorial_rentals.csv](data/tutorial_rentals.csv)，输入：
+打开 <http://127.0.0.1:8501>，上传仓库自带的 [demo_rentals.csv](data/demo_rentals.csv)，输入：
 
 > What is the total number of rentals? Report the valid count.
 
@@ -56,7 +56,7 @@ uv run streamlit run app.py --server.address 127.0.0.1
 也可以先体验无需模型和 Docker 的数据概览：
 
 ```bash
-uv run tabular-agent profile data/tutorial_rentals.csv
+uv run tabular-agent profile data/demo_rentals.csv
 ```
 
 ## 项目结构
@@ -72,7 +72,6 @@ uv run tabular-agent profile data/tutorial_rentals.csv
 | [data/](data/) | 小型示例、合成测试数据、UCI 来源与字段说明 |
 | [docs/](docs/README.md) | 团队交接、实现说明和历史开发记录 |
 | [report/DRAFT.md](report/DRAFT.md) | 工作报告草稿，正式结果仍待补充 |
-| [tutorials/](tutorials/) | 早期学习示例，与正式应用分开 |
 
 ## 测试与配置
 

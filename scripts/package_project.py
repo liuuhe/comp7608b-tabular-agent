@@ -14,7 +14,7 @@ REQUIRED = {
     "README.md", "CONTRIBUTING.md", "app.py", "pyproject.toml", "uv.lock",
     ".gitignore", ".gitattributes", ".python-version",
     "config/development.json", "config/pilot-code-thinking-v12.json",
-    "data/tutorial_rentals.csv", "docker/Dockerfile", "docker/worker.py",
+    "data/demo_rentals.csv", "docker/Dockerfile", "docker/worker.py",
     "src/tabular_agent/__init__.py", "scripts/package_project.py",
     "scripts/download_data.py", "evaluation/README.md", "evaluation/tasks.json",
     "evaluation/tasks.heldout.json",
@@ -23,7 +23,7 @@ REQUIRED = {
 # Prior v25 ZIPs remain verifiable; new snapshots do not require or include this local PDF.
 LEGACY_FILES = {"proposal/Formatting_Instructions_For_NeurIPS_2026.pdf"}
 # Verify earlier snapshots that included CI, without adding it to new snapshots.
-ARCHIVE_ONLY_FILES = {".github/workflows/checks.yml"}
+ARCHIVE_ONLY_FILES = {".github/workflows/checks.yml", "data/tutorial_rentals.csv"}
 EXCLUDED = [
     "Virtual environments, model/runtime caches and local settings",
     "Raw downloaded UCI archives/CSVs (download script and metadata included)",
@@ -58,7 +58,7 @@ uv run tabular-agent doctor
 uv run streamlit run app.py --server.address 127.0.0.1
 ```
 
-Open http://127.0.0.1:8501 and upload `data/tutorial_rentals.csv`.
+Open http://127.0.0.1:8501 and upload `data/demo_rentals.csv`.
 Example question: "What is the total number of rentals? Report the valid count."
 Generated analysis code runs only inside Docker. New analyses require the model
 and Docker services. The default config uses Qwen3.5-9B Q4 with thinking disabled
@@ -137,7 +137,7 @@ def source_paths(root):
     candidates = set(REQUIRED)
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",
-        "tutorials/*.py", "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
+        "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
         "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md",
         "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
@@ -222,11 +222,13 @@ def verify(path):
             raise ValueError("Archive contents differ from the manifest")
         # Old v25 archives predate the team setup files. Accept that original required
         # shape while requiring the complete current shape for new archives.
-        legacy_required = (REQUIRED - {
+        previous_required = (REQUIRED - {"data/demo_rentals.csv"}) | {"data/tutorial_rentals.csv"}
+        legacy_required = (previous_required - {
             "CONTRIBUTING.md", ".gitattributes", ".python-version",
             "docs/README.md", "docs/TEAM_HANDOFF_ZH.md",
         }) | LEGACY_FILES
         if not (REQUIRED | {GUIDE} <= set(expected)
+                or previous_required | {GUIDE} <= set(expected)
                 or legacy_required | {GUIDE} <= set(expected)):
             raise ValueError("Source snapshot is missing required files")
         for name, record in expected.items():

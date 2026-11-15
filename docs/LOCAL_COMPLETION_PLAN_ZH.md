@@ -104,7 +104,7 @@ DOCKER_CONTEXT=colima TABULAR_DOCKER_TESTS=1 uv run pytest -q \
 模型和参数由development.json统一读取，全部阶段关闭thinking。只浏览保存结果不调用模型。
 自检／健康检查只证明启动就绪，不代表统计、图表或探索题已经通过。
 
-示例`data/tutorial_rentals.csv`的rentals总和为152，有效计数为6。真实失败记录照常保留，
+示例`data/demo_rentals.csv`的rentals总和为152，有效计数为6。真实失败记录照常保留，
 定位明确的软件问题后再决定是否修复，不反复重跑直到成功。
 
 修复前`evaluation/runs/local-dev-20261115`已完成18次，原始失败不重试。

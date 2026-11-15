@@ -78,11 +78,26 @@ class Ledger:
         self.events.append({"event": kind, **details})
         self.save()
 
-    def tool(self, name, function):
-        if not self.remaining_tools:
-            raise BudgetExceeded("Tool budget exhausted")
-        record = {"name": name, "status": "started"}
-        self.tools.append(record)
+    def tool(self, name, function, *, stage=None, continuation=None):
+        if continuation is None:
+            if not self.remaining_tools:
+                raise BudgetExceeded("Tool budget exhausted")
+            record = {"name": name, "status": "started"}
+            self.tools.append(record)
+        else:
+            if (not isinstance(continuation, int) or continuation < 0
+                    or continuation >= len(self.tools)):
+                raise ValueError("Unknown verification continuation")
+            record = self.tools[continuation]
+            if (name != "verify_result" or record["name"] != name
+                    or record["status"] != "finished" or stage != "report"
+                    or [item["stage"] for item in record.get("stages", [])] != ["calculations"]):
+                raise ValueError("Only a completed calculation check can continue with report verification")
+            record["status"] = "started"
+        step = None
+        if stage is not None:
+            step = {"stage": stage, "status": "started"}
+            record.setdefault("stages", []).append(step)
         self.save()
         start = time.monotonic()
         try:
@@ -90,12 +105,19 @@ class Ledger:
             record["status"] = (
                 "failed" if isinstance(result, dict) and result.get("ok") is False else "finished"
             )
+            if step is not None:
+                step["status"] = record["status"]
             return result
         except Exception as exc:
             record.update(status="failed", error=str(exc))
+            if step is not None:
+                step.update(status="failed", error=str(exc))
             raise
         finally:
-            record["seconds"] = time.monotonic() - start
+            elapsed = time.monotonic() - start
+            record["seconds"] = record.get("seconds", 0) + elapsed
+            if step is not None:
+                step["seconds"] = elapsed
             self.save()
 
 

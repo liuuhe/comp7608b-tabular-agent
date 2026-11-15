@@ -125,10 +125,11 @@ class ProgrammaticReview:
     selection: dict
 
 
-def inspect_result(
-    csv: Path, plan: Plan, results: dict, charts: list, draft: Draft, request: str = "",
+def inspect_calculations(
+    csv: Path, plan: Plan, results: dict, request: str = "",
     numeric_columns: list[str] | None = None,
 ) -> ProgrammaticReview:
+    """Check requested scope and independently recompute tables before spending report tokens."""
     findings = []
     selection = {}
     tables = results.get("tables", {})
@@ -206,6 +207,19 @@ def inspect_result(
             findings.append(
                 Issue(check=f"calculation.{analysis.id}", status="uncovered", evidence=str(exc))
             )
+    return ProgrammaticReview(findings, selection)
+
+
+def inspect_result(
+    csv: Path, plan: Plan, results: dict, charts: list, draft: Draft, request: str = "",
+    numeric_columns: list[str] | None = None,
+    calculations: ProgrammaticReview | None = None,
+) -> ProgrammaticReview:
+    inspection = calculations if calculations is not None else inspect_calculations(
+        csv, plan, results, request, numeric_columns,
+    )
+    findings, selection = list(inspection.issues), inspection.selection
+    tables = results.get("tables", {})
     expected_chart_ids = {a.id for a in plan.analyses if a.chart}
     actual_ids = {c["analysis"] for c in charts}
     findings.append(

@@ -36,6 +36,7 @@ from .runtime_helpers import assemble_program
 from .schemas import (
     CandidateDraft,
     Draft,
+    Issue,
     Plan,
     Program,
     Review,
@@ -45,7 +46,9 @@ from .schemas import (
 )
 from .storage import digest, read_json, write_json
 from .verify import (
+    ProgrammaticReview,
     deferred_semantic_checks,
+    inspect_calculations,
     inspect_result,
     report_check_ids,
     report_revision_context,
@@ -97,6 +100,8 @@ class State(TypedDict, total=False):
     previous_plan: dict
     repair_node: str
     report_review: dict
+    preflight: dict
+    verification_tool: int | None
 
 
 class Agent:
@@ -177,7 +182,8 @@ class Agent:
                     "pydantic",
                 ]
             },
-            "tool_contract_version": 3,
+            "tool_contract_version": 4,
+            "verification_schedule": "full only: calculations before charts/report; report review continues the same tool invocation",
             "analysis_helper_contract": 1,
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()
@@ -220,7 +226,7 @@ class Agent:
                         else "failed",
                         "repair_node": {
                             "plan": "plan", "generate": "generate", "execute": "generate",
-                            "render": "plan", "draft": "draft", "verify": "verify",
+                            "render": "plan", "draft": "draft", "verify": "verify", "preflight": "generate",
                         }.get(function.__name__, "plan"),
                     }
                     if isinstance(exc, InvalidPlan):
@@ -342,6 +348,7 @@ class Agent:
                 "plan": result, "error": "", "previous_plan": {}, "feedback": "",
                 "code": "", "generated_code": "", "execution": {}, "charts": [], "previous_draft": {},
                 "report_review": {},
+                "preflight": {}, "verification_tool": None,
             }
 
         @guarded
@@ -379,7 +386,8 @@ class Agent:
                 "note": "generated_code.py is the model response; analysis.py includes referenced helper definitions and is executed in Docker.",
             })
             return {"code": effective, "generated_code": result.code,
-                    "error": "", "previous_draft": {}, "report_review": {}}
+                    "error": "", "previous_draft": {}, "report_review": {},
+                    "preflight": {}, "verification_tool": None}
 
         @guarded
         def execute(state):
@@ -396,6 +404,52 @@ class Agent:
             # Plan/code repair feedback has been acted on by this successful execution.
             # Report-only repair bypasses execution and keeps its own relevant feedback.
             return {"execution": result, "error": "", "feedback": ""}
+
+        def numeric_columns(state):
+            return [c["name"] for c in state["profile"]["columns"] if "statistics" in c] + [
+                c.column for c in state["plan"].conversions if c.kind == "numeric"
+            ] + [d.name for d in state["plan"].derived]
+
+        @guarded
+        def preflight(state):
+            nonlocal inspected_attempt
+            tool_id = len(ledger.tools)
+            inspection = ledger.tool(
+                "verify_result",
+                lambda: inspect_calculations(
+                    csv, state["plan"], state["execution"]["result"], question, numeric_columns(state),
+                ),
+                stage="calculations",
+            )
+            saved = {"issues": [issue.model_dump() for issue in inspection.issues],
+                     "selection": inspection.selection}
+            write_json(folder(state) / "preflight_checks.json", saved)
+            write_json(folder(state) / "programmatic_checks.json", saved["issues"])
+            write_json(folder(state) / "selection_accounting.json", inspection.selection)
+            pending = [Issue(check=name, status="uncovered", target="verification",
+                             evidence="No report or semantic review exists for this execution yet.")
+                       for name in ["report_review_coverage", "request_review_coverage", "semantic_suitability"]]
+            issues = inspection.issues + pending
+            write_json(folder(state) / "verification.json", [issue.model_dump() for issue in issues])
+            inspected_attempt = folder(state)
+            failures = [issue for issue in inspection.issues if issue.status == "fail"]
+            ledger.event("calculation_preflight", attempt=state["attempt"],
+                         failed_checks=[issue.check for issue in failures], verification_tool=tool_id)
+            if not failures:
+                return {"preflight": saved, "verification_tool": tool_id, "error": ""}
+            deferred = {"reason": "Repair calculation failures before charts, report drafting and semantic review",
+                        "failed_checks": [issue.model_dump() for issue in failures],
+                        "pending_report_checks": []}
+            write_json(folder(state) / "semantic_review_deferred.json", deferred)
+            ledger.event("semantic_review_deferred", attempt=state["attempt"], **deferred)
+            return {
+                "preflight": saved, "verification_tool": None,
+                "issues": [issue.model_dump() for issue in issues],
+                "feedback": json.dumps([issue.model_dump() for issue in failures]),
+                "error": "Pre-report calculation checks found unresolved issues",
+                "failed_node": "verify", "status": "failed",
+                "repair_node": "plan" if any(issue.target == "plan" for issue in failures) else "generate",
+            }
 
         @guarded
         def render(state):
@@ -458,9 +512,11 @@ class Agent:
                     state["charts"],
                     state["draft"],
                     request=question,
-                    numeric_columns=[c["name"] for c in state["profile"]["columns"] if "statistics" in c]
-                    + [c.column for c in state["plan"].conversions if c.kind == "numeric"]
-                    + [d.name for d in state["plan"].derived],
+                    numeric_columns=numeric_columns(state),
+                    calculations=ProgrammaticReview(
+                        [Issue.model_validate(issue) for issue in state["preflight"]["issues"]],
+                        state["preflight"]["selection"],
+                    ) if state.get("preflight") else None,
                 )
                 write_json(
                     folder(state) / "programmatic_checks.json", [v.model_dump() for v in inspection.issues]
@@ -510,7 +566,9 @@ class Agent:
                 )
                 return inspection.issues + semantic_checks(review, state["draft"]), True
 
-            issues, reviewed = ledger.tool("verify_result", check)
+            issues, reviewed = ledger.tool(
+                "verify_result", check, stage="report", continuation=state.get("verification_tool"),
+            )
             write_json(folder(state) / "verification.json", [v.model_dump() for v in issues])
             inspected_attempt = folder(state)
             if reviewed:
@@ -567,8 +625,14 @@ class Agent:
             has_charts = state.get("plan") and any(a.chart for a in state["plan"].analyses)
             target = state.get("repair_node", "plan")
             reuse = target in {"draft", "verify"}
+            pending_verification = (
+                state.get("verification_tool") is not None
+                and [step["stage"] for step in ledger.tools[state["verification_tool"]].get("stages", [])]
+                == ["calculations"]
+                and ledger.tools[state["verification_tool"]]["status"] == "finished"
+            )
             needed = (
-                int(self.settings.condition == "full")
+                int(self.settings.condition == "full" and not (pending_verification and target == "draft"))
                 if reuse
                 else 1 + int(bool(has_charts)) + int(self.settings.condition == "full")
             )
@@ -592,7 +656,8 @@ class Agent:
                 source = folder(state)
                 destination = run_dir / f"attempt-{state['attempt'] + 1:02d}"
                 destination.mkdir()
-                names = ["analysis.py", "generated_code.py", "code_assembly.json", "plan.json", "execution.json", "tables", "charts"]
+                names = ["analysis.py", "generated_code.py", "code_assembly.json", "plan.json", "execution.json", "tables", "charts",
+                         "preflight_checks.json", "selection_accounting.json"]
                 if target == "verify":
                     names += ["candidate_draft.json", "grounding.json", "draft.json", "report.md", "chart_evidence.json"]
                 for name in names:
@@ -627,6 +692,8 @@ class Agent:
                 "previous_draft": previous_draft,
                 "charts": charts,
                 "retry_target": target if state.get("plan") else "plan",
+                "verification_tool": state.get("verification_tool")
+                if pending_verification and target == "draft" else None,
             }
 
         def finish(state):
@@ -655,6 +722,7 @@ class Agent:
                 "clarification_responses": clarification_responses,
                 "has_unchecked_candidate": bool(
                     completed_attempt and completed_attempt != selected
+                    or inspected_attempt and inspected_attempt != selected
                 ),
             }
             if selected and (selected / "report.md").exists():
@@ -681,6 +749,7 @@ class Agent:
             ("plan", plan),
             ("generate", generate),
             ("execute", execute),
+            ("preflight", preflight),
             ("render", render),
             ("draft", draft),
             ("verify", verify),
@@ -693,7 +762,8 @@ class Agent:
         for node, following in [
             ("plan", "generate"),
             ("generate", "execute"),
-            ("execute", "render"),
+            ("execute", "preflight" if self.settings.condition == "full" else "render"),
+            ("preflight", "render"),
             ("render", "draft"),
         ]:
             builder.add_conditional_edges(

@@ -141,6 +141,15 @@ def test_conditions_and_recovery(tmp_path, condition, attempts, status):
     if condition == "full":
         assert result["tool_count"] == 5
         assert "Mean 20" in (Path(result["directory"]) / "report.md").read_text()
+        assert sum(c["phase"] == "report_drafting" for c in trace["model_calls"]) == 1
+        verifications = [tool for tool in trace["tools"] if tool["name"] == "verify_result"]
+        assert [[stage["stage"] for stage in tool["stages"]] for tool in verifications] == [
+            ["calculations"], ["calculations", "report"],
+        ]
+        assert not (Path(result["directory"]) / "attempt-00/report.md").exists()
+    else:
+        assert not any(tool["name"] == "verify_result" for tool in trace["tools"])
+        assert not (Path(result["directory"]) / "attempt-00/preflight_checks.json").exists()
 
 
 def test_exhausted_budget_does_not_accept_bad_result(tmp_path):

@@ -11,9 +11,63 @@ pitch只讲用户问题、Agent工作流、实测发现与局限；现有10页�
 先实测耗时再确定现场任务；保存结果用于补充和备用。提交优先，11月26–30日集中排练。
 最新排期见[本地完成计划](LOCAL_COMPLETION_PLAN_ZH.md)。
 
+## 两分钟pitch文字草稿（11月16日）
+
+以下按当前开发证据写成，正式结果产生后更新第三段。约220个英文词；需要实际计时，
+目标讲完不超过1分50秒，为切页／停顿留缓冲。现有10页历史slides只作素材。
+
+**0:00–0:20 — Problem.**
+
+Our project lets a user upload one CSV and ask for statistics, charts, or exploratory findings.
+The difficult part is deciding whether the answer follows the requested scope and the computed
+evidence. A program can run successfully and still answer the wrong question.
+
+**0:20–1:00 — System.**
+
+We run a quantized nine-billion-parameter model locally. The agent profiles the table, plans
+analyses, generates aggregation code, and executes it inside Docker. Shared helpers apply the
+declared preprocessing. Reports select computed facts with their labels and valid sample counts.
+In the full condition, separate CSV calculations check supported results before reporting, and
+another call to the same model reviews the answer. Corrections have fixed tool, token, and retry
+budgets. We compare this with one-shot generation and error recovery without verification.
+
+**1:00–1:35 — Evidence and limitation.**
+
+Our development runs show why these checks must be separated. A revenue calculation followed
+its plan, but the plan compared date strings and selected the wrong month. A targeted check
+triggered a correction and recovered the expected table. However, even internally accepted
+reports can misname a category or overstate a comparison. Same-model review is useful feedback,
+but it is not an independent guarantee.
+
+**1:35–1:50 — Demo and evaluation status.**
+
+We can demonstrate uploading a CSV, inspecting the plan, tables and chart, and downloading the
+run record. Formal held-out evaluation and human scoring are still pending; these examples are
+development observations rather than final accuracy claims.
+
+正式评价完成后，最后一句必须换成实际状态，不能按这份开发稿宣称成绩。
+
+## 当前开发版的现场任务准备
+
+当前源码e655733已完成一次真实Chrome小例：上传data/demo_rentals.csv，提问
+“What is the total number of rentals? Report the valid count, and draw a bar chart of total rentals by weather.”
+字段说明标明每行是样本中一个观测小时，只描述这个小样本。运行
+runs/20261116-033140-71f64061，零修正、79.02秒／16,809 token、内部通过。
+总量152、有效记录6；Clear=67/3、Misty=28/1、Rain=57/2，表／图和短报告均核对。
+这是单独演示验收，不纳入开发比较的通过率。
+
+导出按钮已点击，Chrome事件回执超时、原生落盘未确认；服务器同一页面注册的导出媒体
+经本机HTTP下载为ZIP，68项逐字节匹配、排除原CSV。提交前另由正常浏览器人工确认一次
+下载，不把HTTP验证写成已确认的Chrome下载。回执在.cache/overnight-v30b/browser-validation.json。
+截图见[图表与导出控件](screenshots/v30b-browser-result.jpg)。
+
+建议互动先运行这个约80秒的小例，同时讲解计划／计数；留时间让教学团队修改问题并
+观察结果。延迟只测一次，不能承诺每次相同。D6开发探索曾耗时6–7分钟，超出互动预算，
+准备保存的真实探索结果作补充，开放探索不作为唯一即时演示。以下v26–v29记录均为历史。
+
 11月16日用户确定9B Q4为主模型，现场准备统一使用development.json。优先验证第一、
 二层的短任务与可读输出；第三层用于展示探索能力、样本限制和真实失败，不承诺完美
-完成。v29三题均未整题通过，现有正确表／图不能代替新主模型下的完整现场任务验收。
+完成。新验收只支持上述小样本，不能推断任意统计／图表题稳定。
 
 11月15日修复前浏览器小例因代码语法错误失败；86.5秒、8,385 token，49条ZIP匹配。
 [v26定向修复](DEV_STABILITY_V26_ZH.md)后代码与分组图可执行，但首轮内部通过仍把6

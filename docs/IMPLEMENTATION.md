@@ -5,6 +5,24 @@ Current user-supplied deadlines and requirements are recorded in [the local comp
 Teaching examples were removed on 16 November; the tiny demo CSV remains for application use.
 Status below records actual implementation, not results.
 
+Latest v30 removes the teaching scripts, retaining the renamed demo CSV. Full verification now
+checks calculations before charts/report generation and continues the same counted invocation
+for report inspection/review, with explicit stage timing and no free repeat reviews. Common
+Docker preprocessing prepares per-analysis conversions, derivations, filters and missing policy;
+generated code aggregates, orders and limits the prepared frames. Independent CSV verification
+does not reuse those pandas helpers. The report adapter compiles model-selected computed facts
+with measure/group labels, values and valid counts in fixed positions, plus qualitative prose.
+Invalid output and full parser diagnostics remain saved; model feedback is bounded. A short
+decoding pattern now blocks ASCII quantities in qualitative fields, with broader Unicode checks
+at runtime and a minimal actual-ID format example. Narrow month-scope checks reject declared
+ISO date-range filters without the required datetime conversion. 710 tests, including real
+Docker, and Ruff pass. Both separate 18-cell comparisons are complete and audited. The follow-up
+retains six failed outcomes, eight unverified completions, three internal passes and one budget
+stop. Selected numerical matches on four explicit/chart tasks are 2/4, 2/4 and 3/4; same-model
+review still misses qualitative errors, including on explicit tasks. A zero-repair browser demo
+takes 79 seconds; tables/charts match, and the UI-registered HTTP ZIP has 68 matching entries.
+Native Chrome download completion remains unconfirmed. Details: [v30](DEV_QWEN35_V30_ZH.md).
+
 On 16 November the user selected Qwen3.5-9B Q4 as the main model for local resource/quality
 tradeoffs. CLI/UI defaults now load the complete v29 nonthinking policy from development.json;
 the previous 8B file is preserved as config/legacy-development-qwen3-8b.json. The library model
@@ -27,7 +45,8 @@ declared filters despite repair; D3 matches tables/chart arrays but report repai
 another call after 60,080 measured tokens; D6 matches three tables but retains unsupported prose,
 a one-observation group claim and failed replanning. None is a whole-task pass. The cohort uses
 161,488 tokens and 972.34 seconds, with actual native parameters and 312 artifacts verified.
-Report/feedback simplification and numerical verification before drafting remain proposals.
+Report/feedback simplification and numerical verification before drafting were proposals at v29;
+v30 above implements them without changing these historical results.
 
 v28 adds request excerpts linked to intended analyses, while explicitly keeping semantic
 coverage unverified. Code instructions expose only relevant operations, with scalar/grouped

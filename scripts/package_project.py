@@ -50,6 +50,7 @@ uv sync --frozen --extra dev
 uv run pytest -q
 # With a running Docker engine:
 uv run tabular-agent build-executor
+mkdir -p .cache
 TABULAR_DOCKER_TESTS=1 uv run pytest -q --basetemp=.cache/pytest-docker
 ollama serve
 # In another terminal, if not already installed:

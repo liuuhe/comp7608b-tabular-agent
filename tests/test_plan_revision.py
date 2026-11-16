@@ -24,13 +24,18 @@ def original_plan():
     )
 
 
+def repair_payload(base):
+    return {"previous_plan": base.model_dump(), "feedback": "fix date", "request": "sales",
+            "profile": {"columns": [{"name": name} for name in ["qty", "price", "date", "country"]]}}
+
+
 def apply(base, **changes):
     return normalize_revision(revision_schema(base).model_validate(changes), base)
 
 
 def test_calendar_revision_preserves_derived_fields_and_all_other_valid_components():
     base = original_plan()
-    fixed = apply(base, updates=[{"id": "sales", "filters": [
+    fixed = apply(base, analysis_updates=[{"id": "sales", "filters": [
         {"column": "date", "operator": "ge", "value": "2020-01-01"},
         {"column": "date", "operator": "lt", "value": "2020-02-01"},
     ]}])
@@ -45,8 +50,8 @@ def test_calendar_revision_preserves_derived_fields_and_all_other_valid_componen
 def test_null_omitted_and_empty_lists_have_distinct_repair_meanings():
     base = original_plan()
     assert apply(base).model_dump() == base.model_dump()
-    assert apply(base, derived=None, updates=[{"id": "sales", "chart": None, "limit": None}]) == base
-    fixed = apply(base, assumptions=[], updates=[{"id": "sales", "filters": [], "clear_chart": True,
+    assert apply(base, derived=None, analysis_updates=[{"id": "sales", "chart": None, "limit": None}]) == base
+    fixed = apply(base, assumptions=[], analysis_updates=[{"id": "sales", "filters": [], "clear_chart": True,
                                                 "clear_limit": True, "sort_by": ["value"], "ascending": [False]}])
     assert fixed.assumptions == [] and fixed.analyses[0].filters == []
     assert fixed.analyses[0].chart is None and fixed.analyses[0].limit is None
@@ -57,24 +62,24 @@ def test_null_omitted_and_empty_lists_have_distinct_repair_meanings():
 def test_add_remove_require_explicit_valid_links_and_preserve_order():
     base = original_plan()
     new = {"id": "count", "operation": "rows", "column": "qty"}
-    two = apply(base, add=[new])
+    two = apply(base, add_analyses=[new])
     assert [a.id for a in two.analyses] == ["sales", "count"]
     with pytest.raises(ValueError, match="existing analysis IDs"):
-        apply(base, remove=["sales"], add=[new])
-    replaced = apply(base, remove=["sales"], add=[new], requirements=[{"quote": "sales", "analysis_ids": ["count"]}])
+        apply(base, remove_analysis_ids=["sales"], add_analyses=[new])
+    replaced = apply(base, remove_analysis_ids=["sales"], add_analyses=[new], requirements=[{"quote": "sales", "analysis_ids": ["count"]}])
     assert [a.id for a in replaced.analyses] == ["count"]
-    clarified = apply(base, clarification="Which month?", remove=["sales"], requirements=[])
+    clarified = apply(base, clarification="Which month?", remove_analysis_ids=["sales"], requirements=[])
     assert clarified.clarification and not clarified.analyses
 
 
 @pytest.mark.parametrize("change", [
-    {"updates": [{"id": "absent", "limit": 2}]},
-    {"updates": [{"id": "sales", "clear_limit": True, "limit": 3}]},
-    {"updates": [{"id": "sales", "sort_by": []}]},
-    {"updates": [{"id": "sales"}, {"id": "sales"}]},
-    {"updates": [{"id": "sales"}], "remove": ["sales"]},
-    {"remove": ["sales", "sales"]},
-    {"updates": [{"id": "sales", "chart": {"kind": "bar", "x": "country", "title": "Sales",
+    {"analysis_updates": [{"id": "absent", "limit": 2}]},
+    {"analysis_updates": [{"id": "sales", "clear_limit": True, "limit": 3}]},
+    {"analysis_updates": [{"id": "sales", "sort_by": []}]},
+    {"analysis_updates": [{"id": "sales"}, {"id": "sales"}]},
+    {"analysis_updates": [{"id": "sales"}], "remove_analysis_ids": ["sales"]},
+    {"remove_analysis_ids": ["sales", "sales"]},
+    {"analysis_updates": [{"id": "sales", "chart": {"kind": "bar", "x": "country", "title": "Sales",
                                             "x_label": "Country", "y_label": "Revenue"}}]},
     {"requirements": []},
     {"analyses": []},
@@ -88,9 +93,20 @@ def test_malformed_or_inconsistent_revision_is_rejected(change):
 def test_transport_only_applies_to_a_parseable_previous_answering_plan_with_feedback():
     base = original_plan().model_dump()
     assert revision_base({"previous_plan": base}) is None
-    assert revision_base({"previous_plan": {"updates": []}, "feedback": "fix"}) is None
+    assert revision_base({"previous_plan": {"analysis_updates": []}, "feedback": "fix"}) is None
     assert revision_base({"previous_plan": {"clarification": "Which field?"}, "feedback": "fix"}) is None
-    assert revision_base({"previous_plan": base, "feedback": "fix"}).model_dump() == base
+    assert revision_base(repair_payload(original_plan())).model_dump() == base
+
+
+def test_invalid_columns_sort_or_requirement_quotes_keep_the_complete_plan_transport():
+    for mutate in [
+        lambda plan: plan.update(derived=[]),
+        lambda plan: plan["analyses"][0].update(sort_by=["revenue"]),
+        lambda plan: plan["requirements"][0].update(quote="invented quote"),
+    ]:
+        payload = repair_payload(original_plan())
+        mutate(payload["previous_plan"])
+        assert revision_base(payload) is None
 
 
 def test_revision_does_not_grant_an_extra_model_call_after_budget_exhaustion(tmp_path, monkeypatch):
@@ -102,15 +118,15 @@ def test_revision_does_not_grant_an_extra_model_call_after_budget_exhaustion(tmp
     ledger = Ledger(settings, tmp_path)
     with pytest.raises(BudgetExceeded, match="Insufficient token budget"):
         OllamaModel(settings, ledger).call(Plan, "Plan", {
-            "previous_plan": original_plan().model_dump(), "feedback": "fix date",
+            **repair_payload(original_plan()),
         }, "planning")
     assert ledger.tokens == 0 and ledger.models == []
 
 
 @pytest.mark.parametrize("candidate,valid", [
-    ({"updates": [{"id": "sales", "filters": []}]}, True),
-    ({"updates": [{"id": "unknown"}]}, False),
-    ({"updates": [{"id": "sales", "sort_by": []}]}, False),
+    ({"analysis_updates": [{"id": "sales", "filters": []}]}, True),
+    ({"analysis_updates": [{"id": "unknown"}]}, False),
+    ({"analysis_updates": [{"id": "sales", "sort_by": []}]}, False),
 ])
 def test_real_adapter_saves_revision_normalized_plan_and_failed_call_cost(tmp_path, monkeypatch, candidate, valid):
     class Client:
@@ -134,14 +150,14 @@ def test_real_adapter_saves_revision_normalized_plan_and_failed_call_cost(tmp_pa
     base = original_plan()
     model = OllamaModel(settings, ledger)
     if valid:
-        result = model.call(Plan, "Plan", {"previous_plan": base.model_dump(), "feedback": "fix date"}, "planning")
+        result = model.call(Plan, "Plan", repair_payload(base), "planning")
         assert result.derived == base.derived
         assert result.analyses[0].filters == []
         assert read_json(tmp_path / "model_outputs/000-planning.json") == result.model_dump()
-        assert read_json(tmp_path / "model_outputs/000-planning.structured.json")["updates"][0]["id"] == "sales"
+        assert read_json(tmp_path / "model_outputs/000-planning.structured.json")["analysis_updates"][0]["id"] == "sales"
     else:
         with pytest.raises(InvalidOutput) as caught:
-            model.call(Plan, "Plan", {"previous_plan": base.model_dump(), "feedback": "fix date"}, "planning")
+            model.call(Plan, "Plan", repair_payload(base), "planning")
         assert caught.value.candidate is None  # guard retains the previous full plan
         assert not (tmp_path / "model_outputs/000-planning.json").exists()
         assert read_json(tmp_path / "model_outputs/000-planning.validation.json")["candidate"] == candidate

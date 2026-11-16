@@ -7,7 +7,13 @@ from langchain_ollama import ChatOllama as LangChainChatOllama
 from pydantic import ValidationError
 
 from .draft_contract import draft_model_payload, draft_response_schema, normalize_draft
-from .plan_revision import REVISION_INSTRUCTIONS, normalize_revision, revision_base, revision_schema
+from .plan_revision import (
+    REVISION_INSTRUCTIONS,
+    normalize_revision,
+    revision_base,
+    revision_model_payload,
+    revision_schema,
+)
 from .report_facts import fact_model_payload, fact_response_schema, normalize_fact_draft
 from .review_contract import review_artifacts, review_model_payload
 from .schemas import (
@@ -157,6 +163,7 @@ class OllamaModel:
             schema = revision_schema(previous) if previous is not None else PlanningPlan
             if previous is not None:
                 instructions += "\n" + REVISION_INSTRUCTIONS
+                payload = revision_model_payload(payload, previous)
         if structured_program:
             schema = ProgramLines
         if structured_review:

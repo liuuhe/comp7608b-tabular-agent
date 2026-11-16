@@ -1,14 +1,13 @@
-import io
 import json
 import os
 import tempfile
-import zipfile
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
 from tabular_agent.agent import Agent
+from tabular_agent.export import run_archive
 from tabular_agent.schemas import Settings
 
 
@@ -114,15 +113,9 @@ if "run" in st.session_state:
             with st.expander("查看候选计算结果（尚未通过完整检查）"):
                 st.warning("以下表格和图表来自最后一次成功执行；其分析口径或解释仍可能有误。")
                 show_calculations(candidates[-1])
-    archive = io.BytesIO()
-    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
-        # Include only regular run artifacts; exclude the uploaded raw dataset by default.
-        for path in directory.rglob("*"):
-            if path.is_file() and not path.is_symlink() and path.name != "data.csv":
-                bundle.write(path, path.relative_to(directory))
     st.download_button(
         "下载报告、图表、代码和记录",
-        archive.getvalue(),
+        run_archive(directory),
         file_name="analysis.zip",
         mime="application/zip",
     )

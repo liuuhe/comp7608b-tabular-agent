@@ -116,6 +116,7 @@ def permitted(name):
     if PurePosixPath(name).is_absolute() or any(p in {".", ".."} for p in parts):
         return False
     if name in REQUIRED or name in REPORT_SOURCES or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
+        "AGENTS.md",
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
         "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
@@ -144,6 +145,8 @@ def permitted(name):
 
 def source_paths(root):
     candidates = set(REQUIRED)
+    if (root / "AGENTS.md").exists():
+        candidates.add("AGENTS.md")
     candidates.update(name for name in REPORT_SOURCES if (root / name).exists())
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",

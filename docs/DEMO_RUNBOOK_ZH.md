@@ -19,6 +19,21 @@ Chrome下载按钮已点击，但原生落盘未确认。页面注册的HTTP导�
 运行目录并排除原CSV。记录.cache/overnight-v30b/browser-validation.json，
 [结果截图](screenshots/v30b-browser-result.jpg)。提交前仍需用正常浏览器手动确认下载。
 
+11月16日晚当前源码3a7623a也完成真实上传／分析：
+`runs/20261116-215612-48aae557`，零修正、102.17秒／18,481 token，表／图／短报告正确。
+[当前页面截图](screenshots/v33-browser-result.jpg)。网页HTTP导出71项逐字节匹配。
+这是独立集成案例，不是开发比较成绩。用户确认Chrome会弹出系统Save As，故后续
+自动化不点击下载按钮；使用下方脚本验收，不将它写成原生Save As验收。
+
+```bash
+uv run python scripts/verify_export.py \
+  --run runs/20261116-215612-48aae557 \
+  --output .cache/export-check/demo.zip
+```
+
+先在页面打开对应保存结果，再运行脚本。直接读取网页服务已注册的下载资源，核对ZIP
+和每个文件；不调用模型、不触发保存弹窗、不修改浏览器全局设置。操作约定见根目录AGENTS.md。
+
 ## 现场顺序
 
 | 时间 | 操作与讲解 |

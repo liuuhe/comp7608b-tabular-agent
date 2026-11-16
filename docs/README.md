@@ -12,6 +12,11 @@
 
 ## 当前状态与研究材料
 
+- [v33有效计划局部修复](DEV_VALIDATED_REPAIR_V33_ZH.md)：当前源码、两次定向结果与未解决日期失败。
+- [v32局部计划修复与Top-K检查](DEV_PLAN_REPAIR_V32_ZH.md)：最新源码与定向验证。
+- [v31完整三条件比较](DEV_COMPARISON_V31_ZH.md)：18次终态、失败和成本。
+- [报告源码与编译](../report/README_ZH.md)：Markdown、官方模板和工作PDF。
+
 - [开发状态](PROJECT_STATUS_ZH.md)：实现版本和后续实验缺口。
 - [v30流程收敛](DEV_QWEN35_V30_ZH.md)：报告前计算检查、共享输入准备、事实报告及固定开发验证。
 - [v30b完整开发结果](DEV_QWEN35_V30B_RESULTS_ZH.md)：18次终态、数值／候选区别、截断和完整成本；不是整题评分。

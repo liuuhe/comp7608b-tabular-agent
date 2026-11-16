@@ -2,8 +2,8 @@
 
 Planning update, 15 November 2026: run locally under Liu He's lead; handing over the codebase is
 not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH.md) records the
-25 November submission and the pending choice between the original reviewed/two-rater protocol
-below and a documented self-reviewed/single-rater protocol. Current tools implement the original
+25 November submission. On 16 November the user selected the original independently reviewed,
+two-rater protocol below; actual personnel, review and ratings remain pending. Current tools implement this
 protocol only; a different protocol needs explicit tool support and honest result labels.
 
 The [15 November local development cohort](../docs/DEV_LOCAL_COMPARISON_20261115_ZH.md) now

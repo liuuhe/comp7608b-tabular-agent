@@ -7,6 +7,7 @@ from langchain_ollama import ChatOllama as LangChainChatOllama
 from pydantic import ValidationError
 
 from .draft_contract import draft_model_payload, draft_response_schema, normalize_draft
+from .plan_revision import REVISION_INSTRUCTIONS, normalize_revision, revision_base, revision_schema
 from .report_facts import fact_model_payload, fact_response_schema, normalize_fact_draft
 from .review_contract import review_artifacts, review_model_payload
 from .schemas import (
@@ -151,8 +152,11 @@ class OllamaModel:
         structured_draft = schema is CandidateDraft and phase == "report_drafting"
         selected_facts = structured_draft and "fact_catalog" in payload
         fact_source = payload if selected_facts else None
+        previous = revision_base(payload) if structured_plan else None
         if structured_plan:
-            schema = PlanningPlan
+            schema = revision_schema(previous) if previous is not None else PlanningPlan
+            if previous is not None:
+                instructions += "\n" + REVISION_INSTRUCTIONS
         if structured_program:
             schema = ProgramLines
         if structured_review:
@@ -261,10 +265,27 @@ class OllamaModel:
                     {"error": str(response.get("parsing_error")), "candidate": candidate},
                 )
                 detail = validation_feedback(schema, candidate, response.get("parsing_error"))
-                raise InvalidOutput(f"Invalid {phase} output: {detail}", candidate)
+                # A sparse wire response is not a complete candidate plan. Keep the
+                # previous full plan in graph state; raw revision/errors remain saved.
+                raise InvalidOutput(f"Invalid {phase} output: {detail}",
+                                    None if previous is not None else candidate)
             parsed = response["parsed"]
             if structured_plan:
-                parsed = Plan.model_validate(parsed.model_dump())
+                if previous is not None:
+                    write_json(
+                        self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.structured.json",
+                        parsed.model_dump(),
+                    )
+                    try:
+                        parsed = normalize_revision(parsed, previous)
+                    except ValueError as exc:
+                        write_json(
+                            self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.validation.json",
+                            {"error": str(exc), "candidate": parsed.model_dump(exclude_unset=True)},
+                        )
+                        raise InvalidOutput(f"Invalid planning revision; previous plan retained: {str(exc)[:1800]}") from exc
+                else:
+                    parsed = Plan.model_validate(parsed.model_dump())
             if structured_program:
                 write_json(
                     self.ledger.directory / "model_outputs" / f"{call_id:03d}-{phase}.structured.json",

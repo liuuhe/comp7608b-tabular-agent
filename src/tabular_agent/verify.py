@@ -1,5 +1,6 @@
 import json
 from copy import deepcopy
+from csv import reader
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -17,6 +18,7 @@ from .reference import (
 from .reports import render_draft
 from .request_checks import calendar_scope_checks, scalar_sum_scope_checks
 from .schemas import Draft, Issue, Plan, Review
+from .top_k_checks import top_k_scope_checks
 
 
 def report_check_ids(draft: Draft) -> list[str]:
@@ -152,6 +154,9 @@ def inspect_calculations(
         )
         selection = {analysis.id: {"status": "uncovered", "reason": str(exc)} for analysis in plan.analyses}
     findings.extend(calendar_scope_checks(request, plan, rows))
+    with csv.open(encoding="utf-8-sig", newline="") as stream:
+        columns = next(reader(stream), [])
+    findings.extend(top_k_scope_checks(request, plan, columns + [d.name for d in plan.derived]))
     for analysis in plan.analyses:
         if rows is None:
             continue

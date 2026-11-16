@@ -1,0 +1,218 @@
+{
+  "scope": "Recorded development exceptions, including recovered exceptions; not terminal failure attribution or task correctness. Truncation cost includes input/output tokens and client-call wall time; unknown cost is not zero.",
+  "reporter_sha256": "c0c4e18cb87f94d0c9eff57b986ee200da90ae5367ef29d7d12178f155274c91",
+  "inputs": [
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-205649-17f9a36f",
+      "trace_sha256": "de3d328bb76785ee072267ca72c6b57ac2871e0c9d33f2f50f6803175ea0a6fd",
+      "evaluation_sha256": "b3c9c51a768894b8336c6582ab28159c1d437054b6d574c062b99c8c914c544e"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-205716-1b2e09ef",
+      "trace_sha256": "ef748afde7dd126ce760b4e6af0fbfb2c6d300a8c5f178443311da46cbb686b8",
+      "evaluation_sha256": "61fa83479bfcec3642b61c1f55f81af5728db581f4a96174bbd44c01a9f08dfe"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-205827-492cdc6a",
+      "trace_sha256": "63b506d4d62afb6c58ac8dd8e56f735f1572495f6b63fbdf4ce87f75e265d010",
+      "evaluation_sha256": "cc63764c4031bb104ccc7590741e933a707644a81a87469c767cc5ad82473027"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-205945-09c39118",
+      "trace_sha256": "49dd97a1e8ae25572153678e606255946f995a2c089852a4b16c8f8c9640ee95",
+      "evaluation_sha256": "a486971de4ca6e2c95d2922a94783c7bd65a452ec470f000a8488df401d528ab"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210021-f8c3b0ac",
+      "trace_sha256": "1fb6f4da970771c4f42450ac1f7eeade8045a9601f516d86530b7a57dc753841",
+      "evaluation_sha256": "3dfa8aa0660783282ca6fc13fb54474aaa503efd0557e31acf2a17067b8151f8"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210139-e55c82e5",
+      "trace_sha256": "88d7f371144526bd46c4cd3484ac17556c33592a46f61be5ad60f759e336a89b",
+      "evaluation_sha256": "2e8e06734b92cac36d41a46d8f069a6f79543420e831d6e20f9de089bf718991"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210330-6421c42e",
+      "trace_sha256": "fc3f58025e70efc079b92582a32f098365c3ee836e8caa6a35cf4d4338304f71",
+      "evaluation_sha256": "b6b650a107d106df662970a40d3449e5b2da826b7a4d64c45c1ebea37f8ed02d"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210446-32f66f49",
+      "trace_sha256": "16ea97c902cdb17228bac37d4b6f1100be285aa94313266f3a6ca1560dc666f7",
+      "evaluation_sha256": "f02642c74980e223218271ddc4aff5f4e4c47980b7e6f44f37047a65bd9e25bc"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210522-62aba950",
+      "trace_sha256": "fbacc2b64de941a5c38ef536b74edd62091e68e5ebd26032aae9cc49c53fe370",
+      "evaluation_sha256": "fd654fd3ce175102d590e05bb9150d7b92e6ec7d2e8ba05f75e0191eaf2e6930"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210651-f0b64795",
+      "trace_sha256": "ac57f22e3f97c482124444d75824616ce415c3cb711135d4e2df701d8513b341",
+      "evaluation_sha256": "c1b607d0c1b75e3c502d0a0d65a91a59948985479a7ba18cb9db7789198904ad"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210738-b6c46d38",
+      "trace_sha256": "e5000c07f1bb22d38f96dc156665e88753353a341b996e0f7c5082e9c6623faf",
+      "evaluation_sha256": "c6f3f576ef537857979c7a5c18ebf40919cdf4a1a89798a95b5928b7522d3678"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-210957-20ca63cf",
+      "trace_sha256": "724026ee158d7c0b867ffebf981b915d60b78b4e23b780b4c73c3b0f9073c193",
+      "evaluation_sha256": "e365e8763bc7b8fc9c9c3031d050d252b0d45708e8bf743c6658b31ef188aa3f"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-211204-4a6d4b7f",
+      "trace_sha256": "97ae5fda58604ba9b9e0c1852d6248a232feca981ef013e18c5101cb1fefc816",
+      "evaluation_sha256": "27c1ba7adefb8845e81328f0d3ba655cf57eb5d625d20b258345d2f78efa8cd5"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-211259-eac98305",
+      "trace_sha256": "bff781c55b31b958ac1c937ab63b0aa73dce759883bc5727bcb6119cbe4a85fb",
+      "evaluation_sha256": "abbb71f41bf902db78a0520c7604bb7aab98dc3d2c5bd5e886bed5fb998e7ee5"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-211320-7be236fe",
+      "trace_sha256": "e2e0567cbfb4094814fdc36c528e5ace022e6dc1c518d067870c64a9fabed3bb",
+      "evaluation_sha256": "d1d1a442d36fc108e5e7d35045bfa1e76e87090f0aeb742eb28a21d8ff43b2ab"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-211419-1ab1b49b",
+      "trace_sha256": "592f4738df46a95f74adfc516e89778cbb4f4bc7778bfdd59ff73e91559ab7b2",
+      "evaluation_sha256": "ee53316c23d17fc2fbf612e71cb3c10ac3386de6f911c881a230e9d4be097b6e"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-211456-c33cae3d",
+      "trace_sha256": "6be423b47daa12403306e8c2255b5f3d7f68a164fa3bc7174c399c489383c35e",
+      "evaluation_sha256": "e525a8af163d36b546693c9cb98c66aab561142d98ad83dd97d053dd3a3cfb53"
+    },
+    {
+      "directory": "/Users/liuhe/hku/comp7608b_large-language-models/project/evaluation/runs/qwen35-v31-dev/20261116-212743-099e1180",
+      "trace_sha256": "6a7c2ced34fcb692d6fdc41962be6d5b084565f1373e3e64951a07103c951700",
+      "evaluation_sha256": "9d65eb9423b812025c6ecff1c8dead2be48f66b8e867e3c870f1e2ed7a5d1d42"
+    }
+  ],
+  "stages": [
+    {
+      "condition": "one_shot",
+      "stage": "plan",
+      "node_errors": 4,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "plan",
+      "node_errors": 4,
+      "model_calls": 10,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "generate",
+      "node_errors": 0,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "no_verification",
+      "stage": "draft",
+      "node_errors": 3,
+      "model_calls": 8,
+      "failed_model_calls": 3,
+      "truncated_calls": 2,
+      "truncated_seconds_measured_calls": 2,
+      "truncated_seconds_measured": 699.3091675410396,
+      "truncated_tokens_accounted_calls": 2,
+      "truncated_tokens_accounted": 27411
+    },
+    {
+      "condition": "full",
+      "stage": "plan",
+      "node_errors": 5,
+      "model_calls": 11,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "generate",
+      "node_errors": 0,
+      "model_calls": 6,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "full",
+      "stage": "draft",
+      "node_errors": 3,
+      "model_calls": 7,
+      "failed_model_calls": 3,
+      "truncated_calls": 2,
+      "truncated_seconds_measured_calls": 2,
+      "truncated_seconds_measured": 674.0453207500395,
+      "truncated_tokens_accounted_calls": 2,
+      "truncated_tokens_accounted": 27411
+    },
+    {
+      "condition": "full",
+      "stage": "verify",
+      "node_errors": 2,
+      "model_calls": 4,
+      "failed_model_calls": 1,
+      "truncated_calls": 1,
+      "truncated_seconds_measured_calls": 1,
+      "truncated_seconds_measured": 27.408168166992255,
+      "truncated_tokens_accounted_calls": 1,
+      "truncated_tokens_accounted": 8343
+    },
+    {
+      "condition": "one_shot",
+      "stage": "generate",
+      "node_errors": 0,
+      "model_calls": 2,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    },
+    {
+      "condition": "one_shot",
+      "stage": "draft",
+      "node_errors": 0,
+      "model_calls": 2,
+      "failed_model_calls": 0,
+      "truncated_calls": 0,
+      "truncated_seconds_measured_calls": 0,
+      "truncated_seconds_measured": 0,
+      "truncated_tokens_accounted_calls": 0,
+      "truncated_tokens_accounted": 0
+    }
+  ]
+}

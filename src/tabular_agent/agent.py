@@ -18,6 +18,7 @@ from .charts import render_charts
 from .executor import DockerExecutor
 from .grounding import ground_candidate
 from .model import BudgetExceeded, InvalidOutput, Ledger, OllamaModel, ollama_version
+from .plan_revision import PLAN_REPAIR_CONTRACT
 from .profile import profile_data
 from .report_facts import REPORT_CONTRACT, fact_catalog, report_repair_contract
 from .reports import (
@@ -194,6 +195,7 @@ class Agent:
             "verification_schedule": "full only: calculations before charts/report; report review continues the same tool invocation",
             "analysis_helper_contract": 2,
             "report_contract": REPORT_CONTRACT,
+            "plan_repair_contract": PLAN_REPAIR_CONTRACT,
             "review_contract": REVIEW_CONTRACT,
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()

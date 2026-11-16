@@ -142,7 +142,6 @@ def inspect_calculations(
             target="code",
         )
     )
-    findings.extend(calendar_scope_checks(request, plan))
     findings.extend(scalar_sum_scope_checks(request, plan, numeric_columns or []))
     try:
         rows = prepare_rows(csv, plan)
@@ -152,6 +151,7 @@ def inspect_calculations(
             Issue(check="independent_preprocessing", status="uncovered", evidence=str(exc))
         )
         selection = {analysis.id: {"status": "uncovered", "reason": str(exc)} for analysis in plan.analyses}
+    findings.extend(calendar_scope_checks(request, plan, rows))
     for analysis in plan.analyses:
         if rows is None:
             continue

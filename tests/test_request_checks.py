@@ -65,6 +65,48 @@ def test_non_date_filters_do_not_create_new_temporal_type_coverage(value, operat
     assert calendar_scope_checks("For January 2011 compute sales.", plan)[0].status == "uncovered"
 
 
+@pytest.mark.parametrize("separator,status,extra,omitted", [
+    ("", "pass", 0, 0), ("T00:00:00", "fail", 1, 1),
+])
+def test_untyped_date_membership_is_checked_on_actual_snapshot(separator, status, extra, omitted):
+    plan = scoped_plan("2011-01-01" + separator, "2011-02-01" + separator, "lt")
+    plan.conversions = []
+    rows = [{"date": stamp} for stamp in [
+        "2010-12-31 23:59:00", "2011-01-01 08:00:00",
+        "2011-01-31 23:59:00", "2011-02-01 09:00:00",
+    ]]
+    issue = calendar_scope_checks("For January 2011 compute sales.", plan, rows)[0]
+    assert issue.status == status
+    assert f"extra={extra}, omitted={omitted}" in issue.evidence
+    assert "this snapshot" in issue.evidence
+    if status == "fail":
+        assert "datetime conversion" in issue.suggestion
+
+
+def test_snapshot_month_check_holds_other_filters_fixed_and_does_not_give_empty_or_unparseable_pass():
+    plan = scoped_plan("2011-01-01", "2011-02-01", "lt")
+    plan.conversions = []
+    plan.analyses[0].filters.append(Filter(column="active", operator="eq", value=1))
+    rows = [{"date": "unparseable", "active": 0}, {"date": "2011-01-10", "active": 1}]
+    assert calendar_scope_checks("For January 2011 compute sales.", plan, rows)[0].status == "pass"
+    for data in [[], [{"date": "unknown", "active": 1}], [{"date": None, "active": 1}]]:
+        assert calendar_scope_checks("For January 2011 compute sales.", plan, data)[0].status == "uncovered"
+
+
+def test_untyped_snapshot_pass_does_not_hide_another_analysis_with_wrong_typed_dates():
+    plan = scoped_plan("2011-02-01", "2011-03-01", "lt")
+    correct = plan.analyses[0].model_copy(deep=True)
+    correct.id = "other"
+    for rule, value in zip(correct.filters, ["2011-01-01", "2011-02-01"], strict=True):
+        rule.column, rule.value = "text_date", value
+    plan.analyses.append(correct)
+    checks = calendar_scope_checks("For January 2011 compute sales.", plan,
+                                   [{"date": "2011-01-10", "text_date": "2011-01-10"}])
+    assert {item.check: item.status for item in checks} == {
+        "request.calendar_scope.other": "pass", "request.calendar_scope.sales": "fail",
+    }
+
+
 @pytest.mark.parametrize("operation,group_by,expected", [
     ("rows", [], "fail"), ("count", [], "fail"), ("mean", [], "fail"),
     ("sum", ["weather"], "fail"), ("sum", [], "pass"),

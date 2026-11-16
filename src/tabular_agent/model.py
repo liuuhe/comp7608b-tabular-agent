@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 from .draft_contract import draft_model_payload, draft_response_schema, normalize_draft
 from .report_facts import fact_model_payload, fact_response_schema, normalize_fact_draft
+from .review_contract import review_artifacts, review_model_payload
 from .schemas import (
     CandidateDraft,
     Plan,
@@ -155,7 +156,9 @@ class OllamaModel:
         if structured_program:
             schema = ProgramLines
         if structured_review:
-            schema = review_response_schema(payload["required_report_checks"])
+            artifacts = review_artifacts(payload)
+            schema = review_response_schema(payload["required_report_checks"], artifacts)
+            payload = review_model_payload(payload, artifacts)
         if selected_facts:
             schema = fact_response_schema(payload)
             payload = fact_model_payload(payload)

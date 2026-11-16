@@ -4,7 +4,7 @@ import calendar
 import re
 from datetime import datetime
 
-from .reference import date
+from .reference import accepts, date
 from .schemas import Issue, Plan
 
 MONTHS = {name.lower(): number for number, name in enumerate(calendar.month_name) if name}
@@ -82,7 +82,44 @@ def scalar_sum_scope_checks(request: str, plan: Plan, numeric_columns: list[str]
     return checks
 
 
-def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
+def calendar_snapshot_check(analysis, source, rows, start, end):
+    """Check actual membership, not whether lexical date ordering is generally safe."""
+    temporal = [rule for rule in analysis.filters if rule.column == source]
+    other = [rule for rule in analysis.filters if rule.column != source]
+    checked, extra, omitted, witnesses = 0, 0, 0, []
+    try:
+        for index, row in enumerate(rows):
+            if not all(accepts(row, rule) for rule in other):
+                continue
+            stamp = date(row[source])
+            expected = stamp is not None and start <= stamp < end
+            actual = all(accepts(row, rule) for rule in temporal)
+            checked += stamp is not None
+            if actual != expected:
+                extra += actual
+                omitted += not actual
+                if len(witnesses) < 3:
+                    witnesses.append({"source_row_index": index, "timestamp": str(row[source]),
+                                      "planned": actual, "requested_month": expected})
+    except (ValueError, TypeError, KeyError, OverflowError) as exc:
+        return Issue(check=f"request.calendar_scope.{analysis.id}", status="uncovered", target="plan",
+                     evidence=f"Snapshot month membership cannot be independently established: {exc}",
+                     suggestion="Declare a supported datetime conversion and explicit month bounds")
+    if not checked:
+        return Issue(check=f"request.calendar_scope.{analysis.id}", status="uncovered", target="plan",
+                     evidence="No nonmissing timestamp is available after the other declared filters")
+    failed = bool(extra or omitted)
+    return Issue(
+        check=f"request.calendar_scope.{analysis.id}", status="fail" if failed else "pass", target="plan",
+        evidence=f"Independent calendar membership for {checked} eligible source timestamps: "
+                 f"extra={extra}, omitted={omitted}, witnesses={witnesses}. "
+                 "Other declared filters are held fixed. This checks this snapshot, not general lexical-date safety.",
+        suggestion=f"Declare datetime conversion for {source!r}, then filter ge {start.isoformat()} "
+                   f"and lt {end.isoformat()}; keep the other requested filters" if failed else "",
+    )
+
+
+def calendar_scope_checks(request: str, plan: Plan, rows: list[dict] | None = None) -> list[Issue]:
     match = SCOPED_PERIOD.search(request)
     if not match or len(PERIOD.findall(request)) != 1:
         return []
@@ -109,6 +146,9 @@ def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
                 continue
             columns.add(condition.column)
         if columns:
+            if rows is not None and len(columns) == 1:
+                missing_conversion.append(calendar_snapshot_check(analysis, next(iter(columns)), rows, start, end))
+                continue
             missing_conversion.append(Issue(
                 check=f"request.calendar_scope.{analysis.id}", status="fail", target="plan",
                 evidence=f"Requested calendar month has ISO date range filters on {sorted(columns)}, "
@@ -116,7 +156,9 @@ def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
                 suggestion="Declare datetime conversion for the intended date column, then select the complete requested month. "
                            "Do not compare CSV date strings as calendar timestamps.",
             ))
-    if missing_conversion:
+    checked_ids = {issue.check.removeprefix("request.calendar_scope.") for issue in missing_conversion}
+    remaining = [analysis for analysis in plan.analyses if analysis.id not in checked_ids]
+    if not remaining:
         return missing_conversion
     named = [c for c in candidates if c.lower() in request.lower()]
     candidates = named if len(named) == 1 else candidates
@@ -125,16 +167,16 @@ def calendar_scope_checks(request: str, plan: Plan) -> list[Issue]:
             check=f"request.calendar_scope.{analysis.id}", status="fail", target="plan",
             evidence=f"Request selects {start.date()} through the end of its month, but the analysis has no filters",
             suggestion="Select the requested month explicitly; declare the relevant datetime conversion",
-        ) for analysis in plan.analyses if not analysis.filters]
+        ) for analysis in remaining if not analysis.filters]
         if missing:
-            return missing
-        return [Issue(check="request.calendar_scope", status="uncovered", target="plan",
+            return missing_conversion + missing
+        return missing_conversion + [Issue(check="request.calendar_scope", status="uncovered", target="plan",
                       evidence="A calendar month is requested but no unique declared datetime column is available")]
     source = candidates[0]
     derived = {d.name: d.operation for d in plan.derived
                if d.columns == [source] and d.operation in {"year", "month", "day", "hour"}}
-    checks = []
-    for analysis in plan.analyses:
+    checks = list(missing_conversion)
+    for analysis in remaining:
         temporal = [f for f in analysis.filters if f.column == source or f.column in derived]
         issue = Issue(check=f"request.calendar_scope.{analysis.id}", status="uncovered", target="plan",
                       evidence=f"Request selects {start.date()} <= {source} < {end.date()}",

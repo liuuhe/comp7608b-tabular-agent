@@ -15,6 +15,7 @@ from tabular_agent.agent import PACKAGE_SOURCES
 from tabular_agent.chart_evidence import histogram_evidence
 from tabular_agent.grounding import ground_candidate
 from tabular_agent.model import Ledger, OllamaModel
+from tabular_agent.report_facts import fact_catalog
 from tabular_agent.reports import (
     binding_examples,
     evidence_preview,
@@ -49,6 +50,7 @@ def load_candidate(candidate: Path) -> tuple[dict, dict]:
         "profile": read_json(run / "profile.json"),
         "executed_code": (candidate / "analysis.py").read_text(),
         "execution_status": "succeeded", "results": evidence_preview(results),
+        "fact_catalog": fact_catalog(results, plan, charts),
         "chart_evidence": histogram_evidence(charts, limit=40),
         "reference_examples": reference_examples(results), "binding_examples": binding_examples(results),
         "request_constants": request_numbers(manifest["question"]),
@@ -74,7 +76,7 @@ def probe_case(payload, provenance, folder, settings, model_factory=OllamaModel)
     ledger = Ledger(settings, folder)
     result = {**provenance, "scope": "Report drafting/grounding only; no semantic verdict or task score"}
     try:
-        raw = model_factory(settings, ledger).call(CandidateDraft, prompts.DRAFT, payload, "report_drafting")
+        raw = model_factory(settings, ledger).call(CandidateDraft, prompts.FACT_DRAFT, payload, "report_drafting")
         write_json(folder / "candidate_draft.json", raw.model_dump())
         # Ground against COMPLETE results, never the truncated model preview.
         saved = Path(provenance["candidate"])

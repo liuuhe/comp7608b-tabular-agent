@@ -142,7 +142,7 @@ def test_actual_adapter_preserves_raw_response_and_compiles_facts_in_all_conditi
         assert read_json(tmp_path / "model_outputs/000-report_drafting.structured.json") == response
     assert ledger.tokens == 15 and payload == original
     wire = read_json(tmp_path / "model_inputs/000-report_drafting.json")["payload"]
-    assert wire["report_contract"] == "selected-facts-v2"
+    assert wire["report_contract"] == "selected-facts-v3"
     assert wire["format_example"] == {
         "findings": [{"facts": ["table.total.0"], "interpretation": ""}], "limitations": [],
     }

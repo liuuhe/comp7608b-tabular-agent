@@ -14,6 +14,7 @@ from tabular_agent import prompts
 from tabular_agent.agent import PACKAGE_SOURCES
 from tabular_agent.chart_evidence import histogram_evidence
 from tabular_agent.model import Ledger, OllamaModel
+from tabular_agent.report_facts import report_repair_contract
 from tabular_agent.reports import evidence_preview, resolved_draft
 from tabular_agent.schemas import Draft, Plan, Review, Settings
 from tabular_agent.storage import digest, read_json, write_json
@@ -49,6 +50,7 @@ def load_candidate(candidate: Path) -> tuple[dict, dict]:
         "rendered_draft": resolved_draft(draft, execution["result"], manifest["question"], plan, charts),
         "verification_feedback": "", "programmatic_checks": [issue.model_dump() for issue in inspection.issues],
         "selection_accounting": inspection.selection,
+        "report_repair_contract": report_repair_contract(execution["result"], plan, charts),
     }
     inputs = [run / name for name in ["evaluation.json", "manifest.json", "data.csv", "profile.json"]]
     inputs += [candidate / name for name in ["plan.json", "draft.json", "analysis.py", "execution.json"]]

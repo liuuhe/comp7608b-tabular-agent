@@ -313,14 +313,34 @@ class StructuredReview(StrictModel):
     issues: list[AdditionalReviewIssue] = Field(description="Additional material plan/code/chart issues, not copies of statement or programmatic checks. Use [] if none.")
 
 
-def review_response_schema(checks: list[str]) -> type[BaseModel]:
+def review_response_schema(checks: list[str], artifact_values: dict | None = None) -> type[BaseModel]:
     """Require a separate verdict for every actual report statement at decoding."""
     if len(checks) != len(set(checks)) or any(not re.fullmatch(r"report\.(?:finding|limitation)\.[0-9]+", name) for name in checks):
         raise ValueError("Review statement names must be unique finding/limitation references")
     statements = create_model("RequiredStatements", __base__=StrictModel, **{
         f"entry_{index}": (StatementVerdict, Field(alias=name)) for index, name in enumerate(checks)
     })
-    return create_model("ReportReviewResponse", __base__=StructuredReview, statements=(statements, ...))
+    fields = {"statements": (statements, ...)}
+    if artifact_values is not None:
+        if not artifact_values:
+            raise ValueError("Anchored review needs concrete non-report locations")
+
+        class AnchoredIssue(AdditionalReviewIssue):
+            @model_validator(mode="after")
+            def real_observation(self):
+                if not self.observed.strip() or self.observed not in artifact_values[self.check]:
+                    raise ValueError("observed must quote the actual additional_issue_locations value; "
+                                     "report prose belongs only in statement verdicts")
+                return self
+
+        issue = create_model(
+            "AnchoredReviewIssue", __base__=AnchoredIssue,
+            check=(Literal[tuple(artifact_values)], Field(description="Select the actual plan/code/chart location with a problem. Never duplicate report wording issues here.")),
+            observed=(str, Field(min_length=1, max_length=500,
+                                description="Exact nonblank quote from this additional_issue_locations value, not from the report.")),
+        )
+        fields["issues"] = (list[issue], Field(max_length=6, description="Only additional material problems anchored to actual plan/code/chart content. Report corrections use statements. Use [] when none."))
+    return create_model("ReportReviewResponse", __base__=StructuredReview, **fields)
 
 
 def normalize_review(response: BaseModel) -> Review:
@@ -332,7 +352,7 @@ def normalize_review(response: BaseModel) -> Review:
     return Review(semantic_status=response.semantic_status, issues=[
         Issue(check="request_coverage", **response.request_coverage.model_dump()),
         *[Issue(check=name, target="report", **verdict) for name, verdict in statements.items()],
-        *response.issues,
+        *[Issue.model_validate(item.model_dump(exclude={"observed"})) for item in response.issues],
     ])
 
 

@@ -31,6 +31,7 @@ def test_draft_probe_needs_no_successful_original_draft_and_excludes_external_sc
     assert payload["documentation"] == "x is measured in hours"
     assert payload["results"]["tables"]["a"][0]["cells"]["value"] == 3
     assert payload["feedback"] == "" and payload["previous_draft"] == {}
+    assert payload["fact_catalog"][0]["id"] == "table.a.0"
     assert len(provenance["input_sha256"]) == 7
 
 

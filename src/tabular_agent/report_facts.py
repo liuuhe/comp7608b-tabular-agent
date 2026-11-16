@@ -1,5 +1,6 @@
 """Select computed facts while the renderer owns numeric positions, group labels and counts."""
 
+import re
 import unicodedata
 from copy import deepcopy
 from typing import Literal
@@ -7,8 +8,18 @@ from typing import Literal
 from pydantic import Field, create_model, field_validator
 
 from .chart_evidence import histogram_evidence
-from .reports import PATTERN, numeric_summaries, resolve
+from .reports import PATTERN, finite_number, numeric_summaries, resolve
 from .schemas import CandidateDraft, Plan, StrictModel, has_terminal_controls
+
+REPORT_CONTRACT = "selected-facts-v3"
+# These are deliberately narrow surface restrictions, not a general truth classifier.
+# Comparisons belong in computed facts, where labels, direction and scope stay together.
+ANALYTICAL_PROSE = re.compile(
+    r"\b(?:highest|lowest|largest|smallest|maximum|minimum|greater|lesser|higher|lower|"
+    r"more|fewer|less|exceed\w*|surpass\w*|peak\w*|rank\w*|significan\w*|"
+    r"tenth|eleventh|twelfth|thirteenth)\b|[<>£$€¥]|最高|最低|最大|最小|高于|低于|多于|少于|显著",
+    re.I,
+)
 
 
 class FactInterpretation(StrictModel):
@@ -27,7 +38,17 @@ class FactInterpretation(StrictModel):
         return text
 
 
-def fact_catalog(results: dict, plan: Plan, charts: list | None = None, limit=40) -> list[dict]:
+class FindingInterpretation(FactInterpretation):
+    @field_validator("interpretation")
+    @classmethod
+    def comparisons_use_facts(cls, text):
+        if ANALYTICAL_PROSE.search(text):
+            raise ValueError("Select computed maximum/minimum/comparison facts for rankings and differences; "
+                             "do not restate them or significance in interpretation. Empty interpretation is valid")
+        return text
+
+
+def fact_catalog(results: dict, plan: Plan, charts: list | None = None, limit=12) -> list[dict]:
     catalog = []
     summaries = numeric_summaries(results)
 
@@ -85,7 +106,70 @@ def fact_catalog(results: dict, plan: Plan, charts: list | None = None, limit=40
                 if operation == "mean" and row["valid_count"] == 1:
                     text += " This mean uses a single valid observation; interpret it cautiously."
             add(prefix, analysis, text)
+        # Derived report facts describe only the COMPLETE SAVED output. In particular, a
+        # limited result never becomes an assertion about all source groups/populations.
+        if analysis.operation != "raw":
+            stats = summaries.get(analysis.id, {}).get("value")
+            if stats and len(rows) > 1:
+                description = {
+                    "sum": "sum", "mean": "mean", "count": "nonmissing count",
+                    "rows": "row count", "missing": "missing-entry count",
+                    "ratio": "ratio", "correlation": "Pearson correlation",
+                }[analysis.operation]
+                for extreme, word in [("maximum", "highest"), ("minimum", "lowest")]:
+                    witness = stats[extreme]
+                    prefix = witness["reference"].rsplit(".", 1)[0]
+                    row_fact = next(item for item in catalog if item["id"] == prefix)
+                    text = (f"The {word} {description} of " + measure
+                            + " in the saved table is " + bound(witness["reference"]) + ". "
+                            + row_fact["text"])
+                    if witness["ties"] > 1:
+                        text += " This extreme is shared by multiple saved rows; the named row is a witness."
+                    add(f"summary.{analysis.id}.{extreme}", analysis, text)
+                high, low = stats["maximum"], stats["minimum"]
+                high_prefix = high["reference"].rsplit(".", 1)[0]
+                low_prefix = low["reference"].rsplit(".", 1)[0]
+                if high_prefix != low_prefix:
+                    left = next(item for item in catalog if item["id"] == high_prefix)
+                    right = next(item for item in catalog if item["id"] == low_prefix)
+                    relation = "higher than" if high["value"] > low["value"] else "equal to"
+                    add(f"comparison.{analysis.id}.extremes", analysis,
+                        left["text"] + " " + right["text"]
+                        + f" The former saved statistic is {relation} the latter. "
+                        "This is a descriptive comparison within the saved output, without a significance test.")
+            counts = summaries.get(analysis.id, {}).get("valid_count")
+            if counts and len(rows) > 1:
+                count_description = ("Selected observation counts including missing targets"
+                                     if analysis.operation == "missing" else "Valid observation counts")
+                add(f"summary.{analysis.id}.valid_counts", analysis,
+                    count_description + " in the saved table range from "
+                    + bound(counts["minimum"]["reference"]) + " to "
+                    + bound(counts["maximum"]["reference"]) + ". "
+                    "These are per-result counts, not the total source dataset size.")
     by_id = {analysis.id: analysis for analysis in plan.analyses}
+    # Missing-entry counts across fields share units, but count comparisons are not rates.
+    # Compare only scalar counts with the same declared filters; do not compare unlike means.
+    missing = [analysis for analysis in plan.analyses if analysis.operation == "missing"
+               and not analysis.group_by and len(results["tables"][analysis.id]) == 1]
+    for index, left in enumerate(missing):
+        for right in missing[index + 1:]:
+            if left.filters != right.filters:
+                continue
+            first, second = (results["tables"][a.id][0]["value"] for a in [left, right])
+            if not all(finite_number(value) for value in [first, second]):
+                continue
+            relation = "higher than" if first > second else "lower than" if first < second else "equal to"
+            left_fact = next(item for item in catalog if item["id"] == f"table.{left.id}.0")
+            right_fact = next(item for item in catalog if item["id"] == f"table.{right.id}.0")
+            add(f"comparison.{left.id}.vs.{right.id}", left,
+                left_fact["text"] + " " + right_fact["text"]
+                + f" The former saved missing-entry count is {relation} the latter. "
+                "This compares counts, not missing rates.")
+            # Both analyses contribute evidence and must disclose their filters if selected.
+            catalog[-1]["analysis_ids"] = [left.id, right.id]
+            catalog[-1]["evidence"] = list(dict.fromkeys(
+                catalog[-1]["evidence"] + right_fact["evidence"],
+            ))
     for chart in histogram_evidence(charts or [], limit=40):
         analysis = by_id[chart["analysis"]]
         identifier = analysis.id
@@ -106,7 +190,7 @@ def fact_response_schema(payload):
     if not ids or len(set(ids)) != len(ids):
         raise ValueError("A report requires distinct computed fact IDs")
     finding = create_model(
-        "FactFinding", __base__=FactInterpretation,
+        "FactFinding", __base__=FindingInterpretation,
         facts=(list[Literal[ids]], Field(min_length=1, max_length=4,
                                        description="Select supporting computed facts; their labels, values and counts render automatically.")),
     )
@@ -126,12 +210,24 @@ def fact_model_payload(payload):
     for key in ["binding_examples", "reference_examples", "request_constants", "plan_filter_constants"]:
         projected.pop(key, None)
     projected["results"].pop("tables", None)  # Computed rows are already rendered in the fact catalog.
-    projected["report_contract"] = "selected-facts-v2"
+    projected["report_contract"] = REPORT_CONTRACT
     projected["format_example"] = {
         "findings": [{"facts": [projected["fact_catalog"][0]["id"]], "interpretation": ""}],
         "limitations": [],
     }
     return projected
+
+
+def report_repair_contract(results, plan, charts=None):
+    return {
+        "contract": REPORT_CONTRACT,
+        "instruction": "Repair report wording by selecting these or other current row facts, "
+                       "or by using an empty interpretation. Never ask to retype numeric/category "
+                       "labels or comparisons in interpretation. Keep valid requested subjects.",
+        "analytical_facts": [{"id": item["id"], "display": item["display"]}
+                             for item in fact_catalog(results, plan, charts)
+                             if item["id"].startswith(("summary.", "comparison."))],
+    }
 
 
 def normalize_fact_draft(response, payload):
@@ -140,7 +236,7 @@ def normalize_fact_draft(response, payload):
     used = set()
     for finding in response.findings:
         facts = [catalog[identifier] for identifier in dict.fromkeys(finding.facts)]
-        used.update(item["analysis_id"] for item in facts)
+        used.update(identifier for item in facts for identifier in item.get("analysis_ids", [item["analysis_id"]]))
         text = " ".join(filter(None, [finding.interpretation.strip(), *(item["text"] for item in facts)]))
         evidence = list(dict.fromkeys(ref for item in facts for ref in item["evidence"]))
         findings.append({"text": text, "evidence": evidence})

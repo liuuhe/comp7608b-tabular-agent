@@ -19,7 +19,7 @@ from .executor import DockerExecutor
 from .grounding import ground_candidate
 from .model import BudgetExceeded, InvalidOutput, Ledger, OllamaModel, ollama_version
 from .profile import profile_data
-from .report_facts import fact_catalog
+from .report_facts import REPORT_CONTRACT, fact_catalog, report_repair_contract
 from .reports import (
     binding_examples,
     evidence_preview,
@@ -33,6 +33,7 @@ from .reports import (
 )
 from .request_checks import request_coverage_map
 from .resources import MemoryMonitor
+from .review_contract import REVIEW_CONTRACT
 from .runtime_helpers import assemble_program, validate_prepared_input_code
 from .schemas import (
     CandidateDraft,
@@ -192,7 +193,8 @@ class Agent:
             "tool_contract_version": 4,
             "verification_schedule": "full only: calculations before charts/report; report review continues the same tool invocation",
             "analysis_helper_contract": 2,
-            "report_contract": "selected-facts-v2",
+            "report_contract": REPORT_CONTRACT,
+            "review_contract": REVIEW_CONTRACT,
             "source_sha256": {
                 name: hashlib.sha256(content).hexdigest() for name, content in PACKAGE_SOURCES.items()
             },
@@ -564,6 +566,9 @@ class Agent:
                     "programmatic_checks": [v.model_dump() for v in inspection.issues],
                     "selection_accounting": inspection.selection,
                     "required_report_checks": report_check_ids(state["draft"]),
+                    "report_repair_contract": report_repair_contract(
+                        state["execution"]["result"], state["plan"], state["charts"],
+                    ),
                     "verification_feedback": state.get("feedback", "")
                     if state.get("retry_target") == "verify" else "",
                 }

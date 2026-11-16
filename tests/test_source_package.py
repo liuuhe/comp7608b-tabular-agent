@@ -16,6 +16,7 @@ def project(tmp_path):
         "src/tabular_agent/agent.py", "evaluation/run.py", "tests/test_core.py",
         "data/uci/bike/metadata.json", "data/uci/bike/documentation.txt",
         "docs/screenshots/demo.png",
+        "report/latex/main.tex", "report/latex/neurips_2026.sty", "report/build_report.py",
     }:
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -43,6 +44,7 @@ def test_bundle_excludes_private_data_and_is_byte_identical_after_rebuild(projec
         "tutorials/01_example.py", "data/tutorial_rentals.csv",
         "proposal/Formatting_Instructions_For_NeurIPS_2026.pdf",
         "proposal/proposal_draft.md", "Instrctions/COMP7608B_LLM_Project_Guideline.pdf",
+        "report/latex/build/main.pdf", "report/latex/private.tex",
     ]
     for name in excluded:
         path = project / name
@@ -60,6 +62,7 @@ def test_bundle_excludes_private_data_and_is_byte_identical_after_rebuild(projec
         assert REQUIRED | {GUIDE, MANIFEST} <= names
         assert "data/uci/bike/metadata.json" in names
         assert "evaluation/run.py" in names
+        assert {"report/latex/main.tex", "report/latex/neurips_2026.sty", "report/build_report.py"} <= names
         assert all(b"PRIVATE_SENTINEL" not in archive.read(name) for name in names)
         assert all(item.date_time == (1980, 1, 1, 0, 0, 0) for item in archive.infolist())
         extracted = tmp_path / "extracted"

@@ -66,3 +66,11 @@ service-account*.json
 !/report/development-evidence.json
 !/report/development-evidence-v15.json
 !/report/development-evidence-local-20261115.json
+!/report/build_report.py
+!/report/README_ZH.md
+!/report/latex/
+/report/latex/*
+!/report/latex/*.tex
+!/report/latex/neurips_2026.sty
+!/report/latex/source-manifest.json
+!/report/latex/template-provenance.json

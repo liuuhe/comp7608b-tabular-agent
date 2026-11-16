@@ -1,0 +1,12 @@
+{
+  "status": "working_draft_formal_evaluation_pending",
+  "source": "report/DRAFT.md",
+  "source_sha256": "057f8fa9070caad63f23d988bdfaaa70a578c503c642182e06bf916f6e6daf14",
+  "generator_sha256": "a21198731ec2310cadecec7a26149abbd3906da60542cc60a7f0559c4a2a1e0b",
+  "pandoc_version": "pandoc 3.14",
+  "generated_sha256": {
+    "abstract.tex": "66263026679c6a73d672ea968983b2fb32f60700dc3f2b5125419980ae94e720",
+    "body.tex": "9fe19996f25acd19e9e30a28954609a20b8acd1f4599d82dfcc91740b719181a",
+    "references.tex": "bdf0417c960cc7915e2f16e6be6afd611044769b841e0b20125f98932d19fdc5"
+  }
+}

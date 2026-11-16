@@ -39,7 +39,9 @@ Generated code runs only inside a non-root Docker container, with network disabl
 
 ### 2.2. Reports and evidence
 
-The model selects one to four computed fact IDs for each of at most three findings and may add a short qualitative interpretation. A compiler inserts the measure, group labels, values and valid counts in fixed positions and attaches resolvable references. A mean based on one valid observation gets an explicit caution; empty outputs and undefined statistics remain explicit. The catalog exposes up to forty preview rows plus numerical extrema witnesses from the complete saved output. Full tables remain available; a limited output does not establish a population extremum.
+The model selects one to four computed fact IDs for each of at most three findings and may add a short qualitative interpretation. A compiler inserts the measure, group labels, values and valid counts in fixed positions and attaches resolvable references. A mean based on one valid observation gets an explicit caution; empty outputs and undefined statistics remain explicit. The current catalog exposes up to twelve preview rows plus numerical extrema witnesses from the complete saved output. Full tables remain available; a limited output does not establish a population extremum.
+
+The latest interface adds compiled maximum/minimum witnesses, extrema comparisons and observation-count ranges. Ties are explicit and statements are scoped to the complete saved output. Scalar missing-entry counts with matching declared filters may be compared across fields, explicitly as counts rather than rates. A narrow runtime wording rule rejects free-form ranking/comparison/significance terms in findings and requests computed facts instead; conditional limitations remain possible. It does not recognize all paraphrases or establish general semantic correctness.
 
 A short decoding pattern excludes ASCII digits and braces from qualitative fields. Runtime validation additionally rejects Unicode number characters and terminal controls. Numeric field names and category labels remain usable through bound facts. The model also sees a minimal example with an actual fact ID and an empty interpretation. Invalid responses, full parser diagnostics and billed usage are saved; repair feedback contains a bounded set of field locations and errors. The program does not strip numbers from invalid responses or count them as successful reports.
 
@@ -49,11 +51,13 @@ This interface authenticates a fact's location in computed output. It does not e
 
 Independent verification reconstructs supported sums, means, counts, missing counts, ratios and non-grouped Pearson correlations with separate CSV/math routines. It checks grouping, valid counts, sorting and chart/table agreement without reusing the pandas preprocessing helpers. Complete numeric raw observations and unambiguous sorted subsets have additional checks. Unsupported sampling, ambiguous subset ties and unsupported operations remain uncovered.
 
-Narrow checks assess selected request constraints. These include explicit named scalar-sum requests and certain single-month requests. A declared ISO date range without a datetime conversion fails the month check: lexical ordering of date strings does not establish calendar scope. Unrecognized date expressions remain uncovered. These rules do not provide general natural-language request verification.
+Narrow checks assess selected request constraints. These include explicit named scalar-sum requests and certain single-month requests. For an untyped ISO date range, the current checker independently compares actual membership against the requested calendar month, holding other declared filters fixed. Matching membership passes for that snapshot; extra or omitted rows fail. Missing or unsupported date evidence remains uncovered. This replaces a conservative rejection of every untyped range, and does not establish general lexical-date safety or natural-language request verification.
 
 The full condition checks calculations immediately after successful execution, before spending on charts and report drafting. After drafting, reference checks and one separate call to the same model assess each finding, limitation and whole-request coverage. These stages count as one logical verification invocation per candidate, with separate active durations. A completed or failed report review cannot be reused for a free retry. A calculation-only inspection cannot promote a candidate to a reviewed final report.
 
 Feedback can target the plan, code or report. New plans require fresh code and execution; report-only repair can reuse the saved calculations. Previous attempts and failures remain available. The controller stops at exhausted budgets, insufficient reservation or repeated unresolved errors. Failed tools and model outputs consume the same caps as successful ones.
+
+Current additional plan/code/chart review issues must name an actual artifact location and quote its content. Report statements retain their own required verdicts, and report-repair guidance supplies available computed comparisons. A report quote cannot serve as an actual chart-label quote. This constrains feedback provenance and routing, while leaving the reviewer's error judgment heuristic.
 
 Each run permits at most twelve tool invocations, three corrections and 100,000 cumulative model tokens. Model output is capped at 6,144 tokens with a 16,384-token context. All stages use Qwen3.5-9B Q4 with thinking disabled, temperature 0.7, top_p 0.8, top_k 20, repeat penalty 1 and presence penalty 1.5; the initial seed is 42. The development machine has 24 GiB host memory; execution containers use two CPUs and a 2 GiB limit. Model/image digests, dependencies and hardware are recorded in each run.
 
@@ -95,15 +99,6 @@ The proposed two raters score independently before adjudication. Agreement, clar
 
 Source 7c9860f runs six development tasks × three conditions × one repeat, with all eighteen terminal outcomes retained. The grid produces thirteen failures, three completed unverified reports and two internal passes. Total cost is 366,642 tokens and 1,185.68 seconds. A read-only audit verifies 1,179 artifact hashes, fifty-three protected source/input files, budgets and terminal ledgers. These are software and development measurements, not independently rated outcomes.
 
-| Task | One-shot | Error recovery | Full |
-| --- | --- | --- | --- |
-| D1: January revenue by country | Failed | Failed | Failed |
-| D2: top-five product quantities/bar chart | Failed | Failed | Failed |
-| D3: hourly rental means/line chart | Report, numerical match | Report, numerical match | Internal pass, numerical match |
-| D4: bike time/weather exploration | Failed | Report | Internal pass |
-| D5: education/hour means | Failed; matching computed candidate retained | Same | Same |
-| D6: Adult quality/category exploration | Failed | Failed | Failed |
-
 D1 illustrates a wrong plan with internally consistent execution: no datetime conversion is declared, lexical date boundaries select extra records, and the table fails the development reference comparison. D2 sorts by product identifier before quantity and truncates the wrong groups. Independent recomputation confirms those declared plans rather than correcting their meaning.
 
 Many report calls retype a date or amount in a prose-only field, then stop after repeated validation failure. D5 retains a matching computed candidate but no selected report; it receives no selected numerical-answer credit. Conversely, D3/full and D4/full pass internal checks while retaining unsupported commuting explanations, significance language and insufficiently supported trends. Showing a single-observation caution does not make the surrounding inference sound. The [complete table and costs](../docs/DEV_QWEN35_V30_RESULTS_ZH.md) retain every run.
@@ -126,9 +121,15 @@ Report syntax no longer blocks D5 completion, but its full report incorrectly ra
 
 D4/full stops when another review cannot be conservatively reserved after 65,551 measured tokens; this is not 100,000 measured tokens consumed. Both D6 recovery conditions initially truncate a report at 6,144 output tokens, costing 315.1 and 297.1 client-call seconds. Recovery produces prose, but full ultimately rejects its unsupported category comparison and sample limitations after correction capacity is exhausted. Report availability improves descriptively while aggregate cost rises and semantic errors persist. Multiple components changed; no single-patch causal benefit or human whole-task pass rate is inferred.
 
-### 4.3. Current UI integration example
+### 4.3. Current v31 development checks
 
-One separate real-Chrome run uploads the six-row demo CSV and asks for total rentals, valid count and a weather-grouped bar chart. It completes with no repair in 79.02 seconds, using 16,809 tokens and four tools. The report selects facts with empty interpretations. Tables and plotted arrays match the requested sample: total 152 with six valid observations; Clear 67/3, Misty 28/1 and Rain 57/2.
+Source 8d392f7 adds the comparison facts, bounded row catalog, anchored additional review issues and snapshot calendar-membership check. The model/configuration and development tasks remain fixed. All 728 software checks including real Docker pass. Six fixed diagnostics reuse the old D3/D5/D6 calculations: two report drafts bind successfully, while the Adult exploration draft is rejected for comparative prose and a damaged income label. The education draft now binds Prof-school as the maximum and 11th as the minimum, with some duplicated content. All three old reports are accepted by the new reviewer despite their known errors. These probes consume 56,578 tokens and 236.58 client-call seconds; they are not complete task outcomes or a semantic-accuracy estimate.
+
+Reinspection of the saved D2 candidates accepts the intermediate snapshot's correct month membership and rejects the later boundary regression, without changing the original outcomes. A separate fixed eighteen-cell development cohort is in progress; complete outcomes and costs remain pending. The changes are evaluated together rather than as a single-component causal intervention.
+
+### 4.4. UI integration example on v30b
+
+One separate real-Chrome run on source e655733 uploads the six-row demo CSV and asks for total rentals, valid count and a weather-grouped bar chart. It completes with no repair in 79.02 seconds, using 16,809 tokens and four tools. The report selects facts with empty interpretations. Tables and plotted arrays match the requested sample: total 152 with six valid observations; Clear 67/3, Misty 28/1 and Rain 57/2.
 
 The download control is clicked, but the browser event helper times out and native Chrome download completion is unconfirmed. An HTTP GET of the resource registered by the real UI returns the ZIP; all sixty-eight entries match the run files and raw CSV files are excluded. This tests server export separately from native browser download behavior. It is one integration case, not another benchmark cell or a general latency guarantee.
 

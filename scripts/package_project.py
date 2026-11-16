@@ -20,6 +20,12 @@ REQUIRED = {
     "evaluation/tasks.heldout.json",
     "report/DRAFT.md", "docs/PROJECT_STATUS_ZH.md", "docs/README.md", "docs/TEAM_HANDOFF_ZH.md",
 }
+REPORT_SOURCES = {
+    "report/README_ZH.md", "report/build_report.py", "report/latex/main.tex",
+    "report/latex/abstract.tex", "report/latex/body.tex", "report/latex/references.tex",
+    "report/latex/neurips_2026.sty", "report/latex/source-manifest.json",
+    "report/latex/template-provenance.json",
+}
 # Prior v25 ZIPs remain verifiable; new snapshots do not require or include this local PDF.
 LEGACY_FILES = {"proposal/Formatting_Instructions_For_NeurIPS_2026.pdf"}
 # Verify earlier snapshots that included CI, without adding it to new snapshots.
@@ -88,6 +94,8 @@ work and historical run directories. Documentation links to those local historic
 artifacts therefore require the original workspace/evidence archive. They are not
 silently regenerated or represented as included evidence.
 Course handouts and the proposal PDF stay local and are not required to build a snapshot.
+The report source can be regenerated with `python report/build_report.py` (Pandoc required),
+then compiled with TeX Live using report/README_ZH.md. Generated PDFs/build files are excluded.
 
 SOURCE_MANIFEST.json lists every included file and its SHA-256. ZIP entry order,
 timestamps and permissions are fixed so unchanged inputs produce identical bytes.
@@ -107,7 +115,7 @@ def permitted(name):
         return False
     if PurePosixPath(name).is_absolute() or any(p in {".", ".."} for p in parts):
         return False
-    if name in REQUIRED or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
+    if name in REQUIRED or name in REPORT_SOURCES or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
         "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
@@ -136,6 +144,7 @@ def permitted(name):
 
 def source_paths(root):
     candidates = set(REQUIRED)
+    candidates.update(name for name in REPORT_SOURCES if (root / name).exists())
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",
         "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",

@@ -12,6 +12,22 @@ Human ratings remain pending. See [automatic results](../docs/FORMAL_V7_RESULTS_
 [the coordinator handoff](../docs/RATING_COORDINATION_ZH.md). The model-assisted route has a separate receipt
 and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
 
+## Human-sample amendment, 18 November 2026
+
+The user authorized reducing human work after automatic results were inspected: one random test input
+in each dataset × category stratum (nine inputs), all three conditions, fixed repeat zero: **27 outputs**.
+Both raters independently score the same sample (37 CSV rows for this realized sample).
+Selection uses sorted metadata and `random.Random(42)`; failed/missing outputs are retained without
+replacement. Automatic metrics still cover all 252 runs. Human metrics describe only this sample,
+with three tasks per tier and no population or robustness inference. This is a post-hoc protocol
+amendment, not preregistration or human scoring of the entire cohort.
+
+See [the fixed sampling protocol](../docs/HUMAN_SAMPLE_PROTOCOL_ZH.md) and
+[the current handoff](../docs/RATING_COORDINATION_ZH.md). Use `python -m scripts.human_sample collect`
+for returned sheets; preserve the sample's blank sheets and both initial returns. It retains initial
+agreement and requires adjudication when necessary. The original `evaluation.summarize` gate below
+is unchanged: a sample cannot pass its full-human-coverage final-study check.
+
 ## Current reference review route: external model audit
 
 `uv run python -m evaluation.model_audit --help` supports preparation, exact-request preview,

@@ -44,7 +44,8 @@ This is the runnable source and evaluation tooling for the COMP7608B project.
 It is a development snapshot, not a completed formal study or final submission.
 The model-assisted reference/family audit and formal freeze are complete in the
 original workspace; all 252 held-out runs and automatic integrity checks are
-complete, with two independent human ratings still pending. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
+complete. Two raters will independently score a post-hoc 27-output sample;
+the other 225 outputs remain without human ratings. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
 status and docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
 results are not held-out scores. This source ZIP does not contain the private
 audit, frozen receipt, run artifacts or ratings needed to reproduce those claims.

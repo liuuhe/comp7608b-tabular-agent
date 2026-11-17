@@ -1,66 +1,68 @@
-# 正式评分：Liu He的操作单
+# 27份正式样本评分：Liu He的操作单
 
-自动实验和匿名材料已准备好。现在只需把两个包分别交给两位队友；每人独立看全部输出，
-不拆成各评一半，也不把同一个人的两遍评分当两位评分者。
-无需安装Python、模型或LangGraph。此文是协调者操作单，不放进评分包。
+2026-11-18，用户确认把全量双人评分缩减为**每人27份相同输出、37行评分**。
+自动评价仍用252次运行。完整规则与事后调整说明见[样本协议](HUMAN_SAMPLE_PROTOCOL_ZH.md)。
+原252份／282行的包保留为历史材料，不再发送给队友。
 
 ## 发什么
 
-原本机目录：`evaluation/private/rater-handoff-formal-v7/`。
+当前目录：`evaluation/private/rater-handoff-formal-v7-sample27-v1/`。
 
-| 给谁 | 文件 | 大小 |
-| --- | --- | ---: |
-| 评分者1 | `rater-1-anonymous.zip` | 约48 MB |
-| 评分者2 | `rater-2-anonymous.zip` | 约48 MB |
+| 给谁 | 文件 |
+| --- | --- |
+| 评分者1 | `rater-1-anonymous.zip` |
+| 评分者2 | `rater-2-anonymous.zip` |
 
-每份含252份匿名输出、282行空白评分、离线页面、字段说明和必要数据。
-包内`START_HERE_ZH.md`已写操作步骤。不要发送`identity_key.json`、运行日志、
-条件名称／成绩分析、另一人的CSV或整个私有评价目录。队友可先花几份熟悉规则，
-有问题统一澄清规则，最终仍各自独立完成，不预先讨论具体输出该得几分。
+每人使用自己的ZIP。两人各评同样的27份匿名输出，先独立判断再讨论分歧。
+这次一次性随机抽样含12份报告、15份没有最终报告的输出，均保留；CSV有37行，
+因为探索报告的多条发现分开评分。估计每人45–90分钟，尚未实际计时。
 
-可直接转述：
+包内START_HERE_ZH.md已写步骤。无需Python、模型或LangGraph，无需重算整份CSV。
+只发ZIP，不发identity_key.json、运行日志、条件成绩、另一人的CSV或本机整个私有目录。
 
-> 请解压包，读START_HERE_ZH.md，用浏览器打开distribute/index.html，加载你自己的
-> rater CSV。先看题目／字段说明，再看报告／表／图，逐份评分。每次离开前保存CSV，
-> 下次加载继续。完成后把CSV发回我，先不要与另一位对答案。没有报告的失败也要评分。
+可以直接转述：
 
-两人的重复输出和多条探索发现已在表里排好；保留所有行、id及列名。
-可用Excel填写并保存UTF-8 CSV。离线网页的实际浏览器预览未自动验收，CSV解析／回存
-及包内静态结构已检查；若本机浏览器限制本地页面，直接用CSV和artifacts文件夹即可。
-人工正常保存CSV可能弹出Save As，由评分者操作即可。
+> 这次每人只看27份，约45–90分钟。解压后读START_HERE_ZH.md，打开distribute/index.html，
+> 加载你自己的rater CSV。按题目和字段说明检查报告／表／图，数字可看参考表。
+> 没有报告的输出先确认，再点快捷记零；没有因果夸大和澄清也有快捷按钮。
+> 每次离开前保存CSV，下次加载继续。完成后把CSV发回我，先不要与另一位对答案。
+
+保持所有id、行和列名。也可用Excel填写并保存UTF-8 CSV。
+页面只有评分者主动点击才填分，不预填或推断人工判断。原生保存弹窗由评分者操作。
+离线页面的静态证据和CSV往返已检查，实际浏览器操作尚未自动验收；
+若本机限制本地页面，直接用CSV配合artifacts文件夹即可。
 
 ## 收回后
 
-1. 把两份原始返回CSV分别存入新目录，例如
-   `evaluation/private/ratings-returned-formal-v7/`，保留文件名、原件和SHA-256。
-   不直接改初始分数，不拿最终协商分数覆盖它们。
-2. 由本机工具校验完整性后，把工作副本放到
-   `evaluation/private/blind-formal-v7/rater-1.csv`及`rater-2.csv`。
-   初始空表仍在原ZIP中。以下命令只在两份真实评分已收齐后执行。
-3. 首次合并并保留`ratings_merged.json`副本，用其中`initial_agreement`记录初始一致性，
-   `disagreements`列出分歧。两位评分者再讨论分歧；协调者不能替他们推断分数。
+把原始返回CSV保存在新目录，例如`evaluation/private/ratings-returned-formal-v7-sample27/`，
+两份原件都保留。不要覆盖样本包内的空表。以下命令只在真实评分收齐后执行：
 
 ```bash
-uv run python -m evaluation.ratings evaluation/private/blind-formal-v7
+DOCKER_CONTEXT=colima uv run python -m scripts.human_sample collect \
+  --pack evaluation/private/blind-formal-v7-sample27-v1 \
+  --first evaluation/private/ratings-returned-formal-v7-sample27/rater-1-scored.csv \
+  --second evaluation/private/ratings-returned-formal-v7-sample27/rater-2-scored.csv \
+  --interim --output evaluation/private/human-sample27-initial-v1
 ```
 
-没有分歧时可直接汇总。有分歧时，以单独的**完整**裁决表提供最终分数，先保留首次合并
-结果，再运行（此文件须实际由人员确认，不是自动生成的答案）：
+该命令保留两份原CSV和哈希，校验全部37行，记录初始一致性及分歧。
+空白、缺项、改动样本、外来记录均拒绝。--interim允许分歧待解决，但不把它们补零。
+如无分歧，状态会直接成为sample_protocol_complete；全量人工覆盖仍明确为27/252。
+
+如有分歧，两位评分者先讨论，再另存一张完整裁决表resolved.csv，不能修改初始评分。
+用新的输出目录汇总，原初始目录不覆盖：
 
 ```bash
-uv run python -m evaluation.ratings evaluation/private/blind-formal-v7 \
-  --resolved evaluation/private/ratings-returned-formal-v7/resolved.csv
+DOCKER_CONTEXT=colima uv run python -m scripts.human_sample collect \
+  --pack evaluation/private/blind-formal-v7-sample27-v1 \
+  --first evaluation/private/ratings-returned-formal-v7-sample27/rater-1-scored.csv \
+  --second evaluation/private/ratings-returned-formal-v7-sample27/rater-2-scored.csv \
+  --resolved evaluation/private/ratings-returned-formal-v7-sample27/resolved.csv \
+  --output evaluation/private/human-sample27-final-v1
 ```
 
-`pending_output_count`必须为0，之后执行：
+输出summary.json分别保存完整252次自动结果和27份人工样本描述性结果，每层／条件
+人工分母为3。未评分的225份不会补分，不向全量外推，不生成有误导性的人工bootstrap区间。
+原evaluation.summarize仍要求全量人工评分，不会将这个样本冒充原全量协议完成。
 
-```bash
-uv run python -m evaluation.summarize --split test \
-  --root evaluation/runs/formal-qwen35-9b-v7-20261117 \
-  --freeze config/frozen-experiment-model-audit-v7.json \
-  --ratings evaluation/private/blind-formal-v7/ratings_merged.json \
-  --output evaluation/private/formal-v7-final-summary.json
-```
-
-未收齐、空分、重复行或未解决的分歧会阻止最终汇总。保持冻结源码、参考和运行不变；
-评分后更新报告的人工结果／一致性／结论，重新编译、校页并打包即可，无需再跑模型。
+评分后更新报告／摘要／结论和pitch，重新编译校页并生成提交包，无需再跑模型或付费API。

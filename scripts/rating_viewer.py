@@ -79,6 +79,15 @@ function start(){
  function progress(){if(!rows)return;$('progress').textContent=`已完成 ${rows.filter(complete).length}/${rows.length} 评分行`;}
  function persist(){try{localStorage.setItem(storageKey,JSON.stringify(rows));setNotice('已暂存到此浏览器；离开前请保存CSV。');}catch{setNotice('浏览器暂存不可用，请保存CSV备份。');}progress();}
  function scores(){const target=$('scores');target.replaceChildren();if(!rows){target.textContent='加载自己的CSV后开始。';return;}
+  const current=relevant();
+  const flags=el('button','本份无因果夸大／无澄清（两项填0）',target);flags.type='button';
+  flags.addEventListener('click',()=>{for(const row of current)for(const key of FLAGS)row[key]='0';persist();scores();});
+  const output=PACK.outputs[index];
+  if(output.report.trim()==='No final report was available.'&&!output.charts.length&&!output.files.some(f=>f.name.startsWith('tables/'))){
+   el('div','请先核对左侧确无最终报告；确认后可统一记录缺失评分。',target).className='muted';
+   const absent=el('button','确认本份没有最终报告（所有评分项填0）',target);absent.type='button';
+   absent.addEventListener('click',()=>{for(const row of current)for(const key of required(row))row[key]='0';persist();scores();});
+  }
   for(const row of relevant()){
    const box=el('fieldset',undefined,target);el('legend',row.category==='exploration'?(row.finding==='0'?'没有实质发现：三维应填0':'发现 '+row.finding):'本份输出',box);
    for(const key of required(row)){

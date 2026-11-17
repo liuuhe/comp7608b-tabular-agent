@@ -56,6 +56,8 @@ uv run python scripts/verify_export.py \
 0:00–0:30讲问题和真实页面，0:30–1:15讲验证与预算，1:15–1:50讲自动结果和代价。
 页面和表格已渲染检查，结构／字体／布局验证通过；尚未在PowerPoint内实际播放。
 最终人工结果完成后仍需更新第三页及备注，全员实际计时，目标1分50秒内讲完。
+人工范围现已事后调整：两个评分者各看同样27份分层随机样本，保留失败；自动指标仍覆盖252次。
+现有slides中的human pending仍成立；评分收齐后第三页及备注只能报告样本质量，并注明事后调整。
 
 **0:00–0:30 — Problem and system.**
 
@@ -77,7 +79,7 @@ can still share the generator's assumptions, so an internal pass is not a guaran
 All 252 frozen runs are complete. Full verification increased selected numerical matches from about
 48 to 61 percent for explicit questions and 18 to 50 percent for charts versus one-shot. Error recovery
 alone reached 59 and 43 percent, so the extra gains were smaller. Full used 2.59 times the one-shot
-tokens. Exploration reports remained unreliable. Human whole-task ratings are pending. Next we
+tokens. Exploration reports remained unreliable. Human ratings of a post-hoc 27-output sample are pending. Next we
 show the local system, its saved evidence and its limits.
 
 以上约250词，讲述速度和切页需实际计时；人工评分完成后把pending换成真实结果。
@@ -90,6 +92,7 @@ show the local system, its saved evidence and its limits.
 - 三条件共享模型、数据、预处理和报告接口；full增加检查和有限修正，同时支付相应成本。
 - 9B Q4是本机资源与效果的取舍；探索能力按实测报告，不承诺所有第三层任务成功。
 - 正式成绩、人工评分与开发观察分别说明；在未完成前不宣称正式准确率。
+- 人工样本每层／条件仅3份；说明事后调整，不把样本通过率说成252次运行的整题正确率。
 
 较早版本的长讲稿、10页slides及失败／修正案例统一保留在
 [历史演示材料](DEMO_HISTORY_20261116.md)。各历史版本不拼成当前系统的成绩。

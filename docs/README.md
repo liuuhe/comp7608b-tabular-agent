@@ -13,7 +13,8 @@
 ## 当前状态与研究材料
 
 - [正式v7自动结果](FORMAL_V7_RESULTS_ZH.md)：252次全网格、数值／成本、变体和失败案例；人工结果待补。
-- [正式评分协调单](RATING_COORDINATION_ZH.md)：分别给两位队友的ZIP及收回CSV后的步骤。
+- [正式评分协调单](RATING_COORDINATION_ZH.md)：每位队友27份／37行的新ZIP及收回CSV后的步骤。
+- [人工样本协议](HUMAN_SAMPLE_PROTOCOL_ZH.md)：事后调整、seed=42和27份样本的结论边界。
 
 - [v33有效计划局部修复](DEV_VALIDATED_REPAIR_V33_ZH.md)：当前源码、两次定向结果与未解决日期失败。
 - [v32局部计划修复与Top-K检查](DEV_PLAN_REPAIR_V32_ZH.md)：最新源码与定向验证。

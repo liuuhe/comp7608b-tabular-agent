@@ -61,6 +61,17 @@ def environment(settings):
 def validate_review(path, config, tasks):
     review = read_json(path)
     if review.get("protocol") == "model_assisted":
+        if review.get("contract") == "external-model-audit-with-code-line-evidence-v1":
+            if __package__:
+                from .audit_code_lines import validate_receipt as validate_lines
+            else:
+                from audit_code_lines import validate_receipt as validate_lines
+            receipt = validate_lines(path, tasks, config)
+            report = receipt["report"]
+            return {"type": "model_assisted", "judge": report["judge"],
+                    "human_reference_review": False,
+                    "limitations": report["limitations"]}, [
+                        Path(name) for name in report["file_hashes"]]
         if review.get("contract") == "external-model-audit-with-history-addendum-v1":
             if __package__:
                 from .audit_family_addendum import validate_receipt as validate_addendum

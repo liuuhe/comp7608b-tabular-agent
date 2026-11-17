@@ -405,6 +405,55 @@ def test_explicit_supplement_preserves_original_failure_and_additional_cost(inpu
         supplement(inputs["pack"], "T1", destination, "Do not rerun", transport, Executor())
 
 
+@pytest.mark.parametrize("wrong", [False, True])
+def test_code_array_adaptation_preserves_failed_responses_and_checks_full_table(inputs, wrong):
+    from evaluation.audit_code_lines import inspect as inspect_lines
+    from evaluation.audit_code_lines import run as run_lines
+    from evaluation.audit_followup import snapshot_sources
+    from evaluation.audit_retry import run as supplement
+
+    def incomplete(config, system, payload, schema):
+        result = transport(config, system, payload, schema)
+        if payload["job_id"] == "T1":
+            result["parsed"]["code"] = "import pandas as pd\n placeholder = None\n"
+        return result
+
+    run(inputs["pack"], max_calls=10, transport=incomplete, executor=Executor())
+    finish(inputs)  # Only pending jobs; the invalid T1 is retained.
+    base = inputs["pack"].parent
+    supplements = base / "supplements"
+    supplement(inputs["pack"], "T1", supplements / "T1", "Incomplete program", incomplete, Executor())
+    original_files = [inputs["pack"] / "results/T1/provider.json", supplements / "T1/provider.json"]
+    before = [digest(p) for p in original_files]
+    snapshot = base / "array-snapshot"
+    snapshot_sources(inputs["pack"], snapshot)
+    def lines(config, system, payload, schema):
+        result = transport(config, system, payload, schema)
+        code = result["parsed"].pop("code")
+        result["parsed"]["code_lines"] = code.splitlines()
+        return result
+
+    destination = base / "code-lines/T1"
+    result = run_lines(inputs["pack"], "T1", supplements / "T1", destination,
+                       lines, Executor(wrong=wrong))
+    assert result["status"] == ("needs_attention" if wrong else "pass")
+    assert [digest(p) for p in original_files] == before
+    kwargs = dict(pack=inputs["pack"], snapshot=snapshot / "snapshot.json",
+                  supplements=supplements, history=None, lines=base / "code-lines")
+    report = inspect_lines(**kwargs)
+    assert report["calls"] == 6
+    assert report["status"] == ("incomplete_or_unresolved" if wrong else "passed")
+    if wrong:
+        outcome = read_json(destination / "outcome.json")
+        outcome["status"] = "pass"
+        write_json(destination / "outcome.json", outcome)
+        with pytest.raises(ValueError, match="cannot waive"):
+            inspect_lines(**kwargs)
+    else:
+        with pytest.raises(ValueError, match="new code-array"):
+            run_lines(inputs["pack"], "T1", supplements / "T1", destination, lines, Executor())
+
+
 def test_completion_validates_source_snapshot_and_cannot_waive_missing_jobs(inputs):
     from evaluation.audit_completion import inspect, receipt
     from evaluation.audit_followup import snapshot_sources

@@ -30,11 +30,16 @@ For the revised catalog, the proposed substantive targets are:
   have been removed from the test catalog.
 * Adult development: hours/age/education means, category frequencies and missingness,
   capital-gain comparisons, and failed category/weight ratios used as quality measures.
-  Test: final-weight sums/means as the measured quantity; education-label/code mapping;
-  capital-loss occurrence and its relations to gains and supplied weights; oldest-age
+  Test: education-label/code mapping; capital-loss amounts, occurrence and their
+  relations to gains and supplied weights; oldest-age
   distribution. The age/education association was removed after its overlap with a
   development grouped-age comparison was identified. Weight-description exploration was removed because its
-  boundary with the failed ratios was unresolved. General category-composition
+  boundary with the failed ratios was unresolved. Direct final-weight sums/means
+  were also removed after the global evidence addendum found possible grouped-weight
+  intermediates in those failed ratios. The replacement tasks measure capital-loss,
+  a quantity absent from the supplied development attempts; they remain grouped with
+  the other capital-loss tests, rather than counted as an extra independent family.
+  General category-composition
   exploration and capital-gain magnitude comparisons have also been removed.
 
 These proposed boundaries are reviewable claims, not an instruction to approve tasks.

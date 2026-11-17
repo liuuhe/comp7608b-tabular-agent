@@ -17,14 +17,9 @@ A Streamlit application accepts one CSV, a natural-language question and optiona
 
 The plan declares conversions, derived fields, filters, missing-value policy, grouping, aggregation, sorting, output limits and chart specifications. Repairs of structurally and field-valid plans use sparse field updates against the saved plan: omitted/null fields retain their values, removals are explicit, and the merged plan is revalidated. This reduces accidental omission without guaranteeing a correct edit. Initial planning and structurally invalid candidates still use a complete plan. It may link verbatim excerpts of the request to intended analyses. These links are a proposed coverage map; validating an excerpt does not establish that every requirement is covered. An essential ambiguity can trigger a clarification. The CLI and evaluation runner support one prewritten reply in the same run without resetting the budget.
 
-\begin{verbatim}
-CSV and documentation -> profile -> plan -> generated aggregation code
-  -> Docker: prepare declared inputs and execute
-  -> [full: check calculations and supported request scope]
-  -> charts and selected-fact report
-  -> [full: report checks and same-model review]
-  -> return artifacts, repair within budget, or stop with unresolved issues
-\end{verbatim}
+\pandocbounded{\includegraphics[keepaspectratio,alt={Workflow of the full condition; the caption identifies omitted stages in the two baselines.}]{../../docs/system-workflow.png}}
+
+\textbf{Figure 1.} Full workflow, with verification stages shaded. One-shot omits verification and repair; error recovery omits verification and permits execution/format repair. Repairs target the plan, code or report within shared budgets.
 
 Shared preprocessing applies declared conversions and derived fields, then prepares an independent input frame for each analysis with its declared filters and missing-value rules. Aggregate inputs retain all-missing groups so undefined means and zero valid counts remain representable. The model generates aggregation, output columns, sorting and limits from these inputs. Both the raw generated program and the effective script are saved with hashes and preparation row counts. All conditions share this machinery; preprocessing implements the plan and does not certify its suitability.
 
@@ -113,81 +108,39 @@ The draft protocol contains six development tasks and thirty held-out base tasks
 
 The proposal\textquotesingle s independent-human reference/family review has been revised to an external model-assisted audit using SudoCode\textquotesingle s Chat Completions-compatible endpoint, configured as \texttt{gpt-6.1-sol}. For each deterministic task, the auditor sees the question, documentation, columns and three formatting examples, but no existing answer, reference implementation or agent output. It generates independent code for network-disabled local execution and complete-table comparison. Exploration tasks receive scope/scoreability review without a fabricated unique answer. The relay\textquotesingle s returned identifier does not independently verify model identity; correlated model errors remain possible. Audit tokens and failures are recorded separately, with dollar cost unknown because pricing is not configured.
 
-A question-text-only family check initially missed overlap. We therefore reviewed actual attempted development plans, including failed attempts and early/application runs. Conflicting model judgments prompted a written operational boundary: shared primitives alone do not establish rehearsal, while the same substantive target/template with altered dates, subsets, group labels or display remains exposed. Revisions removed rehearsed weather associations, temporal coverage, Adult age/education and capital-gain comparisons, and general category-composition exploration. No Qwen formal-test outputs informed these revisions. The revised test catalog has nine conservative connected families; exploratory tasks can connect several narrower tests, which remain together with their variants for resampling. This is new-request evaluation on familiar data and operations, with few family-level units and limited inferential strength. The revised audit, source/configuration freeze, held-out inference and two-human-rater scoring are still pending.
+A question-text-only family check initially missed overlap. We therefore reviewed actual attempted development plans, including failed attempts and early/application runs. Conflicting model judgments prompted a written operational boundary: shared primitives alone do not establish rehearsal, while the same substantive target/template with altered dates, subsets, group labels or display remains exposed. Revisions removed rehearsed weather associations, temporal coverage, Adult age/education and capital-gain comparisons, general category-composition exploration, and direct supplied-weight summaries potentially exposed through failed ratio intermediates. No Qwen formal-test outputs informed these revisions. The revised test catalog has eight conservative connected families; exploratory tasks can connect several narrower tests, which remain together with their variants for resampling. This is new-request evaluation on familiar data and operations, with few family-level units and limited inferential strength. The revised audit, source/configuration freeze, held-out inference and two-human-rater scoring are still pending.
 
 Numerical tables use exact agreement for categories/counts and floating-point tolerances of relative 1e-4 and absolute 1e-6. A numerical match is distinct from a correct answer. Explicit tasks also require correct scope and explanation. Visualization scoring covers data, type, axes/units/labels and legibility, each on a 0-\/-2 scale; a pass requires correct data, explicit constraints and at least 6/8. Up to three exploratory findings receive correctness, grounding and usefulness scores of 0-\/-2. A response with no substantive finding receives zero; an absent extra finding is not automatically penalized.
 
 The proposed two raters score independently before adjudication. Agreement, clarification outcomes, failure/recovery, robustness and costs are reported separately. Repeats are averaged within task; paired exploratory intervals resample task families while retaining clean/variant dependence. \textbf{Formal outcome tables, agreement statistics and intervals are pending.}
 
-\section{Development evidence}\label{development-evidence}
+\section{Development evidence and failure taxonomy}\label{development-evidence-and-failure-taxonomy}
 
-\subsection{Frozen-source v30 comparison}\label{frozen-source-v30-comparison}
+Development informed the implementation and the task-family audit. Its repeatedly inspected tasks are excluded from formal outcome claims. Complete runs and failed attempts remain in the development evidence ledger; successive versions are not pooled as one controlled experiment.
 
-Source 7c9860f runs six development tasks × three conditions × one repeat, with all eighteen terminal outcomes retained. The grid produces thirteen failures, three completed unverified reports and two internal passes. Total cost is 366,642 tokens and 1,185.68 seconds. A read-only audit verifies 1,179 artifact hashes, fifty-three protected source/input files, budgets and terminal ledgers. These are software and development measurements, not independently rated outcomes.
+The last complete six-task, three-condition development cohort used source 8d392f7, one repeat per cell and the fixed 9B configuration. Its eighteen terminal outcomes were seven failures, seven unverified completions, three internal passes and one budget stop. Across four explicit/chart tasks, the selected table matched the external development reference in two of four tasks in every condition. The cohort consumed 386,010 tokens and 2,583.59 seconds. Artifact hashes and token ledgers were verified. These are development and numerical-table measurements, not human whole-task scores.
 
-D1 illustrates a wrong plan with internally consistent execution: no datetime conversion is declared, lexical date boundaries select extra records, and the table fails the development reference comparison. D2 sorts by product identifier before quantity and truncates the wrong groups. Independent recomputation confirms those declared plans rather than correcting their meaning.
+Four recurring failure types shaped the final system:
 
-Many report calls retype a date or amount in a prose-only field, then stop after repeated validation failure. D5 retains a matching computed candidate but no selected report; it receives no selected numerical-answer credit. Conversely, D3/full and D4/full pass internal checks while retaining unsupported commuting explanations, significance language and insufficiently supported trends. Showing a single-observation caution does not make the surrounding inference sound. The complete table and costs retain every run.
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Plan/request mismatch.} A Retail date filter executed consistently but selected extra records outside the requested month. Another plan sorted product identifiers before the requested quantity ranking. Independent calculation checks alone accepted the declared computation. Narrow month-membership and Top-K checks were added to cover these concrete cases.
+\item
+  \textbf{Repair damage or ineffectiveness.} Replacing a complete plan could lose an existing revenue derivation. Sparse updates reduced this risk for structurally valid plans, while invalid plans retained complete-plan transport. A prespecified two-run final follow-up retained D2\textquotesingle s corrected ranking and a matching table, but D1 repeated its wrong date filter and failed. Field preservation does not establish effective correction.
+\item
+  \textbf{Output-contract failure.} Numerical prose violated the fact-bound report schema, and some exploration responses truncated at the output cap. Binding numbers and labels programmatically and supplying an actual fact-ID example reduced some formatting failures. They did not guarantee a complete report; failed calls consumed the same budgets.
+\item
+  \textbf{Unsupported interpretation and review error.} A correct hourly mean was interpreted as commuting behavior; education extrema were misranked or described with unsupported significance. Same-model review sometimes accepted these claims. Computed extrema witnesses and anchored review evidence improved provenance, but did not establish general semantic reliability.
+\end{itemize}
 
-\subsection{Bounded follow-up}\label{bounded-follow-up}
+The final targeted plan-repair follow-up used source 3a7623a, unchanged model/settings and two prespecified full-condition tasks. Both terminal outcomes and all 55,111 tokens/267.31 seconds were retained: one matching corrected result and one failure. This small diagnostic is not a replacement for the complete formal grid.
 
-Source e655733 adds the short decoding constraint, actual-ID format example, descriptive-wording guidance and a narrow rejection of untyped ISO calendar ranges. The model, configuration, tasks and unreviewed references stay fixed. A separate eighteen-cell cohort, qwen35-v30b-dev, retains all terminal outcomes without overwriting or pooling the first cohort. The 710-test suite including real Docker, Ruff and whitespace checks passes; this does not measure analytical accuracy.
+A separate real-Chrome integration case uploaded a six-row CSV and requested total rentals, valid count and a weather bar chart. It completed without repair in 102.17 seconds and 18,481 tokens. Saved tables and chart arrays agreed: total rentals 152 over six observations; Clear 67/3, Misty 28/1 and Rain 57/2. The result page\textquotesingle s actual HTTP export matched all seventy-one ZIP entries and excluded the raw CSV. Automation fetches that registered resource without clicking Download because Chrome\textquotesingle s native Save As dialog cannot be completed by the browser connector. Native dialog completion is outside this check. The later shared-export refactor did not alter the analysis logic.
 
-The complete follow-up retains six failures, eight unverified completions, three internal passes and one budget stop. Thirteen runs retain a report, including two unresolved full-condition candidates. Total cost is 506,153 tokens and 2,352.40 seconds. A read-only audit verifies 1,394 artifact hashes, fifty-three protected files and the accounting ledgers. The full breakdown preserves failures and stage costs.
+\section{Formal results -\/- pending}\label{formal-results----pending}
 
-{\def\LTcaptype{none} % do not increment counter
-\begin{table}[htbp]\centering
-\begin{tabular}{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4000}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Outcome
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-One-shot
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Error recovery
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Full
-\end{minipage} \\
-\midrule\noalign{}
-Selected numerical matches: four explicit/chart tasks & 2/4 & 2/4 & 3/4 \\
-Retained reports: six tasks, including unresolved candidates & 2/6 & 6/6 & 5/6 \\
-Internal passes: six tasks & Not applicable & Not applicable & 3/6 \\
-\bottomrule
-\end{tabular}
-\end{table}
-}
-
-D1 shows a genuine date-scope correction with a matching selected table. D2 retains an intermediate matching table, but the conservative datetime rule rejects it; the next attempt changes the text boundaries without declaring conversion and regresses numerically. The rule can reject lexical filtering that happens to be correct on this snapshot. It should not be credited as detecting a wrong numerical table at that intermediate attempt.
-
-Report syntax no longer blocks D5 completion, but its full report incorrectly ranks Doctorate above Prof-school, misnames the 11th category and uses unsupported significance language; the reviewer accepts it. D3 review detects a missing hour label but suggests numeric prose and duplicates the issue as a chart problem, triggering replanning. A later internal pass still contains incomplete prose. These problems affect explicit and chart tasks, not only exploration.
-
-D4/full stops when another review cannot be conservatively reserved after 65,551 measured tokens; this is not 100,000 measured tokens consumed. Both D6 recovery conditions initially truncate a report at 6,144 output tokens, costing 315.1 and 297.1 client-call seconds. Recovery produces prose, but full ultimately rejects its unsupported category comparison and sample limitations after correction capacity is exhausted. Report availability improves descriptively while aggregate cost rises and semantic errors persist. Multiple components changed; no single-patch causal benefit or human whole-task pass rate is inferred.
-
-\subsection{Current v31 development checks}\label{current-v31-development-checks}
-
-Source 8d392f7 adds the comparison facts, bounded row catalog, anchored additional review issues and snapshot calendar-membership check. The model/configuration and development tasks remain fixed. All 728 software checks including real Docker pass. Six fixed diagnostics reuse the old D3/D5/D6 calculations: two report drafts bind successfully, while the Adult exploration draft is rejected for comparative prose and a damaged income label. The education draft now binds Prof-school as the maximum and 11th as the minimum, with some duplicated content. All three old reports are accepted by the new reviewer despite their known errors. These probes consume 56,578 tokens and 236.58 client-call seconds; they are not complete task outcomes or a semantic-accuracy estimate.
-
-Reinspection of the saved D2 candidates accepts the intermediate snapshot\textquotesingle s correct month membership and rejects the later boundary regression, without changing the original outcomes. The fixed eighteen-cell cohort is complete: seven failures, seven unverified completions, three internal passes and one budget stop, with 386,010 tokens and 2,583.59 seconds. All 56 protected files and 1,192 run artifacts match recorded hashes, and token ledgers agree. Selected numerical matches on the four explicit/chart tasks are two of four in every condition; this is not a whole-task score. The changes are evaluated together rather than as a single-component causal intervention.
-
-The D3/full and D5/full reports now render actual hour/education labels and correct saved-table extrema, although findings repeat content. D2/full still passes internal checks with an incorrect product-first order; recomputation only certifies its declared plan. D1/full adds its required revenue derivation, then loses it while repairing date scope and stops. Both repair-enabled D6 runs truncate report output twice; the four truncated calls consume 54,822 tokens and 1,373.3 client-call seconds. Format enforcement therefore remains a source of costly failure. No human report scores are inferred from these observations.
-
-\subsection{Targeted plan-repair follow-up}\label{targeted-plan-repair-follow-up}
-
-Source 770de50 adds sparse plan repair and the narrow request-ranking check. Its prespecified D1/D2-by-three-condition grid retains four failures, one unverified completion and one internal pass, consuming 100,034 tokens and 369.56 seconds. D2/full detects the wrong primary order, repairs it and retains a reference-matching table; D1 repair instead generates conflicting update/removal actions and fails. This is targeted validation, not another complete six-task comparison or an exploration score.
-
-Source 3a7623a restricts sparse repair to plans whose required structure, fields and request excerpts already validate; other candidates keep the complete-plan transport. All 775 software checks including real Docker pass. Two prespecified full-condition runs consume 55,111 tokens and 267.31 seconds. D2 again repairs and retains a matching table. D1 preserves its newly added derivation but returns an unchanged date filter; membership checks still detect extra February records and stop it. Thus field preservation does not establish effective correction, and the no-change syntax example may itself influence generation. All terminal outcomes remain separate; the model, sampling, budgets, tasks and references stay fixed.
-
-\subsection{UI integration and export}\label{ui-integration-and-export}
-
-A separate real-Chrome run on source 3a7623a uploads the six-row demo CSV and asks for total rentals, valid count and a weather-grouped bar chart. It completes with no repair in 102.17 seconds, using 18,481 tokens and four tools. The report renders the total and saved extrema with correct labels. Saved tables and plotted arrays match the requested sample: total 152 with six valid observations; Clear 67/3, Misty 28/1 and Rain 57/2. This is one integration case, not a benchmark score or general latency guarantee.
-
-Chrome opens an operating-system Save As dialog that the web connector cannot complete. Automated export checks therefore avoid clicking Download: a local script fetches the media resource already registered by the real result page, checks every ZIP entry against the saved run and writes it locally. All seventy-one entries match and the raw CSV is excluded. Native Save As completion is not claimed. Source b604ea9 shares the bundle builder between UI and verifier; 780 software tests including real Docker pass. This export change does not introduce another model-quality result.
-
-Older 8B/14B cohorts and model-selection diagnostics remain in the archived development ledger with their source, parameters and costs. They are not pooled with the final 9B configuration or presented as a controlled model comparison.
+The forty-two-input, three-condition, two-repeat grid has not yet started. Numerical table matches, chart-array consistency, execution/report availability, repair/regression and all-run token/time costs will be summarized separately. Whole-task explicit and chart passes, exploratory quality and rater agreement require two actual independent human ratings. No pending metric is imputed as zero or replaced by the system\textquotesingle s internal verdict.
 
 \section{Discussion and limitations}\label{discussion-and-limitations}
 
@@ -195,7 +148,7 @@ The architecture separates three checks that are easy to conflate: whether code 
 
 Same-model review can repeat assumptions, miss contradictions, propose incompatible repairs or route a report issue into unnecessary replanning. An internal pass cannot substitute for independent task assessment. Narrow deterministic checks improve specific covered cases while leaving unsupported requests explicit; they do not establish general verification.
 
-The development sample is small, uses one repeat per cell and has been repeatedly inspected during implementation. It cannot establish held-out answer quality, exploration usefulness, human chart legibility or robustness. The initial model-assisted audit missed development/test overlap until actual attempted plans were supplied. Boundary judgments also varied across requests. The revised audit is in progress; no human reference review or human-equivalent review accuracy is claimed. The nine connected test families, and only four exploration-bearing families, limit the strength of resampling intervals. Intended output raters are team members. Sequential task/condition ordering, cache state and hardware load also limit causal latency comparisons; no controlled cold-start study is claimed. Process RSS measurements exclude Metal allocations and the Docker VM.
+The development sample is small, uses one repeat per cell and has been repeatedly inspected during implementation. It cannot establish held-out answer quality, exploration usefulness, human chart legibility or robustness. The initial model-assisted audit missed development/test overlap until actual attempted plans were supplied. Boundary judgments also varied across requests. The revised audit is in progress; no human reference review or human-equivalent review accuracy is claimed. The eight connected test families, and only four exploration-bearing families, limit the strength of resampling intervals. Intended output raters are team members. Sequential task/condition ordering, cache state and hardware load also limit causal latency comparisons; no controlled cold-start study is claimed. Process RSS measurements exclude Metal allocations and the Docker VM.
 
 The remaining evidence is the completed and documented model-assisted reference/family audit, a frozen formal experiment, actual human ratings, and a category-level analysis of quality, recovery/regression, robustness and costs. Correlated errors between language models remain possible; numerical agreement cannot establish that the task itself is valid. The current evidence supports an instrumented prototype and concrete failure/correction cases; it leaves the primary research question open.
 

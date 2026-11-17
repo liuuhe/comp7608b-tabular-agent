@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -11,7 +12,10 @@ ROOT = Path(__file__).resolve().parent
 
 def convert(text):
     # Repository evidence links stay in Markdown; a portable paper uses their readable labels.
-    text = re.sub(r"\[([^\]]+)\]\((?:\.\./)[^)]+\)", r"\1", text)
+    text = re.sub(r"(?<!!)\[([^\]]+)\]\((?:\.\./)[^)]+\)", r"\1", text)
+    # Images are authored relative to DRAFT.md; TeX compiles from report/latex/.
+    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", lambda match:
+                  f"![{match[1]}]({os.path.relpath(ROOT / match[2], ROOT / 'latex')})", text)
     text = text.replace("—", " -- ").replace("–", "--").replace("→", "->")
     parsed = subprocess.run(["pandoc", "--from=gfm", "--to=json"], input=text,
                             text=True, capture_output=True, check=True)
@@ -52,7 +56,7 @@ def main():
     for name, content in parts.items():
         (destination / name).write_text("% Generated from report/DRAFT.md by build_report.py.\n" + content)
     manifest = {
-        "status": "working_draft_formal_evaluation_pending", "source": "report/DRAFT.md",
+        "status": "working_draft_not_final", "source": "report/DRAFT.md",
         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "generator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "pandoc_version": subprocess.check_output(["pandoc", "--version"], text=True).splitlines()[0],

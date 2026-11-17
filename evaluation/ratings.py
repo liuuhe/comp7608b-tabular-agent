@@ -17,7 +17,7 @@ FLAGS = ["causal_overstatement", "clarification_justified"]
 
 def read_sheet(path, expected):
     rows = {}
-    with path.open(newline="") as stream:
+    with path.open(newline="", encoding="utf-8-sig") as stream:
         for row in csv.DictReader(stream):
             key = (row["id"], int(row["finding"]))
             if key in rows or key not in expected:

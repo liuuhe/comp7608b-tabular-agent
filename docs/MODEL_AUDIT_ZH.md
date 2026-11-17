@@ -1,7 +1,7 @@
 # 强模型辅助复核：使用说明
 
 2026-11-17：按用户决定，把“用户逐题人工复核”改为外部强模型辅助复核。
-两位队友在正式实验后独立评分的安排继续保留。API已配置，当前v6三个数据集的
+两位队友在正式实验后独立评分的安排继续保留。API已配置，当前v7全局检查及三个数据集的
 实际开发历史复核均通过，49项题目／参考复核正在运行；冻结、正式实验和人工评分待完成。报告须说明相对proposal的调整，
 不能写成已完成人工独立审核。
 
@@ -19,7 +19,7 @@ API服务商如果使用标准Chat Completions兼容协议即可接入；原生A
 
 1. 本地准备48道题（含6道开发题）及1次全局任务家族检查，共49个模型请求。
 2. 每题只发送题目、字段说明、列名和前三行格式示例；不上传完整CSV，不提供参考答案、
-   参考代码或被测Agent的输出。全局检查发送全部题目与开发／测试划分。
+   参考代码或被测Agent的输出。全局检查发送全部题目与开发／测试划分，以及已封存的实际开发模板。
 3. 强模型检查题意，并为40道有确定参考表的题独立编写Python计算。代码在本地无网络的
    Docker中读取完整CSV，计算结果再按既定容差与参考表比较；有效记录数、排序、原始点
    和重复观察也进入对比。8道探索题检查范围和可评价性，不编造唯一正确答案。
@@ -107,7 +107,7 @@ uv run python -m evaluation.model_audit summary evaluation/private/model-audit-s
 
 ## 当前整批
 
-用户已授权继续处理。当前新版v6已发起49项题目／参考复核；另外三个数据集的真实开发
+用户已授权继续处理。当前新版v7已发起49项题目／参考复核；另外三个数据集的真实开发
 历史复核通过。修改后的题目不沿用旧包的批准。价格尚未配置，美元费用保持未知，
 token及请求耗时照常记录。后续如补录价格，保存独立账本，不改写原请求配置和证据。
 
@@ -115,8 +115,8 @@ token及请求耗时照常记录。后续如补录价格，保存独立账本，
 
 ```bash
 DOCKER_CONTEXT=colima uv run python -m evaluation.model_audit run \
-  evaluation/private/model-audit-sudocode-20261117-v6 --max-calls 49
-uv run python -m evaluation.model_audit summary evaluation/private/model-audit-sudocode-20261117-v6
+  evaluation/private/model-audit-sudocode-20261117-v7 --max-calls 49
+uv run python -m evaluation.model_audit summary evaluation/private/model-audit-sudocode-20261117-v7
 ```
 
 已结束的题会校验其证据后跳过，不额外消费API。默认`--max-calls 1`，整批必须显式放大。
@@ -131,24 +131,23 @@ uv run python -m evaluation.model_audit summary evaluation/private/model-audit-s
 
 ## 全部通过后进入正式实验
 
-必须先完成49项及三个数据集的真实历史复核。v6使用包含格式证据的完成回执，不能
+必须先完成49项及三个数据集的真实历史复核。v7使用包含逐题及历史证据的完成回执，不能
 只用题目文本检查替代实际历史。当前运行中的原始批次不重复启动；完成后检查：
 
 ```bash
-uv run python -m evaluation.audit_completion evaluation/private/model-audit-sudocode-20261117-v6 \
-  --snapshot evaluation/private/model-audit-v6-source-snapshot/snapshot.json \
-  --followups evaluation/private/model-audit-v6-followups \
-  --history evaluation/private/model-audit-v6-history-bundle.json
+uv run python -m evaluation.audit_completion evaluation/private/model-audit-sudocode-20261117-v7 \
+  --snapshot evaluation/private/model-audit-v7-source-snapshot/snapshot.json \
+  --history evaluation/private/model-audit-v7-history-bundle.json
 ```
 
 全部通过后，在同一命令加`--pilot evaluation/runs/qwen35-v33-targeted/cohort.json`和
-`--output evaluation/private/model-review-v6.json`生成回执；如有单独补充请求，还须传入
+`--output evaluation/private/model-review-v7.json`生成回执；如有单独补充请求，还须传入
 真实`--supplements`目录。任何未解决题意／数值／家族问题都会阻止回执。
 
 ```bash
 DOCKER_CONTEXT=colima uv run python -m evaluation.freeze \
-  --config config/development.json --review evaluation/private/model-review-v6.json \
-  --output config/frozen-experiment-model-audit-v6.json
+  --config config/development.json --review evaluation/private/model-review-v7.json \
+  --output config/frozen-experiment-model-audit-v7.json
 ```
 
 冻结保留模型复核类型、配置、请求、全部结果和哈希，不冒充人工复核。

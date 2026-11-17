@@ -6,7 +6,7 @@ not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH
 review with an external strong-model audit, through a configurable third-party/relay API. Two other
 teammates will still rate formal outputs independently (names pending). The API is configured as
 `gpt-6.1-sol`. After actual development-history review identified overlap and inconsistent family
-judgments, tasks were revised before any Qwen test inference. The current v6 history partitions all
+judgments, tasks were revised before any Qwen test inference. The current v7 global audit (with actual history included) and all history partitions
 pass; independent task computations are running. Human ratings and formal inference remain pending. The model-assisted route has a separate receipt
 and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
 
@@ -69,7 +69,7 @@ specifications; `prepare_heldout.py` materializes data and external answers with
 No held-out question has been run through the agent. Family boundaries require actual team review:
 broad development exploration prompts could overlap proposed test questions. Revise or relocate
 overlapping tasks before declaring the split frozen. The revised references are being independently recomputed; no final approval or freeze is yet claimed.
-The current catalog conservatively uses nine connected test families, only four of which contain
+The current catalog conservatively uses eight connected test families, only four of which contain
 exploration tasks. All conditions, repetitions and paired variants stay together within these families;
 small family counts limit uncertainty estimates.
 Numeric-text variants change whitespace representation only and may be inferred automatically by
@@ -132,6 +132,33 @@ references or environment. Historical cohorts without a receipt are not adopted.
 development batches can be checked offline; pending batches need live model/Docker preflight.
 Test batches still require a valid, auditable human or model-assisted review receipt and freeze on every invocation. This is
 batch resumption, not continuation of a partially consumed model call or a failed-run retry.
+
+## Automatic evidence and offline human scoring
+
+After the complete frozen grid finishes, the following read-only analysis checks all saved cohort
+artifact hashes, fixed-grid membership, terminal accounting and caps. It produces explicitly interim
+automatic tables and all-run costs; it does not invent human scores or change the original cohort.
+
+```bash
+DOCKER_CONTEXT=colima uv run python -m scripts.formal_evidence \
+  --root evaluation/runs/formal-qwen35-9b-v7-20261117 \
+  --freeze config/frozen-experiment-model-audit-v7.json \
+  --output evaluation/private/formal-v7-automatic-evidence
+```
+
+After preparing the blind pack below, create its optional offline scoring interface:
+
+```bash
+uv run python -m scripts.rating_viewer evaluation/private/blind-formal-v7/distribute
+```
+
+Each real rater opens `distribute/index.html` and loads their own blank CSV. The page shows anonymous
+questions, documentation, reports, charts and reference previews together with rubric fields. It makes
+no network/model calls and assigns no scores. Raters can save partial or completed UTF-8 CSVs and
+continue later; browser local storage is only a convenience, so they must confirm saved files. Direct
+CSV editing remains supported. CSV quoting, multiline/Chinese notes, zero-versus-blank preservation,
+and compatibility with the Python merge reader are tested. Automated Chrome preview of a local file
+URL was blocked by browser policy; an actual browser UI pass is not claimed.
 
 ## Preparation, freeze and scoring
 

@@ -4,7 +4,8 @@ COMP7608B 课程项目：上传一份 CSV，用自然语言提出问题，返回
 
 **当前为可运行的开发原型。主模型已确定为 Qwen3.5-9B Q4；优先在本机完成开发、评价和报告。**
 11月25日提交；报告沿用proposal模板，最多10页（参考文献不计）。12月1日展示：2分钟pitch＋5–6分钟互动。
-正式 held-out 实验、参考答案独立复核和双人人工评分尚未完成；自动检查通过不等于整题正确。
+参考复核已按用户决定改为外部强模型辅助审计，当前修订题目的逐题复算运行中。
+正式held-out实验与双人人工评分待完成；自动检查通过不等于整题正确。
 
 当前待办、排期及评价取舍统一见[本地完成计划](docs/LOCAL_COMPLETION_PLAN_ZH.md)。
 队友按需参与，阅读[协作入口](docs/TEAM_HANDOFF_ZH.md)；不要求先接手整个项目。
@@ -138,8 +139,8 @@ uv run python evaluation/prepare_heldout.py
 这些命令下载数据并生成**未复核**的参考材料，不会运行模型。已有正式材料时应先阅读
 [评估流程](evaluation/README.md)及[正式实验交接](docs/EXPERIMENT_HANDOFF_ZH.md)，避免覆盖已有工作。
 原proposal计划为30个基础任务和12个变体，三条件、两次重复，共252次运行；当前尚无正式结果。
-建议保留这套自动运行规模；独立复核／双人评分或透明的单人评价路线在
-[本地完成计划](docs/LOCAL_COMPLETION_PLAN_ZH.md)中待定，后者需要显式调整现有评价工具。
+建议保留这套自动运行规模；当前采用外部模型辅助参考审计＋两位队友独立评分，详情见
+[当前评价安排](docs/EVALUATION_NEXT_STEP_ZH.md)。
 
 完整开发历史保存在[原首页存档](docs/README_DEVELOPMENT_HISTORY_ZH.md)。修复前的
 [11月15日本地比较](docs/DEV_LOCAL_COMPARISON_20261115_ZH.md)18次全部终止，四道明确／图表题

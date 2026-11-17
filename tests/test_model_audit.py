@@ -26,6 +26,112 @@ tables = {'audit': counts}
 
 
 @pytest.fixture
+def evidence_addendum(inputs, monkeypatch):
+    from evaluation import audit_family_addendum as addendum
+    from evaluation import audit_history
+    from evaluation.audit_followup import snapshot_sources
+
+    def unresolved(config, system, payload, schema):
+        result = transport(config, system, payload, schema)
+        if payload["job_id"] == "families":
+            result["parsed"]["assessments"][0]["status"] = "uncertain"
+            result["parsed"]["issues"] = [{"severity": "blocking",
+                                             "detail": "Actual history missing in this request"}]
+        return result
+
+    run(inputs["pack"], max_calls=10, transport=unresolved, executor=Executor())
+    original_hash = digest(inputs["pack"] / "results/families/outcome.json")
+    base = inputs["pack"].parent
+    root = base / "actual-dev"
+    write_json(root / "run/evaluation.json", {"split": "dev", "task": "D1",
+                                             "score": "PRIVATE_SCORE"})
+    write_json(root / "run/attempt-00/plan.json", {"analyses": [{
+        "operation": "mean", "column": "x", "group_by": ["Country"]}]})
+    prepare_history = audit_history.prepare
+    monkeypatch.setattr(audit_history, "prepare", lambda pack, output: prepare_history(
+        pack, output, root=root, additional_root=base / "empty-app"))
+    part = base / "history"
+    audit_history.prepare(inputs["pack"], part)
+    audit_history.run(part, transport)
+    bundle = base / "bundle.json"
+    audit_history.combine(inputs["pack"], [part], [], bundle)
+    destination = base / "addendum"
+    addendum.prepare(inputs["pack"], destination)
+    snapshot = base / "source-snapshot"
+    snapshot_sources(inputs["pack"], snapshot)
+    return {**inputs, "addendum": destination, "history": bundle,
+            "snapshot": snapshot / "snapshot.json", "original_hash": original_hash}
+
+
+def test_family_evidence_addendum_retains_original_and_supports_freeze(evidence_addendum):
+    from evaluation import audit_family_addendum as addendum
+    from evaluation import audit_history
+
+    case = evidence_addendum
+    request = read_json(case["addendum"] / "request.json")
+    assert "PRIVATE_SCORE" not in json.dumps(request)
+    assert request["payload"]["original_unresolved_global_audit"]["issues"][0][
+        "severity"] == "blocking"
+    audit_history.run(case["addendum"], transport)
+    kwargs = {key: case[key] for key in ["pack", "snapshot", "history", "addendum"]}
+    result = addendum.inspect(**kwargs, followups=None, supplements=None)
+    assert result["status"] == "passed" and result["calls"] == 6
+    original = case["pack"] / "results/families/outcome.json"
+    assert digest(original) == case["original_hash"]
+    assert read_json(original)["status"] == "needs_attention"
+    pilot = pilot_for(case)
+    artifact = pilot.parent / "pilot-run/evidence.json"
+    write_json(artifact, {"development_only": True})
+    cohort = read_json(pilot)
+    cohort["completed"]["cell"] = {
+        "directory": "pilot-run", "artifact_sha256": {"evidence.json": digest(artifact)}}
+    write_json(pilot, cohort)
+    receipt = pilot.parent / "addendum-receipt.json"
+    addendum.receipt(**kwargs, followups=None, supplements=None, pilot=pilot, output=receipt)
+    protocol, evidence = validate_review(receipt, case["agent"], case["tasks"])
+    assert protocol["type"] == "model_assisted" and not protocol["human_reference_review"]
+    assert original.resolve() in evidence
+    with pytest.raises(ValueError, match="already started"):
+        audit_history.run(case["addendum"], transport)
+
+
+@pytest.mark.parametrize("failure", ["uncertain", "missing_history", "numeric_mismatch"])
+def test_family_addendum_cannot_waive_unresolved_or_omitted_evidence(evidence_addendum, failure):
+    from evaluation import audit_family_addendum as addendum
+    from evaluation import audit_history
+
+    case = evidence_addendum
+    def response(config, system, payload, schema):
+        result = transport(config, system, payload, schema)
+        if failure == "uncertain":
+            result["parsed"]["assessments"][0]["status"] = "uncertain"
+        return result
+
+    if failure == "missing_history":
+        path = case["addendum"] / "request.json"
+        request = read_json(path)
+        request["payload"]["actual_development_templates"] = []
+        write_json(path, request)
+        path = case["addendum"] / "provenance.json"
+        provenance = read_json(path)
+        provenance["request_sha256"] = digest(case["addendum"] / "request.json")
+        write_json(path, provenance)
+    audit_history.run(case["addendum"], response)
+    if failure == "numeric_mismatch":
+        path = case["pack"] / "results/T1"
+        outcome = read_json(path / "outcome.json")
+        outcome["status"] = "needs_attention"
+        write_json(path / "outcome.json", outcome)
+    kwargs = {key: case[key] for key in ["pack", "snapshot", "history", "addendum"]}
+    if failure == "uncertain":
+        assert addendum.inspect(**kwargs, followups=None, supplements=None)[
+            "status"] == "incomplete_or_unresolved"
+    else:
+        with pytest.raises(ValueError, match="all original tasks and actual history|Only the original"):
+            addendum.inspect(**kwargs, followups=None, supplements=None)
+
+
+@pytest.fixture
 def inputs(tmp_path):
     data, docs = tmp_path / "data.csv", tmp_path / "docs.txt"
     data.write_text("Country,x\nA,1\nA,2\nB,3\n")
@@ -108,6 +214,31 @@ def test_preparation_is_blind_and_does_not_mark_references_reviewed(inputs):
     assert "PRIVATE_SENTINEL" not in family_prompt and "reference_spec" not in family_prompt
     assert not read_json(inputs["references"] / "T1.json")["independently_reviewed"]
     assert summary(inputs["pack"])["calls_started"] == 0
+
+
+def test_initial_family_request_can_include_verified_actual_history(inputs):
+    from evaluation.audit_history import prepare as prepare_history
+
+    base = inputs["pack"].parent
+    root = base / "history-dev"
+    write_json(root / "run/evaluation.json", {"task": "D1", "score": "PRIVATE_SCORE"})
+    plan = root / "run/attempt-00/plan.json"
+    write_json(plan, {"analyses": [{"operation": "ratio", "column": "x",
+                                   "other_column": "x", "group_by": ["Country"]}]})
+    history = base / "initial-history"
+    prepare_history(inputs["pack"], history, root, additional_root=base / "empty")
+    fresh = base / "audit-with-history"
+    prepare(fresh, [inputs["tasks"]], inputs["config"], inputs["agent"],
+            inputs["references"], family_history=history)
+    request = read_json(fresh / "requests/families.json")
+    assert request["payload"]["actual_development_templates"][0]["analysis"][
+        "operation"] == "ratio"
+    assert "PRIVATE_SCORE" not in json.dumps(request) and "PRIVATE_SENTINEL" not in json.dumps(request)
+    assert str(plan.resolve()) in read_json(fresh / "manifest.json")["input_hashes"]
+    plan.write_text("Changed actual exposure")
+    with pytest.raises(ValueError, match="history evidence changed"):
+        prepare(base / "must-not-prepare", [inputs["tasks"]], inputs["config"], inputs["agent"],
+                inputs["references"], family_history=history)
 
 
 def test_call_cap_resume_and_costs_include_all_responses(inputs):

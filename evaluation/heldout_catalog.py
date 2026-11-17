@@ -141,12 +141,12 @@ def catalog():
         "of totals from means of hourly fractions; do not replace this with total-demand "
         "means or a temporal record-coverage analysis. Avoid causal claims.")
 
-    add("A01", "adult", "adult_weight_summary", "explicit",
-        "Sum fnlwgt by sex, including valid fnlwgt observation counts. Drop missing sex "
-        "and fnlwgt; sort sex ascending. fnlwgt is the supplied final survey weight, "
-        "not income, record count or a monetary amount. Report sums of the supplied "
-        "weights without claiming a population-size estimate.",
-        operation="sum", column="fnlwgt", groups=["sex"])
+    add("A01", "adult", "adult_capital_loss", "explicit",
+        "Sum capital-loss by sex, including valid capital-loss observation counts. "
+        "Keep zero losses, drop missing sex or capital-loss, and sort sex ascending. "
+        "Use unweighted observed capital-loss amounts, not loss-bearing record counts, "
+        "capital-gain or fnlwgt. Describe this sample without population estimates.",
+        operation="sum", column="capital-loss", groups=["sex"])
     add("A02", "adult", "adult_capital_loss", "explicit",
         "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, "
         "over complete loss/gain pairs. Include paired valid counts, including pairs "
@@ -174,12 +174,12 @@ def catalog():
         "include contributing counts. Label the y axis loss-bearing sample records. "
         "Do not plot loss amounts, capital-gain means or population estimates.",
         operation="rows", groups=["workclass"], filters=[("capital-loss", "gt", 0)], chart="bar")
-    add("A06", "adult", "adult_weight_summary", "visualization",
-        "For records with age>=60, line-chart unweighted mean fnlwgt by single-year age, "
-        "sorted age ascending, with valid fnlwgt counts. Label age in years and mean "
-        "supplied final survey weight. Do not bin ages, treat fnlwgt as income, "
-        "or infer a population-size estimate from these means.",
-        operation="mean", column="fnlwgt", groups=["age"],
+    add("A06", "adult", "adult_capital_loss", "visualization",
+        "For records with age>=60, line-chart unweighted mean capital-loss by single-year "
+        "age, sorted age ascending, with valid capital-loss counts. Keep zero losses; "
+        "drop missing age or capital-loss. Label age in years and mean observed capital-loss "
+        "amount. Do not bin ages, use fnlwgt, substitute capital-gain or infer population effects.",
+        operation="mean", column="capital-loss", groups=["age"],
         filters=[("age", "ge", 60)], chart="line")
     add("A07", "adult", "adult_oldest_age_distribution", "visualization",
         "For age>=80, histogram every nonmissing age using 10 equal-width bins; no sampling. "
@@ -227,7 +227,7 @@ VARIANTS = [
     ("B02", "missing_values", "registered"),
     ("B04", "missing_values", "season"),
     ("B06", "mixed_dates", "dteday"),
-    ("A01", "numeric_strings", "fnlwgt"),
+    ("A01", "numeric_strings", "capital-loss"),
     ("A02", "numeric_strings", "capital-gain"),
     ("A04", "missing_values", "education-num"),
     ("A03", "missing_values", "sex"),

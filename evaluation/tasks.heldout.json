@@ -211,9 +211,9 @@
     "id": "A01",
     "split": "test",
     "dataset": "adult",
-    "family": "adult_weight_summary",
+    "family": "adult_capital_loss",
     "category": "explicit",
-    "question": "Sum fnlwgt by sex, including valid fnlwgt observation counts. Drop missing sex and fnlwgt; sort sex ascending. fnlwgt is the supplied final survey weight, not income, record count or a monetary amount. Report sums of the supplied weights without claiming a population-size estimate.",
+    "question": "Sum capital-loss by sex, including valid capital-loss observation counts. Keep zero losses, drop missing sex or capital-loss, and sort sex ascending. Use unweighted observed capital-loss amounts, not loss-bearing record counts, capital-gain or fnlwgt. Describe this sample without population estimates.",
     "data_path": "data/uci/adult/data.csv",
     "documentation_path": "data/uci/adult/documentation.txt"
   },
@@ -262,9 +262,9 @@
     "id": "A06",
     "split": "test",
     "dataset": "adult",
-    "family": "adult_weight_summary",
+    "family": "adult_capital_loss",
     "category": "visualization",
-    "question": "For records with age>=60, line-chart unweighted mean fnlwgt by single-year age, sorted age ascending, with valid fnlwgt counts. Label age in years and mean supplied final survey weight. Do not bin ages, treat fnlwgt as income, or infer a population-size estimate from these means.",
+    "question": "For records with age>=60, line-chart unweighted mean capital-loss by single-year age, sorted age ascending, with valid capital-loss counts. Keep zero losses; drop missing age or capital-loss. Label age in years and mean observed capital-loss amount. Do not bin ages, use fnlwgt, substitute capital-gain or infer population effects.",
     "chart": "line",
     "data_path": "data/uci/adult/data.csv",
     "documentation_path": "data/uci/adult/documentation.txt"
@@ -421,14 +421,14 @@
     "id": "V09",
     "split": "test",
     "dataset": "adult",
-    "family": "adult_weight_summary",
+    "family": "adult_capital_loss",
     "category": "explicit",
-    "question": "Sum fnlwgt by sex, including valid fnlwgt observation counts. Drop missing sex and fnlwgt; sort sex ascending. fnlwgt is the supplied final survey weight, not income, record count or a monetary amount. Report sums of the supplied weights without claiming a population-size estimate.",
+    "question": "Sum capital-loss by sex, including valid capital-loss observation counts. Keep zero losses, drop missing sex or capital-loss, and sort sex ascending. Use unweighted observed capital-loss amounts, not loss-bearing record counts, capital-gain or fnlwgt. Describe this sample without population estimates.",
     "data_path": "evaluation/private/datasets/V09/data.csv",
     "documentation_path": "evaluation/private/datasets/V09/documentation.txt",
     "paired_with": "A01",
     "variant": "numeric_strings",
-    "variant_column": "fnlwgt"
+    "variant_column": "capital-loss"
   },
   {
     "id": "V10",

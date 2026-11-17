@@ -70,7 +70,7 @@ def locked(pack):
 
 
 def prepare(output, task_files, config_path, executor_path,
-            references=Path("evaluation/private/references")):
+            references=Path("evaluation/private/references"), family_history=None):
     if output.exists():
         raise ValueError("Choose a new audit directory; preserve previous work")
     config = JudgeConfig.model_validate(read_json(config_path))
@@ -127,6 +127,26 @@ def prepare(output, task_files, config_path, executor_path,
             if not base or any(task.get(key) != base.get(key) for key in ["family", "split"]):
                 prechecks.append(f"{task['id']}: missing paired task or inconsistent family/split")
     family_payload["deterministic_issues"] = prechecks
+    if family_history:
+        provenance = read_json(family_history / "provenance.json")
+        source_request = family_history / "request.json"
+        if digest(source_request) != provenance["request_sha256"]:
+            raise ValueError("Actual development-history request changed")
+        for name, expected in provenance["file_hashes"].items():
+            if digest(Path(name)) != expected:
+                raise ValueError("Actual development-history evidence changed")
+            files.add(Path(name))
+        files.update([source_request, family_history / "provenance.json"])
+        history_payload = read_json(source_request)["payload"]
+        for key in ["actual_development_templates", "additional_development_questions"]:
+            family_payload[key] = history_payload[key]
+        family_payload["history_scope"] = {
+            key: provenance[key] for key in ["development_records", "unique_templates"]}
+        family_payload["history_scope"]["ratio_definition"] = (
+            "The agent's ratio operation means sum(column)/sum(other_column), "
+            "over paired observations. Failed attempted ratios count as development "
+            "exposure, including their grouped sum intermediates. Direct fnlwgt "
+            "sum/mean test tasks have therefore been removed from this revision.")
     snapshot = {str(path.resolve()): digest(path) for path in sorted(files)}
     output.mkdir(parents=True)
     requests = {}
@@ -412,6 +432,8 @@ def main():
     prep.add_argument("--agent-config", type=Path, default=Path("config/development.json"))
     prep.add_argument("--tasks", nargs="+", type=Path, default=[
         Path("evaluation/tasks.json"), Path("evaluation/tasks.heldout.json")])
+    prep.add_argument("--family-history", type=Path,
+                      help="Previously hash-recorded actual development-history request directory")
     execute = sub.add_parser("run", help="Explicit API calls, at most --max-calls per invocation")
     execute.add_argument("pack", type=Path)
     execute.add_argument("--ids", nargs="+")
@@ -427,7 +449,8 @@ def main():
     preview.add_argument("--id", required=True)
     args = parser.parse_args()
     if args.command == "prepare":
-        result = prepare(args.output, args.tasks, args.judge_config, args.agent_config)
+        result = prepare(args.output, args.tasks, args.judge_config, args.agent_config,
+                         family_history=args.family_history)
     elif args.command == "run":
         result = run(args.pack, args.ids, args.max_calls)
         write_summary(args.pack)

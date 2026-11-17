@@ -122,6 +122,39 @@ def test_completed_resume_is_offline_and_does_not_duplicate_outputs(project, mon
     assert {p.name: cohort.artifact_hashes(p) for p in Path("batch").iterdir() if p.is_dir()} == before
 
 
+def test_formal_automatic_evidence_is_read_only_and_retains_failures(project, monkeypatch):
+    from evaluation import freeze
+    from scripts import formal_evidence
+
+    invoke, calls, _ = project
+    Path("evaluation").mkdir()
+    Path("evaluation/run.py").write_bytes(run.RUNNER_SOURCE)
+    tasks = read_json(Path("tasks.json"))
+    tasks[0]["split"] = "test"
+    write_json(Path("tasks.json"), tasks)
+    frozen = {"task_ids": ["SYNTHETIC"], "conditions": ["one_shot", "no_verification", "full"],
+              "repetitions": 1, "config_sha256": digest(Path("config.json")),
+              "tasks_sha256": digest(Path("tasks.json"))}
+    write_json(Path("freeze.json"), frozen)
+    monkeypatch.setattr(freeze, "validate_freeze", lambda *args: frozen)
+    monkeypatch.setattr(formal_evidence, "validate_freeze", lambda *args: frozen)
+    invoke("--split", "test", "--freeze", "freeze.json")
+    before = cohort.artifact_hashes(Path("batch"))
+    result = formal_evidence.create(Path("batch"), Path("freeze.json"), Path("config.json"),
+                                    Path("tasks.json"), Path("auto-evidence"))
+    assert result["status"] == "human_ratings_pending" and result["runs"] == 3
+    assert len(calls) == 3 and before == cohort.artifact_hashes(Path("batch"))
+    summary = read_json(Path("auto-evidence/summary-interim.json"))
+    assert summary["analysis_status"] == "interim" and summary["fully_human_rated_count"] == 0
+    counts = read_json(Path("auto-evidence/automatic-counts.json"))
+    assert counts[0]["terminal_statuses"] == {"failed": 1} and counts[0]["total_tokens"] == 10
+    Path("batch/synthetic-01/data.csv").write_text("tampered")
+    with pytest.raises(ValueError, match="artifact changed"):
+        formal_evidence.create(Path("batch"), Path("freeze.json"), Path("config.json"),
+                               Path("tasks.json"), Path("must-not-exist"))
+    assert not Path("must-not-exist").exists()
+
+
 def test_starting_again_without_resume_is_rejected_before_inference(project):
     invoke, calls, _ = project
     invoke()

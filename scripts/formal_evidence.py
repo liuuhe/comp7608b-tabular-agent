@@ -110,6 +110,7 @@ def markdown(rows, audit, records):
                      f"{row['runs']} | {numerical} | {row['report_available']}/{row['runs']} | "
                      f"{row['total_tokens']:,} | {seconds} |")
     lines += ["", "两次重复先在每题内平均；完整网格下上表分数等价于各输入等权的平均。",
+              "匹配表示最终所选候选至少一张表完整符合参考，不保证额外分析或文字解释正确。",
               "探索题只统计可用性与成本，正确性、证据支撑及实用性等待真实人工评分。", "",
               "| 条件 | failed | budget_exhausted | completed_unverified | checks_passed | needs_clarification |",
               "| --- | ---: | ---: | ---: | ---: | ---: |"]
@@ -150,6 +151,10 @@ def create(root, freeze, config, tasks, output):
         "status": "automatic_results_only_human_ratings_pending", "cohort": str(root.resolve()),
         "cohort_sha256": audit["cohort_sha256"], "freeze": str(freeze.resolve()),
         "freeze_sha256": audit["freeze_sha256"], "analyzer_sha256": digest(Path(__file__)),
+        "analysis_sources": {name: digest(Path(__file__).resolve().parents[1] / name) for name in [
+            "scripts/formal_evidence.py", "scripts/formal_details.py", "scripts/formal_secondary.py",
+            "evaluation/summarize.py", "evaluation/development_report.py",
+        ]},
         "outputs": {p.name: digest(p) for p in output.iterdir() if p.is_file()},
     })
     return {"output": str(output), "runs": len(records), "status": "human_ratings_pending"}

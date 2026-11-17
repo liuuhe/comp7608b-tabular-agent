@@ -55,5 +55,5 @@ def numerical_transitions(records):
             counts[f"initial_{first}_final_{last}"] += 1
         output.append({"category": category, "condition": condition, "runs": len(rows),
                        "counts": dict(counts),
-                       "scope": "Numerical table score of first candidate versus selected final output, including unavailable final outputs as recorded failures. An initially matching table need not have had a usable report; this is not human repair or regression success."})
+                       "scope": "Numerical table score of first candidate versus selected final output. Failed or unavailable initial computations score wrong under the frozen evaluator; unavailable final outputs likewise remain recorded failures. An initially matching table need not have had a usable report; this is not human repair or regression success."})
     return output

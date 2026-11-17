@@ -43,8 +43,8 @@ GUIDE_TEXT = """# Development source snapshot
 This is the runnable source and evaluation tooling for the COMP7608B project.
 It is a development snapshot, not a completed formal study or final submission.
 The model-assisted reference/family audit and formal freeze are complete in the
-original workspace; a 252-run held-out grid is underway, with two independent
-human ratings still pending. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
+original workspace; all 252 held-out runs and automatic integrity checks are
+complete, with two independent human ratings still pending. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
 status and docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
 results are not held-out scores. This source ZIP does not contain the private
 audit, frozen receipt, run artifacts or ratings needed to reproduce those claims.
@@ -75,7 +75,7 @@ Generated analysis code runs only inside Docker. New analyses require the model
 and Docker services. The default config uses Qwen3.5-9B Q4 with thinking disabled
 in every stage. See README.md and docs/LOCAL_COMPLETION_PLAN_ZH.md for task goals
 and known limits. The original formal source/parameter snapshot is frozen; do not
-change it during that experiment. A new study needs its own review and freeze.
+tune it using formal outcomes. A new study needs its own review and freeze.
 
 ## Restore evaluation inputs
 

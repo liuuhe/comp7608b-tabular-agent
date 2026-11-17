@@ -12,6 +12,9 @@
 
 ## 当前状态与研究材料
 
+- [正式v7自动结果](FORMAL_V7_RESULTS_ZH.md)：252次全网格、数值／成本、变体和失败案例；人工结果待补。
+- [正式评分协调单](RATING_COORDINATION_ZH.md)：分别给两位队友的ZIP及收回CSV后的步骤。
+
 - [v33有效计划局部修复](DEV_VALIDATED_REPAIR_V33_ZH.md)：当前源码、两次定向结果与未解决日期失败。
 - [v32局部计划修复与Top-K检查](DEV_PLAN_REPAIR_V32_ZH.md)：最新源码与定向验证。
 - [v31完整三条件比较](DEV_COMPARISON_V31_ZH.md)：18次终态、失败和成本。
@@ -23,7 +26,7 @@
 - [v30b完整开发结果](DEV_QWEN35_V30B_RESULTS_ZH.md)：18次终态、数值／候选区别、截断和完整成本；不是整题评分。
 - [v29 Qwen3.5-9B研究](DEV_QWEN35_V29_ZH.md)：思考／量化诊断、采样传输纠正及固定完整流程。
 - [v28模型选择与接口调整](DEV_MODEL_UPGRADE_V28_ZH.md)：固定模型探针、需求映射、提示精简及真实失败。
-- [工作报告](../report/DRAFT.md)：已有方法和开发结果，尚未定稿。
+- [工作报告](../report/DRAFT.md)：已有方法、自动正式结果和案例，人工结果待补。
 - [开发史工作稿存档](REPORT_DEVELOPMENT_HISTORY_20261116.md)：主报告精简前的历史记录；不作为最终10页报告。
 - [修复前完整开发比较](DEV_LOCAL_COMPARISON_20261115_ZH.md)：11月15日18次运行、浏览器失败与修复顺序。
 - [v27审查与恢复](DEV_REVIEW_ROUTING_V27_ZH.md)：额外问题名解码约束、确定性失败先修复与完整流程验收。

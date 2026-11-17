@@ -38,6 +38,19 @@ def convert(text):
     rendered = rendered.replace("\\endhead\n", "")
     rendered = rendered.replace("\\bottomrule\\noalign{}\n\\endlastfoot\n", "")
     rendered = rendered.replace("\\end{longtable}", "\\bottomrule\n\\end{tabular}\n\\end{table}")
+    # Keep each authored caption inside its float so it cannot precede a table
+    # left at the top of the next page. Pandoc emits these as plain paragraphs.
+    rendered = re.sub(
+        r"\\end\{table\}\n\}\n\n(\\textbf\{Table \d+\.\}[^\n]+)",
+        lambda match: "\\par\\smallskip\n\\begin{minipage}{\\linewidth}\\small\n"
+        + match[1] + "\n\\end{minipage}\n\\end{table}\n}", rendered,
+    )
+    rendered = re.sub(
+        r"(\\pandocbounded\{\\includegraphics[^\n]+\})\n\n(\\textbf\{Figure \d+\.\}[^\n]+)",
+        lambda match: "\\begin{figure}[htbp]\\centering\n" + match[1]
+        + "\n\\par\\smallskip\n\\begin{minipage}{\\linewidth}\\small\n"
+        + match[2] + "\n\\end{minipage}\n\\end{figure}", rendered,
+    )
     return rendered
 
 

@@ -1,18 +1,49 @@
 # 开发源码包
 
-2026-11-17更新：v7参考／家族／实际开发历史审计通过，正式252次网格已冻结并运行。
-下述v33和v25是历史交付快照，不包含最新审计及离线评分工具；新的源码包将在正式
-运行完成、自动统计和报告更新后生成并独立解压验证。源码包始终与私有运行／审计
-证据分开，不能只凭解压源码重现原实验结果。
+更新：2026-11-18。v7正式252次推理、自动完整性检查和自动结果报告已完成；
+两位真实评分仍待完成，所以当前源码包不是已完成研究或最终提交。
+本轮候选包已独立解压、新建环境并按锁文件安装；856项测试（含真实Colima Docker）
+及Ruff通过，未调用模型，未改主项目冻结环境。
+源码始终与私有运行、审计和评分证据分开；仅解包源码不能重现原实验成绩。
 
-## v7源码预验收
+## v7自动结果阶段源码快照
 
-2026-11-17，新源码预验收包独立解压到`.cache/source-formal-v7-portability`，
-新建环境并按锁文件安装成功；导入路径指向解包目录，853项测试（含真实Colima
-Docker）和Ruff通过，未调用模型。主项目冻结环境未改动。回执：
-`evaluation/private/source-formal-v7-portability-20261117.json`。
-这验证源码可运行，不替代原始审计／正式结果证据。正式运行结束后更新文档与报告的
-最终源码包仍需逐文件比较、清单校验和重打包一致性检查。
+文件：`dist/tabular-agent-source-formal-v7-20261118.zip`。
+它包含最新自动结果、匿名评分工具、报告源码和当前说明；人工结果尚未生成。
+独立验收目录`.cache/source-formal-v7-final-portability`，导入路径已确认指向解包src，
+856项检查耗时29.36秒。安装、测试、Ruff及清单比对回执保存在
+`evaluation/private/source-formal-v7-final-validation-20261118.json`。
+
+最终包相对通过测试的候选包仅更新本文和状态文档，源码／配置／锁文件／测试逐项一致；
+另做完整清单、敏感文件排除、解压内容与当前文件一致性，以及解包重建字节一致性检查。
+报告工作稿8页正文、1页参考文献，逐页渲染检查；生成PDF／PPTX保留本机，不进入源码包。
+冻结保护的1,691个文件均未变。此包不是原始研究证据归档或含人工结果的最终提交。
+
+## 当前内容与排除范围
+
+包含应用、LangGraph控制器、Docker worker、评估／复核／盲评工具、测试、锁文件、
+9B默认和历史配置、小型demo、UCI来源和字段说明、报告LaTeX及Markdown、自动结果图和说明。
+排除.env和密钥、虚拟环境、模型缓存、完整UCI下载、私有参考／评分／运行及生成PDF/PPTX。
+课程PDF和proposal保留本机；包内START_HERE.md说明恢复与限制。
+
+打包只用Python标准库；固定条目顺序、时间和权限，未变输入生成相同字节。
+SOURCE_MANIFEST.json记录每个文件的大小和SHA-256；拒绝覆盖、符号链接、异常路径、
+篡改、重复或缺少条目。哈希检测内容变化，不是数字签名。
+
+```bash
+python3 scripts/package_project.py --output dist/new-source.zip
+python3 scripts/package_project.py --verify dist/new-source.zip
+```
+
+解压后uv sync --frozen --extra dev安装。真实Colima测试先创建.cache，再使用
+目录内--basetemp，避免macOS临时目录挂载问题。新机器按自身Docker引擎设置context。
+重建参考不等于重放已完成的独立审计；新实验仍需真实复核和冻结。
+
+## 11月17日预验收（历史）
+
+.cache/source-formal-v7-portability的新环境按锁文件安装成功，853项测试（含真实Colima
+Docker）和Ruff通过。它早于最新的成本详情／报告工具，不能代替本轮最终包验收。
+回执evaluation/private/source-formal-v7-portability-20261117.json保留。
 
 ## 历史v33快照
 

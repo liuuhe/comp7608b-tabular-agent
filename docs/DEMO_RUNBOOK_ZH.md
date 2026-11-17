@@ -5,7 +5,7 @@
 
 ## 当前可复用的验收证据
 
-最后一次真实浏览器小例使用源码e655733（v30b），不是此后代码的浏览器验收。
+以下先保留v30b历史小例；当前v33集成验收见本节后半。
 上传data/demo_rentals.csv，说明每行是样本中的一个观测小时，只描述该小样本。
 问题为：
 
@@ -52,47 +52,35 @@ uv run python scripts/verify_export.py \
 
 ## 两分钟pitch文字草稿
 
-11月17日已生成3页可编辑草稿`report/pitch/pitch-v7-draft.pptx`，包含讲者备注。
-新slides按0:00–0:30、0:30–1:15、1:15–1:50编排；实际讲述需计时。
-最后一页当前标明正式运行中／双人评分待完成，完整结果出来后更新。
-页面使用真实开发示例截图，不能把该截图当正式质量成绩。
-本机Artifact Session暂不可用，已用官方Artifact Tool生成并通过结构、字体及布局检查；
-已逐页检查渲染图，尚未在PowerPoint内实际播放。
+11月18日已生成3页可编辑工作稿`report/pitch/pitch-v7-automatic-results.pptx`，包含讲者备注。
+0:00–0:30讲问题和真实页面，0:30–1:15讲验证与预算，1:15–1:50讲自动结果和代价。
+页面和表格已渲染检查，结构／字体／布局验证通过；尚未在PowerPoint内实际播放。
+最终人工结果完成后仍需更新第三页及备注，全员实际计时，目标1分50秒内讲完。
 
-
-以下按当前开发证据写成，正式结果产生后更新第三段。约220个英文词；需要实际计时，
-目标讲完不超过1分50秒，为切页／停顿留缓冲。现有10页历史slides只作素材。
-
-**0:00–0:20 — Problem.**
+**0:00–0:30 — Problem and system.**
 
 Our project lets a user upload one CSV and ask for statistics, charts, or exploratory findings.
-The difficult part is deciding whether the answer follows the requested scope and the computed
-evidence. A program can run successfully and still answer the wrong question.
+A program can run successfully and still answer the wrong question. We run a quantized nine-billion-
+parameter model locally, with LangGraph managing the workflow and Docker executing generated code.
+This screenshot is a real small integration example: 152 rentals over six observations.
 
-**0:20–1:00 — System.**
+**0:30–1:15 — Verification and budgets.**
 
-We run a quantized nine-billion-parameter model locally. The agent profiles the table, plans
-analyses, generates aggregation code, and executes it inside Docker. Shared helpers apply the
-declared preprocessing. Reports select computed facts with their labels and valid sample counts.
-In the full condition, separate CSV calculations check supported results before reporting, and
-another call to the same model reviews the answer. Corrections have fixed tool, token, and retry
-budgets. We compare this with one-shot generation and error recovery without verification.
+The full condition checks supported calculations using separate CSV recomputation. It also checks
+some narrow request constraints. Reports bind selected facts to saved values, labels and valid counts.
+After deterministic checks pass, another call to the same model reviews the report. Feedback can
+repair the plan, code or report. Each run has fixed tool, token and correction limits. The reviewer
+can still share the generator's assumptions, so an internal pass is not a guarantee of task success.
 
-**1:00–1:35 — Evidence and limitation.**
+**1:15–1:50 — Evidence and limitation.**
 
-Our development runs show why these checks must be separated. A revenue calculation followed
-its plan, but the plan compared date strings and selected the wrong month. A targeted check
-triggered a correction and recovered the expected table. However, even internally accepted
-reports can misname a category or overstate a comparison. Same-model review is useful feedback,
-but it is not an independent guarantee.
+All 252 frozen runs are complete. Full verification increased selected numerical matches from about
+48 to 61 percent for explicit questions and 18 to 50 percent for charts versus one-shot. Error recovery
+alone reached 59 and 43 percent, so the extra gains were smaller. Full used 2.59 times the one-shot
+tokens. Exploration reports remained unreliable. Human whole-task ratings are pending. Next we
+show the local system, its saved evidence and its limits.
 
-**1:35–1:50 — Demo and evaluation status.**
-
-We can demonstrate uploading a CSV, inspecting the plan, tables and chart, and downloading the
-run record. Formal held-out evaluation and human scoring are still pending; these examples are
-development observations rather than final accuracy claims.
-
-正式评价完成后，最后一句必须换成实际状态，不能按这份开发稿宣称成绩。
+以上约250词，讲述速度和切页需实际计时；人工评分完成后把pending换成真实结果。
 
 ## 问答要点
 

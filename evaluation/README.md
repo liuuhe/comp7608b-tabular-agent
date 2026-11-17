@@ -1,4 +1,4 @@
-# Evaluation protocol (development stage)
+# Evaluation protocol and formal v7 status
 
 Planning update, 15 November 2026: run locally under Liu He's lead; handing over the codebase is
 not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH.md) records the
@@ -7,8 +7,9 @@ review with an external strong-model audit, through a configurable third-party/r
 teammates will still rate formal outputs independently (names pending). The API is configured as
 `gpt-6.1-sol`. After actual development-history review identified overlap and inconsistent family
 judgments, tasks were revised before any Qwen test inference. The current v7 global audit (with actual history included) and all history partitions
-pass; independent task computations are complete. The configuration is frozen and the 252-run grid
-is underway. Human ratings remain pending. The model-assisted route has a separate receipt
+pass; independent task computations are complete. The configuration is frozen; all 252 runs and automatic integrity checks are complete.
+Human ratings remain pending. See [automatic results](../docs/FORMAL_V7_RESULTS_ZH.md) and
+[the coordinator handoff](../docs/RATING_COORDINATION_ZH.md). The model-assisted route has a separate receipt
 and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
 
 ## Current reference review route: external model audit
@@ -38,7 +39,7 @@ The [15 November local development cohort](../docs/DEV_LOCAL_COMPARISON_20261115
 contains all 18 terminal observations, including failures, with its archived pre-fix source and candidate
 configuration archived before the later fixes. Selected numerical matches are 3/4, 3/4 and 4/4; full has three internal passes
 and two matching visualization candidates whose workflows still fail or exhaust the budget.
-There are no human whole-task scores or held-out inference results. The associated browser smoke
+That historical cohort contains no human whole-task scores or held-out inference results. The associated browser smoke
 with application defaults fails analysis; failure display and the ZIP download are verified.
 
 On 16 November the user selected Qwen3.5-9B Q4 as the main model. The default
@@ -46,7 +47,7 @@ On 16 November the user selected Qwen3.5-9B Q4 as the main model. The default
 is saved as `config/legacy-development-qwen3-8b.json`. Tiers 1/2 prioritize reliable calculations,
 charts and reports. Tier 3 remains an exploration objective with successes, sample limitations
 and failures measured honestly, without requiring perfect completion. The v7 formal source/parameter freeze and model-assisted reference audit are complete;
-the formal grid is underway and human scoring remains pending. Historical cohorts retain their original settings.
+the formal grid is complete and human scoring remains pending. Historical cohorts retain their original settings.
 
 `tasks.json` contains the six proposal development tasks. These are not held-out results.
 `build_references.py` computes independent task-specific answers into ignored `private/` storage.
@@ -64,12 +65,11 @@ nor answers are mounted into its generated-code container or sent to its model/r
 6. Create condition-blind rating packs with
    `uv run python -m evaluation.blind --output evaluation/private/blind-dev-01`.
 
-The draft catalog now contains 30 clean tasks (four explicit, four visualization and two exploration
+The frozen v7 catalog contains 30 clean tasks (four explicit, four visualization and two exploration
 per dataset) plus 12 paired variants. `heldout_catalog.py` defines questions/families and reference
 specifications; `prepare_heldout.py` materializes data and external answers without model calls.
-No held-out question has been run through the agent. Family boundaries require actual team review:
-broad development exploration prompts could overlap proposed test questions. Revise or relocate
-overlapping tasks before declaring the split frozen. The revised references have been independently recomputed and approved through the labeled
+Before formal inference, model-assisted review of actual development plans identified overlap;
+revisions and the operational family policy were completed and audited before freezing. The revised references have been independently recomputed and approved through the labeled
 model-assisted receipt; the v7 configuration is frozen. Original failures and format adaptations remain retained.
 The current catalog conservatively uses eight connected test families, only four of which contain
 exploration tasks. All conditions, repetitions and paired variants stay together within these families;
@@ -101,8 +101,8 @@ are preserved in the run; question.md includes the actual exchange only.
 Human ratings still judge its justification. Explicit/chart task pass cannot override a missing
 required exchange. Terminal clarification has `clarification_task_pass` and separate comparisons,
 with no numerical-answer or whole-answer pass denominator. Existing historical scores are retained;
-the current 42-task held-out draft is unchanged and still expects direct answers throughout. Team
-review must determine any interaction cases/replies before freezing, without tuning on test outputs.
+the frozen 42-task catalog expects direct answers throughout. It does not test the prewritten
+clarification-response workflow; adding interaction cases would require a separate study.
 
 ## Resuming a fixed cohort
 
@@ -186,7 +186,7 @@ question, source documentation, reference formula and full expected table. `chec
 generating this pack does not constitute independent review.
 
 ```bash
-# Only after the actual reviews/pilot are complete; these commands are not run yet.
+# Generic examples for a NEW study after genuine review; do not rerun the completed v7 grid.
 uv run python -m evaluation.freeze --config config/development.json
 uv run python -m evaluation.run --split test --tasks evaluation/tasks.heldout.json \
   --config config/development.json --freeze config/frozen-experiment.json --repeats 2 \
@@ -342,6 +342,11 @@ requires explicit references. Scope/unit truth remains for verification and huma
 documentation is supplied to drafting and the corresponding saved-development probe as well as
 planning/review; all conditions receive identical documentation. Worker contract3 supplies runtime
 metadata df/plan/required_tables/column_types, with all analyses still generated by the model.
+
+## Historical development chronology (superseded by formal v7 status above)
+
+The following records describe the state at each earlier version; their pending/freeze statements
+are historical, not the current evaluation status.
 
 Recent completed development cohorts: pilot-report-contract-v4 (D1–D6/full/one repeat; three internal
 passes) and pilot-representation-v5 (D2/D4/D6/full/one repeat; D2 passes after actual report repair).

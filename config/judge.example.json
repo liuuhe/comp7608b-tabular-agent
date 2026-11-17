@@ -1,0 +1,15 @@
+{
+  "protocol": "chat_completions",
+  "endpoint": "https://api.example.com/v1/chat/completions",
+  "model": "replace-with-provider-model-id",
+  "api_key_env": "JUDGE_API_KEY",
+  "env_file": ".env.judge",
+  "max_output_tokens": 8192,
+  "token_parameter": "max_tokens",
+  "temperature": null,
+  "timeout_seconds": 180,
+  "json_mode": false,
+  "body_options": {},
+  "input_usd_per_million": null,
+  "output_usd_per_million": null
+}

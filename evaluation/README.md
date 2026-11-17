@@ -2,9 +2,36 @@
 
 Planning update, 15 November 2026: run locally under Liu He's lead; handing over the codebase is
 not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH.md) records the
-25 November submission. On 16 November the user selected the original independently reviewed,
-two-rater protocol below; actual personnel, review and ratings remain pending. Current tools implement this
-protocol only; a different protocol needs explicit tool support and honest result labels.
+25 November submission. Updated 17 November: the user replaced the planned per-task human reference
+review with an external strong-model audit, through a configurable third-party/relay API. Two other
+teammates will still rate formal outputs independently (names pending). The API is configured as
+`gpt-6.1-sol`. After actual development-history review identified overlap and inconsistent family
+judgments, tasks were revised before any Qwen test inference. The current v6 history partitions all
+pass; independent task computations are running. Human ratings and formal inference remain pending. The model-assisted route has a separate receipt
+and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
+
+## Current reference review route: external model audit
+
+`uv run python -m evaluation.model_audit --help` supports preparation, exact-request preview,
+bounded API calls, saved status/costs and evidence-backed receipts. Config examples support
+Chat Completions-compatible and Anthropic Messages endpoints without an OpenAI SDK. Keys live
+only in the environment or ignored local env files. The external auditor sees questions, documentation,
+column names and three format-example rows, never existing references or agent outputs. Independent
+generated computations run in the local Docker sandbox and are compared with the complete references.
+A separate global audit includes development exploration prompts and all family/variant assignments.
+Additional partitions review actual attempted development plans, including failures, early records and
+application runs on the same data snapshots. The [operational boundary](family_policy.md) distinguishes
+substantive targets/templates from shared elementary operations. [The audit record](../docs/EVALUATION_AUDIT_20261117_ZH.md)
+retains original failures, conflicting judgments and all pre-test task revisions.
+Ambiguity, differences, unresolved overlap, invalid output or interruption block the model receipt.
+
+This is a recorded revision to the proposal's human reference review, not evidence that models and
+humans have equivalent accuracy. The existing human-review route remains available below. Formal
+outputs still use the existing two-human-rater protocol. Strong-model reference-audit costs stay
+separate from costs of the Qwen system under test. No test question is sent through that system
+while auditing references. Use the new receipt with `--review` when freezing, as shown in the guide.
+
+## Retained development evidence and scoring protocol
 
 The [15 November local development cohort](../docs/DEV_LOCAL_COMPARISON_20261115_ZH.md) now
 contains all 18 terminal observations, including failures, with its archived pre-fix source and candidate
@@ -27,8 +54,8 @@ nor answers are mounted into its generated-code container or sent to its model/r
 
 1. Download data: `uv run python scripts/download_data.py bike adult retail`.
 2. Generate references: `uv run python evaluation/build_references.py`.
-3. Review reference calculations independently with a second team member; current scripts are not
-   a substitute for that review.
+3. Audit reference calculations and task families through the current model-assisted route, or obtain
+   a genuine human-review receipt. Merely rerunning current reference builders is not either review.
 4. Run development tasks in a fresh directory:
    `uv run python evaluation/run.py --split dev --repeats 1 --output evaluation/runs/dev-01`.
 5. Inspect logs, error recovery, hardware memory, latency and actual token use. Fix/freeze model digest,
@@ -41,7 +68,10 @@ per dataset) plus 12 paired variants. `heldout_catalog.py` defines questions/fam
 specifications; `prepare_heldout.py` materializes data and external answers without model calls.
 No held-out question has been run through the agent. Family boundaries require actual team review:
 broad development exploration prompts could overlap proposed test questions. Revise or relocate
-overlapping tasks before declaring the split frozen. All reference answers are still unreviewed.
+overlapping tasks before declaring the split frozen. The revised references are being independently recomputed; no final approval or freeze is yet claimed.
+The current catalog conservatively uses nine connected test families, only four of which contain
+exploration tasks. All conditions, repetitions and paired variants stay together within these families;
+small family counts limit uncertainty estimates.
 Numeric-text variants change whitespace representation only and may be inferred automatically by
 pandas; the other variants introduce mixed unambiguous dates and fixed-position missing entries.
 Do not present development results as held-out performance or tune on the latter.
@@ -69,7 +99,7 @@ are preserved in the run; question.md includes the actual exchange only.
 Human ratings still judge its justification. Explicit/chart task pass cannot override a missing
 required exchange. Terminal clarification has `clarification_task_pass` and separate comparisons,
 with no numerical-answer or whole-answer pass denominator. Existing historical scores are retained;
-the current42-task held-out draft is unchanged and still expects direct answers throughout. Team
+the current 42-task held-out draft is unchanged and still expects direct answers throughout. Team
 review must determine any interaction cases/replies before freezing, without tuning on test outputs.
 
 ## Resuming a fixed cohort
@@ -100,21 +130,26 @@ Partial calls without terminal records stop the batch for audit and preserve the
 they are never silently retried or removed. Resume also rejects changed files, grid, source,
 references or environment. Historical cohorts without a receipt are not adopted. Completed
 development batches can be checked offline; pending batches need live model/Docker preflight.
-Test batches still require valid independent-review/freeze checks on every invocation. This is
+Test batches still require a valid, auditable human or model-assisted review receipt and freeze on every invocation. This is
 batch resumption, not continuation of a partially consumed model call or a failed-run retry.
 
 ## Preparation, freeze and scoring
+
+For the current model-assisted route, follow [MODEL_AUDIT_ZH.md](../docs/MODEL_AUDIT_ZH.md).
+The review template commands immediately below are the alternative **human-review** route;
+do not fill them with model judgments or invented reviewer names.
 
 ```bash
 uv run python evaluation/prepare_heldout.py
 uv run python evaluation/freeze.py --review-template
 ```
 
-The template is `private/review.template.json`. A second team member must inspect the reference
-formulas, data, hashes and family split, then save an actual completed receipt as `private/review.json`.
+The template is `private/review.template.json`. Only use it if explicitly returning to the human-review
+route; name the actual reviewer, inspect formulas/data/hashes/family split, record genuine independent
+checks and save the receipt as `private/review.json`. Merely rerunning the existing builders is insufficient.
 Do not change review flags merely to make the runner proceed. Complete the pilot and select model
 settings before creating a freeze. Freeze validation checks code, libraries' lock file, task/data/docs,
-reviewed answers, model digest, Ollama version, executor image, hardware, actual Python version
+review receipt and answers, model digest, Ollama version, executor image, hardware, actual Python version
 and installed package versions. The frozen protocol also records all task IDs, conditions and repeats.
 
 The readable independent-review pack is `private/reference-review-v1/INDEX.md`: it links each

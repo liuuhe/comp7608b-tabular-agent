@@ -1,7 +1,7 @@
 """Materialize draft test questions, deterministic variants and external references.
 
 No model calls. Independent reference code deliberately does not import agent validators.
-All generated answers remain unreviewed until a second team member checks them.
+Generated answers remain drafts until a recorded human or external-model audit.
 """
 
 import argparse

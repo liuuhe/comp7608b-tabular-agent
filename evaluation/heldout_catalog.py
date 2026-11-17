@@ -33,9 +33,11 @@ def catalog():
         "Drop missing Country and UnitPrice, sort Country ascending. Do not weight by Quantity.",
         operation="mean", column="UnitPrice", groups=["Country"], filters=positive)
     add("R03", "retail", "retail_cancellations", "explicit",
-        "For InvoiceNo starting with C, sum signed Quantity by Country; retain negative signs. "
-        "Include valid Quantity counts, exclude missing Country, sort Country ascending.",
-        operation="sum", column="Quantity", groups=["Country"], filters=cancelled)
+        "For InvoiceNo starting with C, compute unweighted mean UnitPrice by Country. "
+        "Include valid UnitPrice counts, keep zero and negative prices, drop missing "
+        "Country or UnitPrice, and sort Country ascending. UnitPrice is GBP per unit; "
+        "this is a per-line mean of unit prices, not cancellation units or revenue.",
+        operation="mean", column="UnitPrice", groups=["Country"], filters=cancelled)
     add("R04", "retail", "retail_record_activity", "explicit",
         "Count transaction records for each calendar month of 2011, including cancellations "
         "and zero-price rows. Parse InvoiceDate; derive InvoiceMonth (1..12). "
@@ -76,9 +78,11 @@ def catalog():
             ("InvoiceDate", "ge", "2011-04-01"), ("InvoiceDate", "lt", "2011-05-01")],
         chart="scatter", ordered=False)
     add("R09", "retail", "retail_cancellations", "exploration",
-        "Explore cancelled lines (InvoiceNo starts with C): their concentration across Country "
-        "and StockCode and signed Quantity totals. Give up to three traceable findings. "
-        "Distinguish transaction records from distinct invoices, and disclose exclusions.")
+        "Audit cancelled transaction lines (InvoiceNo starts with C): investigate their "
+        "UnitPrice values, including nonpositive prices, and record counts across Country. "
+        "Give up to three traceable findings with valid counts and explicit denominators. "
+        "UnitPrice is GBP per unit; do not substitute Quantity totals or revenue ranking. "
+        "Distinguish transaction records from distinct invoices and disclose exclusions.")
     add("R10", "retail", "retail_prices", "exploration",
         "Investigate unusual UnitPrice patterns in this Retail file, including nonpositive "
         "prices and extreme positive prices. Give up to three useful findings with computed "
@@ -97,10 +101,13 @@ def catalog():
         "Compute the mean normalized humidity hum by season, include valid hum counts and "
         "sort season ascending. Keep hum on the supplied 0..1 scale; summarize observed hours.",
         operation="mean", column="hum", groups=["season"])
-    add("B04", "bike", "bike_record_coverage", "explicit",
-        "Count observed hourly records by yr and season, dropping missing group keys. "
-        "Sort yr then season ascending. Report record counts, not rental totals or day counts.",
-        operation="rows", groups=["yr", "season"])
+    add("B04", "bike", "bike_component_share", "explicit",
+        "By season, compute sum(casual)/sum(cnt) over complete casual/cnt pairs, "
+        "including paired valid counts. Drop missing season; sort season ascending. "
+        "Return fractions, not percentages or means of hourly fractions; a zero "
+        "denominator gives an undefined value. Describe the casual share of rentals "
+        "over observed hours, not temporal record coverage.",
+        operation="ratio", column="casual", other_column="cnt", groups=["season"])
     add("B05", "bike", "bike_component_totals", "visualization",
         "Bar-chart total registered rentals by workingday (0 then 1), include valid counts. "
         "Label y total registered rentals across observed hours, not mean rentals.",
@@ -116,68 +123,98 @@ def catalog():
         "bins; no sampling. Label x rentals per observed hour and y observed hourly records.",
         operation="raw", column="cnt", groups=[],
         filters=[("yr", "eq", 0), ("weathersit", "eq", 3)], chart="histogram", ordered=False)
-    add("B08", "bike", "bike_temperature_pair", "visualization",
-        "For yr=1 and hr=12, scatter-plot all paired nonmissing temp (x) and atemp (y). "
-        "Use normalized scales: temperature/41 and feels-like temperature/50. "
-        "Do not sample or describe either axis as raw Celsius.",
-        operation="raw", column="temp", other_column="atemp", groups=[],
+    add("B08", "bike", "bike_component_share", "visualization",
+        "For yr=1 and hr=12, scatter-plot all paired nonmissing casual (x) and registered "
+        "(y) rental counts. Label each axis rentals per observed hour for its user type. "
+        "Use every complete pair, preserving duplicate observations; do not sample "
+        "or normalize by total cnt. Describe co-variation, without causal claims.",
+        operation="raw", column="casual", other_column="registered", groups=[],
         filters=[("yr", "eq", 1), ("hr", "eq", 12)], chart="scatter", ordered=False)
     add("B09", "bike", "bike_component_totals", "exploration",
         "Explore how casual and registered users contribute to observed bike demand across "
         "workingday categories. Give up to three evidence-grounded findings, distinguish sums "
         "from means and unequal observation counts, and avoid causal claims.")
-    add("B10", "bike", "bike_record_coverage", "exploration",
-        "Inspect coverage of observed hourly records across yr and season. Give up to three "
-        "findings useful before comparing rental totals. Support statements with counts; do "
-        "not infer missing hours or their causes without computing the relevant coverage.")
+    add("B10", "bike", "bike_component_share", "exploration",
+        "Explore casual versus registered contributions to bike rentals across yr and "
+        "season. Give up to three traceable findings about component totals or shares, "
+        "with paired observation counts and explicit denominators. Distinguish ratios "
+        "of totals from means of hourly fractions; do not replace this with total-demand "
+        "means or a temporal record-coverage analysis. Avoid causal claims.")
 
-    add("A01", "adult", "adult_age_income", "explicit",
-        "Compute unweighted mean age by income, including valid age counts. "
-        "Drop missing income, sort income ascending. Describe this sample only.",
-        operation="mean", column="age", groups=["income"])
-    add("A02", "adult", "adult_capital_workclass", "explicit",
-        "Sum capital-gain by workclass with valid capital-gain counts, unweighted. "
-        "Treat ?/blank workclass as missing and drop those group keys; sort workclass ascending. "
-        "Do not treat fnlwgt as income or a multiplier.",
-        operation="sum", column="capital-gain", groups=["workclass"])
-    add("A03", "adult", "adult_household_composition", "explicit",
-        "Count sample records by relationship and sex, unweighted. Drop missing group keys; "
-        "sort relationship then sex ascending. Count records, without deduplicating people.",
-        operation="rows", groups=["relationship", "sex"])
-    add("A04", "adult", "adult_occupation_missingness", "explicit",
-        "Count missing occupation entries by income (? and blanks are missing). "
-        "Also include total sample records in each income group as valid_count. "
-        "Drop missing income, keep rows missing occupation, sort income ascending; unweighted.",
-        operation="missing", column="occupation", groups=["income"])
-    add("A05", "adult", "adult_capital_income", "visualization",
-        "Bar-chart total capital-loss by income, unweighted, with valid capital-loss counts; "
-        "sort income ascending. Label totals rather than average losses; describe this sample.",
-        operation="sum", column="capital-loss", groups=["income"], chart="bar")
-    add("A06", "adult", "adult_older_work", "visualization",
-        "For records with age>=60, draw a line chart of unweighted mean hours-per-week by "
-        "single-year age, sorted age ascending. Include valid hours counts and label weekly "
-        "working hours. Do not bin ages or infer a population retirement effect.",
-        operation="mean", column="hours-per-week", groups=["age"],
+    add("A01", "adult", "adult_weight_summary", "explicit",
+        "Sum fnlwgt by sex, including valid fnlwgt observation counts. Drop missing sex "
+        "and fnlwgt; sort sex ascending. fnlwgt is the supplied final survey weight, "
+        "not income, record count or a monetary amount. Report sums of the supplied "
+        "weights without claiming a population-size estimate.",
+        operation="sum", column="fnlwgt", groups=["sex"])
+    add("A02", "adult", "adult_capital_loss", "explicit",
+        "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, "
+        "over complete loss/gain pairs. Include paired valid counts, including pairs "
+        "with zero values. Treat ?/blank workclass as missing and drop those group keys; "
+        "sort workclass ascending. A zero denominator gives an undefined value. "
+        "This is a ratio of observed capital amounts, not a fraction of people; do not "
+        "use fnlwgt or average person-level ratios.",
+        operation="ratio", column="capital-loss", other_column="capital-gain", groups=["workclass"])
+    add("A03", "adult", "adult_capital_loss", "explicit",
+        "For sample records with capital-loss>0, count records by marital-status and sex, "
+        "unweighted. Drop missing group keys (? and blanks); sort marital-status then sex "
+        "ascending and return observed combinations only. Count loss-bearing records, "
+        "without deduplicating people or summing loss amounts.",
+        operation="rows", groups=["marital-status", "sex"], filters=[("capital-loss", "gt", 0)])
+    add("A04", "adult", "adult_education_mapping", "explicit",
+        "Audit the education-label/code mapping: count unweighted sample records by "
+        "education and education-num, dropping missing group keys (? and blanks). "
+        "Sort education ascending then education-num numerically ascending; return "
+        "observed pairs only. Preserve education labels and treat education-num as "
+        "an ordinal code, not years of schooling. Do not deduplicate repeated records.",
+        operation="rows", groups=["education", "education-num"])
+    add("A05", "adult", "adult_capital_loss", "visualization",
+        "For sample records with capital-loss>0, bar-chart unweighted record counts by "
+        "workclass, sorted workclass ascending. Drop missing workclass (? and blanks); "
+        "include contributing counts. Label the y axis loss-bearing sample records. "
+        "Do not plot loss amounts, capital-gain means or population estimates.",
+        operation="rows", groups=["workclass"], filters=[("capital-loss", "gt", 0)], chart="bar")
+    add("A06", "adult", "adult_weight_summary", "visualization",
+        "For records with age>=60, line-chart unweighted mean fnlwgt by single-year age, "
+        "sorted age ascending, with valid fnlwgt counts. Label age in years and mean "
+        "supplied final survey weight. Do not bin ages, treat fnlwgt as income, "
+        "or infer a population-size estimate from these means.",
+        operation="mean", column="fnlwgt", groups=["age"],
         filters=[("age", "ge", 60)], chart="line")
     add("A07", "adult", "adult_oldest_age_distribution", "visualization",
         "For age>=80, histogram every nonmissing age using 10 equal-width bins; no sampling. "
         "Label age in years and frequency as sample records. Use unweighted counts.",
         operation="raw", column="age", groups=[], filters=[("age", "ge", 80)],
         chart="histogram", ordered=False)
-    add("A08", "adult", "adult_oldest_education", "visualization",
-        "For age>=80, scatter-plot all paired nonmissing age (x) and education-num (y), "
-        "unweighted, without sampling. Label age in years and education-num as an ordinal code. "
-        "Describe associations within this sample only.",
-        operation="raw", column="age", other_column="education-num", groups=[],
-        filters=[("age", "ge", 80)], chart="scatter", ordered=False)
-    add("A09", "adult", "adult_capital_income", "exploration",
-        "Explore capital-gain and capital-loss across income categories in this sample. "
-        "Give up to three useful findings with computed evidence, distinguish totals and means, "
-        "and disclose zero values and sample counts. Use unweighted summaries, no causal claims.")
-    add("A10", "adult", "adult_older_work", "exploration",
-        "For age>=60, explore weekly working hours across sex and workclass categories. "
-        "Give up to three traceable, useful findings with valid counts and missing-group "
-        "handling. Describe unweighted observed records without population or causal claims.")
+    add("A08", "adult", "adult_capital_loss", "visualization",
+        "For records with capital-loss>0, scatter-plot all paired nonmissing fnlwgt (x) "
+        "and capital-loss (y), unweighted and without sampling. Label x supplied final "
+        "survey weight and y capital-loss amount. Preserve duplicate observations. "
+        "Describe association among loss-bearing sample records, not population or "
+        "causal effects; fnlwgt is not income or a monetary amount.",
+        operation="raw", column="fnlwgt", other_column="capital-loss", groups=[],
+        filters=[("capital-loss", "gt", 0)], chart="scatter", ordered=False)
+    add("A09", "adult", "adult_education_mapping", "exploration",
+        "Investigate the correspondence between education labels and education-num "
+        "codes. Give up to three useful findings grounded in counts of observed pairs "
+        "and missing entries. Check whether each observed label maps to one or multiple "
+        "codes and vice versa; describe the actually computed result, without assuming "
+        "the mapping is inconsistent. Codes are ordinal, not years of schooling. "
+        "Do not substitute income, age or working-hours comparisons.")
+    add("A10", "adult", "adult_capital_loss", "exploration",
+        "Investigate capital-loss occurrence in this Adult sample and its joint "
+        "occurrence with positive capital-gain. Give up to three traceable findings "
+        "with unweighted counts and explicit denominators, optionally comparing "
+        "workclass or sex. Distinguish zero values from missing values, loss-bearing "
+        "record counts from loss amounts, and disclose missing-key exclusions. "
+        "Do not substitute mean capital-gain comparisons or make population or causal claims.")
+    # Conservative connected families: exploratory tasks bridge related test templates.
+    # Preserve those dependencies when resampling, even though all are on the test side.
+    for task in tasks:
+        if task["dataset"] == "retail" and task["family"] != "retail_record_activity":
+            task["family"] = "retail_price_cancellation_audit"
+        if task["family"] in {"bike_component_totals", "bike_component_share"}:
+            task["family"] = "bike_component_composition"
     return tasks, specs
 
 
@@ -190,8 +227,8 @@ VARIANTS = [
     ("B02", "missing_values", "registered"),
     ("B04", "missing_values", "season"),
     ("B06", "mixed_dates", "dteday"),
-    ("A01", "numeric_strings", "age"),
+    ("A01", "numeric_strings", "fnlwgt"),
     ("A02", "numeric_strings", "capital-gain"),
-    ("A04", "missing_values", "occupation"),
+    ("A04", "missing_values", "education-num"),
     ("A03", "missing_values", "sex"),
 ]

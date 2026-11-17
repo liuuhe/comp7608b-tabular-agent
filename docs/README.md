@@ -18,6 +18,7 @@
 - [报告源码与编译](../report/README_ZH.md)：Markdown、官方模板和工作PDF。
 
 - [开发状态](PROJECT_STATUS_ZH.md)：实现版本和后续实验缺口。
+- [强模型辅助复核](MODEL_AUDIT_ZH.md)：当前参考复核路线，支持其他厂商／中转API；正式输出仍由两位同学评分。
 - [v30流程收敛](DEV_QWEN35_V30_ZH.md)：报告前计算检查、共享输入准备、事实报告及固定开发验证。
 - [v30b完整开发结果](DEV_QWEN35_V30B_RESULTS_ZH.md)：18次终态、数值／候选区别、截断和完整成本；不是整题评分。
 - [v29 Qwen3.5-9B研究](DEV_QWEN35_V29_ZH.md)：思考／量化诊断、采样传输纠正及固定完整流程。
@@ -44,3 +45,5 @@ GitHub仓库也不包含模型权重或完整UCI数据，恢复方法见首页�
 
 [v25源码包说明](SOURCE_PACKAGE_ZH.md)描述整理前的离线交付快照；该ZIP保持原样，不能当作
 后续修改的源码。当前代码可用`scripts/package_project.py`另外生成新包。
+
+11月17日评价修正与证据边界：[外部复核记录](EVALUATION_AUDIT_20261117_ZH.md)。

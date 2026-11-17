@@ -17,7 +17,7 @@ REQUIRED = {
     "data/demo_rentals.csv", "docker/Dockerfile", "docker/worker.py",
     "src/tabular_agent/__init__.py", "scripts/package_project.py",
     "scripts/download_data.py", "evaluation/README.md", "evaluation/tasks.json",
-    "evaluation/tasks.heldout.json",
+    "evaluation/tasks.heldout.json", "evaluation/family_policy.md",
     "report/DRAFT.md", "docs/PROJECT_STATUS_ZH.md", "docs/README.md", "docs/TEAM_HANDOFF_ZH.md",
 }
 REPORT_SOURCES = {
@@ -42,8 +42,9 @@ GUIDE_TEXT = """# Development source snapshot
 
 This is the runnable source and evaluation tooling for the COMP7608B project.
 It is a development snapshot, not a completed formal study or final submission.
-Independent reference/family review, formal freeze, held-out runs and two human
-ratings remain outstanding. Historical development results are not held-out scores.
+Reference/family audit, formal freeze, held-out runs and two human ratings remain
+outstanding. The current reference route is explicitly model-assisted; see
+docs/MODEL_AUDIT_ZH.md. Historical development results are not held-out scores.
 
 ## Verify and run
 
@@ -123,6 +124,7 @@ def permitted(name):
         "config/model-selection-v28-qwen35-9b.json",
         "config/model-selection-v29-qwen35-9b.json",
         "config/legacy-development-qwen3-8b.json",
+        "config/judge.example.json", "config/judge-anthropic.example.json",
         "config/model-selection-v28-qwen38-27b.json",
     }:
         return True
@@ -151,13 +153,14 @@ def source_paths(root):
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",
         "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
-        "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md",
+        "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md", "evaluation/family_policy.md",
         "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
         "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
         "config/model-selection-v28-qwen35-9b.json",
         "config/model-selection-v29-qwen35-9b.json",
         "config/legacy-development-qwen3-8b.json",
+        "config/judge.example.json", "config/judge-anthropic.example.json",
         "config/model-selection-v28-qwen38-27b.json",
     ]
     for pattern in patterns:
@@ -235,12 +238,14 @@ def verify(path):
             raise ValueError("Archive contents differ from the manifest")
         # Old v25 archives predate the team setup files. Accept that original required
         # shape while requiring the complete current shape for new archives.
-        previous_required = (REQUIRED - {"data/demo_rentals.csv"}) | {"data/tutorial_rentals.csv"}
+        prior_required = REQUIRED - {"evaluation/family_policy.md"}
+        previous_required = (prior_required - {"data/demo_rentals.csv"}) | {"data/tutorial_rentals.csv"}
         legacy_required = (previous_required - {
             "CONTRIBUTING.md", ".gitattributes", ".python-version",
             "docs/README.md", "docs/TEAM_HANDOFF_ZH.md",
         }) | LEGACY_FILES
         if not (REQUIRED | {GUIDE} <= set(expected)
+                or prior_required | {GUIDE} <= set(expected)
                 or previous_required | {GUIDE} <= set(expected)
                 or legacy_required | {GUIDE} <= set(expected)):
             raise ValueError("Source snapshot is missing required files")

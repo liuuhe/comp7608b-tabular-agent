@@ -281,15 +281,21 @@ def test_execution_metrics_count_failed_tools_and_exclude_report_reuse(tmp_path)
 def test_freeze_rejects_runtime_dependency_drift(tmp_path, monkeypatch):
     from evaluation import freeze
 
-    config, tasks, manifest = [tmp_path / name for name in ["config.json", "tasks.json", "freeze.json"]]
+    config, tasks, review, manifest = [tmp_path / name for name in [
+        "config.json", "tasks.json", "review.json", "freeze.json"]]
     write_json(config, {})
     write_json(tasks, [{"id": "T", "split": "test"}])
+    write_json(review, {"protocol": "human", "reviewer": "test reviewer"})
     frozen_environment = {"python": "3.12.0", "installed_packages": {"pandas": "2.3.3"}}
     write_json(manifest, {"status": "frozen", "config_sha256": digest(config),
                "tasks_sha256": digest(tasks), "task_ids": ["T"],
                "conditions": ["one_shot", "no_verification", "full"], "file_hashes": {},
-               "reference_hashes": {}, "environment": frozen_environment})
+               "reference_hashes": {}, "environment": frozen_environment,
+               "review_receipt": str(review), "review_receipt_sha256": digest(review),
+               "reference_review_protocol": {"type": "human", "reviewer": "test reviewer"}})
     monkeypatch.setattr(freeze, "reference_hashes", lambda _: {})
+    monkeypatch.setattr(freeze, "validate_review", lambda *args: (
+        {"type": "human", "reviewer": "test reviewer"}, []))
     monkeypatch.setattr(freeze, "environment", lambda _: {
         **frozen_environment, "installed_packages": {"pandas": "2.4.0"},
     })

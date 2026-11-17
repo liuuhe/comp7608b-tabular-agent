@@ -1,0 +1,14 @@
+{
+  "protocol": "anthropic_messages",
+  "endpoint": "https://api.example.com/v1/messages",
+  "model": "replace-with-provider-model-id",
+  "api_key_env": "JUDGE_API_KEY",
+  "env_file": ".env.judge",
+  "max_output_tokens": 8192,
+  "temperature": null,
+  "timeout_seconds": 180,
+  "body_options": {},
+  "anthropic_version": "2023-06-01",
+  "input_usd_per_million": null,
+  "output_usd_per_million": null
+}

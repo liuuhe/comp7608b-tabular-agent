@@ -1,4 +1,4 @@
-"""Create/validate an experimental freeze after the pilot and independent team review."""
+"""Freeze after a real human review or an explicitly labeled external model audit."""
 
 import argparse
 import os
@@ -58,6 +58,52 @@ def environment(settings):
     }
 
 
+def validate_review(path, config, tasks):
+    review = read_json(path)
+    if review.get("protocol") == "model_assisted":
+        if review.get("contract") == "external-model-audit-with-format-evidence-v1":
+            if __package__:
+                from .audit_completion import validate_receipt as validate_completion
+            else:
+                from audit_completion import validate_receipt as validate_completion
+            receipt = validate_completion(path, tasks, config)
+            report = receipt["report"]
+            return {"type": "model_assisted", "judge": report["judge"],
+                    "human_reference_review": False,
+                    "limitations": report["limitations"]}, [
+                        Path(name) for name in report["file_hashes"]]
+        if __package__:
+            from .model_audit import validate_receipt
+        else:
+            from model_audit import validate_receipt
+        receipt = validate_receipt(path, tasks, config)
+        pack = Path(receipt["pack"])
+        manifest = read_json(pack / "manifest.json")
+        files = [pack / "manifest.json", Path(receipt["pilot_path"])]
+        files += [Path(name) for name in manifest["input_hashes"]]
+        files += [pack / name for name in manifest["request_hashes"]]
+        files += [pack / name for name in receipt["result_hashes"]]
+        return {"type": "model_assisted", "judge": receipt["judge"],
+                "human_reference_review": False,
+                "limitations": receipt["summary"]["limitation"]}, files
+    if review.get("protocol") not in {None, "human"}:
+        raise ValueError("Unknown review protocol; do not treat model output as a human review")
+    if not review.get("reviewer", "").strip() or not review.get("review_date"):
+        raise ValueError("Independent reviewer identity and date are required")
+    if not all(review.get(k) is True for k in [
+        "pilot_completed", "family_split_reviewed", "reference_calculations_reviewed"
+    ]):
+        raise ValueError("Pilot, family split and independent reference reviews remain outstanding")
+    if review["reference_hashes"] != reference_hashes(tasks):
+        raise ValueError("Review does not match the current reference files")
+    for key, source in [("catalog_sha256", "evaluation/heldout_catalog.py"),
+                        ("builder_sha256", "evaluation/prepare_heldout.py")]:
+        if review[key] != digest(Path(source)):
+            raise ValueError("Reference code changed after review")
+    return {"type": "human", "reviewer": review["reviewer"],
+            "human_reference_review": True}, []
+
+
 def validate_freeze(path, config, tasks):
     frozen = read_json(path)
     if frozen.get("status") != "frozen":
@@ -74,6 +120,12 @@ def validate_freeze(path, config, tasks):
             raise ValueError(f"Frozen file changed: {name}")
     if reference_hashes(tasks) != frozen["reference_hashes"]:
         raise ValueError("Reference files changed after review/freeze")
+    receipt_path = Path(frozen["review_receipt"])
+    if digest(receipt_path) != frozen["review_receipt_sha256"]:
+        raise ValueError("Review receipt changed after freeze")
+    review_protocol, _ = validate_review(receipt_path, config, tasks)
+    if review_protocol != frozen["reference_review_protocol"]:
+        raise ValueError("Recorded review protocol changed after freeze")
     current = environment(Settings.model_validate_json(config.read_text()))
     if current != frozen["environment"]:
         raise ValueError("Model, image, hardware, Python or installed packages changed after freeze")
@@ -100,33 +152,24 @@ def main():
         })
         print(f"Review template: {destination}; complete it only after actual independent review.")
         return
-    review = read_json(args.review)
-    if not review.get("reviewer", "").strip() or not review.get("review_date"):
-        raise ValueError("Independent reviewer identity and date are required")
-    if not all(review.get(k) is True for k in [
-        "pilot_completed", "family_split_reviewed", "reference_calculations_reviewed"
-    ]):
-        raise ValueError("Pilot, family split and independent reference reviews remain outstanding")
-    if review["reference_hashes"] != hashes:
-        raise ValueError("Review does not match the current reference files")
-    for key, source in [("catalog_sha256", "evaluation/heldout_catalog.py"),
-                        ("builder_sha256", "evaluation/prepare_heldout.py")]:
-        if review[key] != digest(Path(source)):
-            raise ValueError("Reference code changed after review")
+    review_protocol, evidence = validate_review(args.review, args.config, args.tasks)
     if args.output.exists():
         raise ValueError("Do not overwrite an existing freeze; choose a new output path")
     settings = Settings.model_validate_json(args.config.read_text())
-    files = source_files(args.config, args.tasks) + data_files(args.tasks) + [args.review]
+    files = source_files(args.config, args.tasks) + data_files(args.tasks) + [args.review] + evidence
     write_json(args.output, {
         "status": "frozen", "config_sha256": digest(args.config),
         "tasks_sha256": digest(args.tasks), "reference_hashes": hashes,
         "review_receipt": str(args.review), "review_receipt_sha256": digest(args.review),
+        "reference_review_protocol": review_protocol,
         "file_hashes": {str(p): digest(p) for p in files if p.is_file()},
         "environment": environment(settings), "settings": settings.model_dump(),
         "task_ids": sorted(task["id"] for task in read_json(args.tasks) if task["split"] == "test"),
         "conditions": ["one_shot", "no_verification", "full"],
         "repetitions": 2, "concurrency": 1, "float_rtol": 1e-4, "float_atol": 1e-6,
-        "limitations": "Known datasets and internal raters; not unseen-domain generalization.",
+        "limitations": "Known datasets and internal raters; not unseen-domain generalization. "
+                       + ("External-model reference audit, not human review; correlated model errors remain."
+                          if review_protocol["type"] == "model_assisted" else "Human reference review."),
     })
     print(args.output)
 

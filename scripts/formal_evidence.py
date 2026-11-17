@@ -14,6 +14,7 @@ from evaluation.cohort import Cohort, artifact_hashes
 from evaluation.development_report import stage_diagnostics
 from evaluation.freeze import validate_freeze
 from evaluation.summarize import build_summary, protocol_coverage
+from scripts.formal_details import task_rows, timing_rows, usage_coverage
 from scripts.formal_secondary import numerical_transitions, paired_variants
 from tabular_agent.schemas import Settings
 from tabular_agent.storage import digest, read_json, write_json
@@ -129,17 +130,20 @@ def create(root, freeze, config, tasks, output):
     frozen, records, audit = validate(root, freeze, config, tasks)
     summary = build_summary(records, frozen=frozen, interim=True)
     rows = automatic_rows(records)
+    secondary = {"paired_variants": paired_variants(records),
+                 "numerical_transitions": numerical_transitions(records),
+                 "scope": "Automatic numerical observations only; independent human scores pending."}
+    timing, usage = timing_rows(records), usage_coverage(records)
+    diagnostics = stage_diagnostics(records)
+    diagnostics["scope"] = diagnostics["scope"].replace("development exceptions", "formal-run exceptions")
     output.mkdir(parents=True)
     write_json(output / "integrity.json", audit)
     write_json(output / "summary-interim.json", summary)
     write_json(output / "automatic-counts.json", rows)
-    write_json(output / "secondary-analysis.json", {
-        "paired_variants": paired_variants(records),
-        "numerical_transitions": numerical_transitions(records),
-        "scope": "Automatic numerical observations only; independent human scores pending.",
-    })
-    diagnostics = stage_diagnostics(records)
-    diagnostics["scope"] = diagnostics["scope"].replace("development exceptions", "formal-run exceptions")
+    write_json(output / "secondary-analysis.json", secondary)
+    write_json(output / "timing-breakdown.json", timing)
+    write_json(output / "usage-coverage.json", usage)
+    write_json(output / "per-run-automatic.json", task_rows(records))
     write_json(output / "stage-diagnostics.json", diagnostics)
     (output / "RESULTS_ZH.md").write_text(markdown(rows, audit, records))
     write_json(output / "manifest.json", {

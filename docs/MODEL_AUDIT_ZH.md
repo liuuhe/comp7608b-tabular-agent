@@ -2,7 +2,7 @@
 
 2026-11-17：按用户决定，把“用户逐题人工复核”改为外部强模型辅助复核。
 两位队友在正式实验后独立评分的安排继续保留。API已配置，当前v7全局检查及三个数据集的
-实际开发历史复核均通过，49项题目／参考复核正在运行；冻结、正式实验和人工评分待完成。报告须说明相对proposal的调整，
+实际开发历史复核均通过，49项题目／参考复核已完成；已冻结并启动252次正式实验，人工评分待完成。报告须说明相对proposal的调整，
 不能写成已完成人工独立审核。
 
 ## 新机器需要配置什么
@@ -107,8 +107,8 @@ uv run python -m evaluation.model_audit summary evaluation/private/model-audit-s
 
 ## 当前整批
 
-用户已授权继续处理。当前新版v7已发起49项题目／参考复核；另外三个数据集的真实开发
-历史复核通过。修改后的题目不沿用旧包的批准。价格尚未配置，美元费用保持未知，
+用户已授权继续处理。当前新版v7的49项题目／参考复核已完成；另外三个数据集的真实开发
+历史复核通过。V03/V08的不完整程序和全部补充／格式适配请求均保留，详见审计记录。修改后的题目不沿用旧包的批准。价格尚未配置，美元费用保持未知，
 token及请求耗时照常记录。后续如补录价格，保存独立账本，不改写原请求配置和证据。
 
 下面命令只供原进程结束后的继续操作；程序对已完成题不发新请求：
@@ -129,27 +129,35 @@ uv run python -m evaluation.model_audit summary evaluation/private/model-audit-s
 `evaluation.audit_retry`为已诊断的格式／执行错误单独记录一次补充请求，不提供参考答案反馈。
 数值不匹配、题意问题或家族冲突不能通过这两个入口改成通过；需要修正题目时使用新包。
 
-## 全部通过后进入正式实验
+## 已完成的封存与正式运行
 
-必须先完成49项及三个数据集的真实历史复核。v7使用包含逐题及历史证据的完成回执，不能
-只用题目文本检查替代实际历史。当前运行中的原始批次不重复启动；完成后检查：
+v7已完成，最终回执为`evaluation/private/model-review-v7.json`，冻结文件为
+`config/frozen-experiment-model-audit-v7.json`。本机已开始正式网格，不要重复创建回执、
+冻结或并发启动另一个runner。
+
+原V03/V08占位程序的补充分别留存；V08额外采用一次逐行代码数组协议适配。
+因此这版使用`audit_code_lines`完成回执，保留所有原失败，并重新核对完整数值表，
+而不是把失败标签改成通过。封存前实际执行的命令如下，供审计查阅：
 
 ```bash
-uv run python -m evaluation.audit_completion evaluation/private/model-audit-sudocode-20261117-v7 \
+uv run python -m evaluation.audit_code_lines receipt \
+  --pack evaluation/private/model-audit-sudocode-20261117-v7 \
   --snapshot evaluation/private/model-audit-v7-source-snapshot/snapshot.json \
-  --history evaluation/private/model-audit-v7-history-bundle.json
-```
-
-全部通过后，在同一命令加`--pilot evaluation/runs/qwen35-v33-targeted/cohort.json`和
-`--output evaluation/private/model-review-v7.json`生成回执；如有单独补充请求，还须传入
-真实`--supplements`目录。任何未解决题意／数值／家族问题都会阻止回执。
-
-```bash
+  --supplements evaluation/private/model-audit-v7-supplements \
+  --history evaluation/private/model-audit-v7-history-bundle.json \
+  --lines evaluation/private/model-audit-v7-code-lines \
+  --pilot evaluation/runs/qwen35-v33-targeted/cohort.json \
+  --output evaluation/private/model-review-v7.json
 DOCKER_CONTEXT=colima uv run python -m evaluation.freeze \
   --config config/development.json --review evaluation/private/model-review-v7.json \
   --output config/frozen-experiment-model-audit-v7.json
 ```
 
-冻结保留模型复核类型、配置、请求、全部结果和哈希，不冒充人工复核。
-42题×三条件×两次的网格和双人人工评分见`evaluation/README.md`。
-最终报告记录外部复核服务／返回模型名、全部调用及原始失败、题目修正、边界分歧和限制。
+冻结保留模型复核类型、配置、请求、所有结果和哈希，不冒充人工复核。完成封存的
+传输／回执工具修改有原源码快照，未改被测系统、题目、数据或数值参考。旧包的
+`model_audit summary`会严格拒绝当前源码漂移；封存状态以最终回执和冻结验证为准。
+
+全部修订174次已保存响应的token／未知费用见
+`evaluation/private/external-audit-cost-20261117-complete.json`。
+42输入×三条件×两次的正式命令与双人人工评分见`evaluation/README.md`。
+最终报告记录服务／返回模型ID、全部调用及原失败、题目修正、边界分歧和限制。

@@ -30,7 +30,8 @@
 - [v26定向修复记录](DEV_STABILITY_V26_ZH.md)：逐行代码传输、语法检查、请求求和检查及保留的语义失败。
 - [历史v15比较](DEV_COMPARISON_V15_ZH.md)：原18次结果单独保留。
 - [人工复核与评分](HUMAN_REVIEW_GUIDE.md)：原proposal协议所需工作，可直接在本机完成。
-- [原完整实验协议](EXPERIMENT_HANDOFF_ZH.md)：独立复核后冻结并执行完整网格的命令。
+- [原完整实验协议](EXPERIMENT_HANDOFF_ZH.md)：历史协议和旧命令；当前操作以[评价安排](EVALUATION_NEXT_STEP_ZH.md)为准。
+- [队友最简评分步骤](RATER_QUICKSTART_ZH.md)：离线匿名材料、各自保存CSV；无需接手代码。
 - [演示素材](DEMO_RUNBOOK_ZH.md)：2分钟pitch／互动要求与原本机历史案例。
 
 ## 历史记录
@@ -43,7 +44,7 @@
 这些文件保留在原本机，默认不提交Git。新clone无需这些文件即可安装、测试和分析自己的CSV。
 GitHub仓库也不包含模型权重或完整UCI数据，恢复方法见首页。
 
-[v25源码包说明](SOURCE_PACKAGE_ZH.md)描述整理前的离线交付快照；该ZIP保持原样，不能当作
-后续修改的源码。当前代码可用`scripts/package_project.py`另外生成新包。
+[源码包说明](SOURCE_PACKAGE_ZH.md)记录各次交付快照及独立解压检查；旧ZIP保持原样。
+当前代码可用`scripts/package_project.py`另外生成新包。
 
 11月17日评价修正与证据边界：[外部复核记录](EVALUATION_AUDIT_20261117_ZH.md)。

@@ -7,7 +7,8 @@ review with an external strong-model audit, through a configurable third-party/r
 teammates will still rate formal outputs independently (names pending). The API is configured as
 `gpt-6.1-sol`. After actual development-history review identified overlap and inconsistent family
 judgments, tasks were revised before any Qwen test inference. The current v7 global audit (with actual history included) and all history partitions
-pass; independent task computations are running. Human ratings and formal inference remain pending. The model-assisted route has a separate receipt
+pass; independent task computations are complete. The configuration is frozen and the 252-run grid
+is underway. Human ratings remain pending. The model-assisted route has a separate receipt
 and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
 
 ## Current reference review route: external model audit
@@ -44,8 +45,8 @@ On 16 November the user selected Qwen3.5-9B Q4 as the main model. The default
 `config/development.json` now matches the retained v29 nonthinking policy; the old 8B default
 is saved as `config/legacy-development-qwen3-8b.json`. Tiers 1/2 prioritize reliable calculations,
 charts and reports. Tier 3 remains an exploration objective with successes, sample limitations
-and failures measured honestly, without requiring perfect completion. Formal source/parameter
-freeze and reference/rater work remain pending; historical cohorts keep their original settings.
+and failures measured honestly, without requiring perfect completion. The v7 formal source/parameter freeze and model-assisted reference audit are complete;
+the formal grid is underway and human scoring remains pending. Historical cohorts retain their original settings.
 
 `tasks.json` contains the six proposal development tasks. These are not held-out results.
 `build_references.py` computes independent task-specific answers into ignored `private/` storage.
@@ -53,22 +54,23 @@ The agent sees only the question, dataset documentation and CSV snapshot. Neithe
 nor answers are mounted into its generated-code container or sent to its model/reviewer.
 
 1. Download data: `uv run python scripts/download_data.py bike adult retail`.
-2. Generate references: `uv run python evaluation/build_references.py`.
+2. Generate references: `uv run python -m evaluation.build_references`.
 3. Audit reference calculations and task families through the current model-assisted route, or obtain
    a genuine human-review receipt. Merely rerunning current reference builders is not either review.
 4. Run development tasks in a fresh directory:
-   `uv run python evaluation/run.py --split dev --repeats 1 --output evaluation/runs/dev-01`.
+   `uv run python -m evaluation.run --split dev --repeats 1 --output evaluation/runs/dev-01`.
 5. Inspect logs, error recovery, hardware memory, latency and actual token use. Fix/freeze model digest,
    model options, framework/image versions, tasks, tolerances and budgets before held-out evaluation.
 6. Create condition-blind rating packs with
-   `uv run python evaluation/blind.py --output evaluation/private/blind-dev-01`.
+   `uv run python -m evaluation.blind --output evaluation/private/blind-dev-01`.
 
 The draft catalog now contains 30 clean tasks (four explicit, four visualization and two exploration
 per dataset) plus 12 paired variants. `heldout_catalog.py` defines questions/families and reference
 specifications; `prepare_heldout.py` materializes data and external answers without model calls.
 No held-out question has been run through the agent. Family boundaries require actual team review:
 broad development exploration prompts could overlap proposed test questions. Revise or relocate
-overlapping tasks before declaring the split frozen. The revised references are being independently recomputed; no final approval or freeze is yet claimed.
+overlapping tasks before declaring the split frozen. The revised references have been independently recomputed and approved through the labeled
+model-assisted receipt; the v7 configuration is frozen. Original failures and format adaptations remain retained.
 The current catalog conservatively uses eight connected test families, only four of which contain
 exploration tasks. All conditions, repetitions and paired variants stay together within these families;
 small family counts limit uncertainty estimates.
@@ -111,11 +113,11 @@ with `--resume`; keep the task selection/order, conditions, repeats, config and 
 ```bash
 # First invocation; create the directory so shell redirection can open the logs.
 mkdir -p evaluation/runs/dev-01
-uv run python -u evaluation/run.py --split dev --repeats 1 \
+uv run python -u -m evaluation.run --split dev --repeats 1 \
   --output evaluation/runs/dev-01 \
   > evaluation/runs/dev-01/runner.stdout.jsonl 2> evaluation/runs/dev-01/runner.stderr.log
 # After interruption: append logs rather than truncating them.
-uv run python -u evaluation/run.py --split dev --repeats 1 \
+uv run python -u -m evaluation.run --split dev --repeats 1 \
   --output evaluation/runs/dev-01 --resume \
   >> evaluation/runs/dev-01/runner.stdout.jsonl 2>> evaluation/runs/dev-01/runner.stderr.log
 ```
@@ -167,8 +169,8 @@ The review template commands immediately below are the alternative **human-revie
 do not fill them with model judgments or invented reviewer names.
 
 ```bash
-uv run python evaluation/prepare_heldout.py
-uv run python evaluation/freeze.py --review-template
+uv run python -m evaluation.prepare_heldout
+uv run python -m evaluation.freeze --review-template
 ```
 
 The template is `private/review.template.json`. Only use it if explicitly returning to the human-review
@@ -185,11 +187,11 @@ generating this pack does not constitute independent review.
 
 ```bash
 # Only after the actual reviews/pilot are complete; these commands are not run yet.
-uv run python evaluation/freeze.py --config config/development.json
-uv run python evaluation/run.py --split test --tasks evaluation/tasks.heldout.json \
+uv run python -m evaluation.freeze --config config/development.json
+uv run python -m evaluation.run --split test --tasks evaluation/tasks.heldout.json \
   --config config/development.json --freeze config/frozen-experiment.json --repeats 2 \
   --output evaluation/runs/frozen-test
-uv run python evaluation/blind.py --split test --tasks evaluation/tasks.heldout.json \
+uv run python -m evaluation.blind --split test --tasks evaluation/tasks.heldout.json \
   --root evaluation/runs/frozen-test \
   --output evaluation/private/blind-test-01
 ```
@@ -199,9 +201,9 @@ private. Packs include questions, documentation, anonymized reports/plans/tables
 input data; source paths and verification logs are excluded. Exploration is rated per finding.
 
 ```bash
-uv run python evaluation/ratings.py evaluation/private/blind-test-01
+uv run python -m evaluation.ratings evaluation/private/blind-test-01
 # If raters disagree, record initial agreement first; supply a separately resolved full sheet:
-uv run python evaluation/ratings.py evaluation/private/blind-test-01 --resolved path/to/resolved.csv
+uv run python -m evaluation.ratings evaluation/private/blind-test-01 --resolved path/to/resolved.csv
 ```
 
 Blank ratings are rejected; unresolved outputs do not enter final human-scored outcomes. An absent
@@ -217,12 +219,12 @@ Duplicate runs, mixed code/environment fingerprints and stale rating packs are r
 separate `--output` cohort directory for each pilot; do not combine histories after changing code.
 
 ```bash
-uv run python evaluation/summarize.py --root evaluation/runs/my-pilot
+uv run python -m evaluation.summarize --root evaluation/runs/my-pilot
 # Readable development-only report and resource figure; requires the complete three-condition grid.
-uv run python evaluation/development_report.py --root evaluation/runs/my-pilot \
+uv run python -m evaluation.development_report --root evaluation/runs/my-pilot \
   --repeats 1 --output docs/development-comparison.md
 # Final test aggregation, after all runs and ratings exist:
-uv run python evaluation/summarize.py --split test --root evaluation/runs/frozen-test \
+uv run python -m evaluation.summarize --split test --root evaluation/runs/frozen-test \
   --freeze config/frozen-experiment.json \
   --ratings evaluation/private/blind-test-01/ratings_merged.json
 ```
@@ -244,7 +246,7 @@ separate from execution success and human-rated correctness.
 To isolate report-generation failures from already successful development computations:
 
 ```bash
-uv run python evaluation/probe_draft.py \
+uv run python -m evaluation.probe_draft \
   --candidates evaluation/runs/my-pilot/<run-id>/attempt-00 \
   --config config/development.json --output runs/probe-draft-01
 ```
@@ -309,7 +311,7 @@ The condition-blind pack still excludes verification/model-input artifacts throu
 To diagnose review behavior without rerunning calculations:
 
 ```bash
-uv run python evaluation/probe_review.py \
+uv run python -m evaluation.probe_review \
   --candidates evaluation/runs/my-pilot/RUN_ID/attempt-00 \
   --config config/development.json --output runs/my-review-probe
 ```
@@ -437,3 +439,25 @@ accuracy estimate. Both ledgers/snapshots and153 original-file hashes were check
 The354-test suite including real Docker and Ruff passed. Details: ../docs/DEV_REFERENCE_FEEDBACK_V13_ZH.md.
 Unfilled blind packs exist separately for v12 and v13. Formal reference/family review and two-rater
 scoring remain deferred by the user; no held-out inference or formal freeze has been performed.
+
+## Anonymous offline rating packages
+
+After the complete frozen cohort passes `scripts.formal_evidence`, build a new blind pack
+using `python -m evaluation.blind`, then:
+
+```bash
+uv run python -m scripts.rating_viewer evaluation/private/blind-formal-v7/distribute
+uv run python -m scripts.package_raters evaluation/private/blind-formal-v7 \
+  --output evaluation/private/rater-handoff-formal-v7
+```
+
+Each ZIP includes all anonymous evidence and only its own blank rater CSV. The packager
+never reads `identity_key.json`; it rejects private/unknown files, symbolic links,
+changed raw data, incomplete sheets and preassigned scores. Keep the identity key and
+condition/run metadata local. The generated HTML is an offline convenience; raters can
+also use the CSV and artifact folders directly. CSV saving is a human browser action;
+automation does not click a download button or operate a native Save As dialog.
+
+The analyzer also retains paired variant differences and first-candidate/final numerical
+transitions. These describe numerical tables, including failed final outputs; they are
+not human task-level recovery or regression scores.

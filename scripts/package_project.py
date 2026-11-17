@@ -42,9 +42,12 @@ GUIDE_TEXT = """# Development source snapshot
 
 This is the runnable source and evaluation tooling for the COMP7608B project.
 It is a development snapshot, not a completed formal study or final submission.
-Reference/family audit, formal freeze, held-out runs and two human ratings remain
-outstanding. The current reference route is explicitly model-assisted; see
-docs/MODEL_AUDIT_ZH.md. Historical development results are not held-out scores.
+The model-assisted reference/family audit and formal freeze are complete in the
+original workspace; a 252-run held-out grid is underway, with two independent
+human ratings still pending. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
+status and docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
+results are not held-out scores. This source ZIP does not contain the private
+audit, frozen receipt, run artifacts or ratings needed to reproduce those claims.
 
 ## Verify and run
 
@@ -71,22 +74,26 @@ Example question: "What is the total number of rentals? Report the valid count."
 Generated analysis code runs only inside Docker. New analyses require the model
 and Docker services. The default config uses Qwen3.5-9B Q4 with thinking disabled
 in every stage. See README.md and docs/LOCAL_COMPLETION_PLAN_ZH.md for task goals
-and known limits; the formal evaluation source/parameter snapshot is not frozen.
+and known limits. The original formal source/parameter snapshot is frozen; do not
+change it during that experiment. A new study needs its own review and freeze.
 
 ## Restore evaluation inputs
 
 ```bash
 uv run python scripts/download_data.py bike adult retail
-uv run python evaluation/build_references.py
-uv run python evaluation/prepare_heldout.py
-uv run python evaluation/review_pack.py --output evaluation/private/reference-review-local
+uv run python -m evaluation.build_references
+uv run python -m evaluation.prepare_heldout
+uv run python -m evaluation.review_pack --output evaluation/private/reference-review-local
 ```
 
 The data downloader records source URLs, licenses, transformations and hashes.
 Compare new hashes with the included `data/uci/*/metadata.json`; changed upstream
 content or dependencies require investigation. Rebuilt references remain unreviewed.
-Do not fabricate a review receipt or run a formal study before genuine review.
-Follow evaluation/README.md and docs/EXPERIMENT_HANDOFF_ZH.md afterwards.
+Do not fabricate a review receipt or claim that rebuilding references replays the
+independent audit. A model-assisted or independent-human review must be genuinely
+completed and documented for a new study. Use module entrypoints (`python -m
+evaluation.run`, not `python evaluation/run.py`) for evaluation tools.
+Follow evaluation/README.md and docs/MODEL_AUDIT_ZH.md afterwards.
 
 This ZIP contains source, tests, team setup, documentation, a draft report, tiny example
 data and UCI metadata/field descriptions. It excludes installed dependencies/model

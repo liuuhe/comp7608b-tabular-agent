@@ -1,5 +1,7 @@
 # 已提交 proposal 的逐项验收
 
+> 2026-11-17现状：本表主体是早期v15–v22的逐项验收记录，保留历史原文。此后主模型改为9B Q4，参考复核改为外部模型辅助；v7独立计算及家族／实际开发历史审计通过，正式252次网格已冻结并运行。两位队友独立评分仍待完成。最新实现和证据见[当前评价安排](EVALUATION_NEXT_STEP_ZH.md)、[项目状态](PROJECT_STATUS_ZH.md)，下文旧状态不作为今天的待办。
+
 本表核对最终提交的五页 PDF，作为项目验收依据；它不替代独立参考复核或人工评分。
 源文件：[已提交 proposal](../proposal/Formatting_Instructions_For_NeurIPS_2026.pdf)。
 SHA-256：`a1a91b6eb6a06b5e7dd839c245604e87b1de9ecc277aece861de2989e22ba8b7`。

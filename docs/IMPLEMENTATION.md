@@ -21,7 +21,7 @@ retains six failed outcomes, eight unverified completions, three internal passes
 stop. Selected numerical matches on four explicit/chart tasks are 2/4, 2/4 and 3/4; same-model
 review still misses qualitative errors, including on explicit tasks. A zero-repair browser demo
 takes 79 seconds; tables/charts match, and the UI-registered HTTP ZIP has 68 matching entries.
-Native Chrome download completion remains unconfirmed. Details: [v30](DEV_QWEN35_V30_ZH.md).
+Native Chrome download completion remains unconfirmed. Details: [v30](archive/DEV_QWEN35_V30_ZH.md).
 
 On 16 November the user selected Qwen3.5-9B Q4 as the main model for local resource/quality
 tradeoffs. CLI/UI defaults now load the complete v29 nonthinking policy from development.json;
@@ -39,7 +39,7 @@ The adapter now binds all sampling fields at construction and extends native cha
 for presence_penalty. Tests exercise the real structured runnable and SDK through serialized
 HTTP requests for omitted, zero and 1.5 values, retaining the raw response and budget fields.
 675 tests including real Docker pass; all three final HTTP cases pass. Historical outputs and
-costs remain intact, with parameter interpretations corrected in [v29](DEV_QWEN35_V29_ZH.md).
+costs remain intact, with parameter interpretations corrected in [v29](archive/DEV_QWEN35_V29_ZH.md).
 The final fixed 9B/Q4 nonthinking three-task development cohort completes all cells: D1 fails
 declared filters despite repair; D3 matches tables/chart arrays but report repair cannot reserve
 another call after 60,080 measured tokens; D6 matches three tables but retains unsupported prose,
@@ -54,7 +54,7 @@ examples and declared sorting/limits. Draft examples distinguish category/statis
 roles; terminal controls are rejected without rewriting raw responses. Sampling intent was
 logged; the v29 correction above establishes actual forwarding. Additional review issues require a compatible
 repair destination; historical canonical reviews remain readable. Local candidate evidence and
-unresolved semantic failures are recorded in [the v28 record](DEV_MODEL_UPGRADE_V28_ZH.md).
+unresolved semantic failures are recorded in [the v28 record](archive/DEV_MODEL_UPGRADE_V28_ZH.md).
 The final helper contract provides tested conversion/filter functions to all conditions. Referenced
 definitions are prepended to the effective Docker script, with raw generated code and assembly hashes
 saved separately. Drafting/review see the effective code; repair sees the raw model code. Independent
@@ -70,7 +70,7 @@ Deterministic failures now defer semantic calls and route directly to bounded re
 semantic coverage stays uncovered, and a partially inspected candidate cannot replace an earlier
 reviewed report.616tests including real Docker and Ruff pass. A real browser run replans the
 missing sum without review, but two scalar-table generation errors prevent completion. One
-separate saved-payload review truncates in thinking; live format success remains unproven. See [the v27 record](DEV_REVIEW_ROUTING_V27_ZH.md).
+separate saved-payload review truncates in thinking; live format success remains unproven. See [the v27 record](archive/DEV_REVIEW_ROUTING_V27_ZH.md).
 
 Historical v26: model code responses use one Python line per array item, mechanically joined into
 the existing code contract. Syntax is parsed before container execution; invalid code and costs
@@ -80,7 +80,7 @@ without the requested sum analysis.606tests including Docker and Ruff pass. Fixe
 expose report-meaning and exploration-coverage failures. A subsequent browser run detects the
 missing sum, but three malformed semantic reviews prevent replanning and exhaust repairs. One
 D5/full follow-up repairs an empty count table and internally passes; both final 16-group tables
-match independent CSV/Decimal calculations. Human scores remain absent; see [the v26 record](DEV_STABILITY_V26_ZH.md).
+match independent CSV/Decimal calculations. Human scores remain absent; see [the v26 record](archive/DEV_STABILITY_V26_ZH.md).
 
 Historical v18: planning responses explicitly require the chart ordinate; omitted fields are rejected
 with original JSON and billed usage retained. Local Plan defaults and histogram serialization stay

@@ -225,6 +225,11 @@ Accounted model tokens, total & 888,793 & 1,433,807 & 2,299,457 \\
 Accounted tokens, mean per run & 10,581 & 17,069 & 27,374 \\
 Elapsed seconds, mean per run & 58.7 & 84.9 & 142.5 \\
 Corrections, mean per run & 0.00 & 1.05 & 1.39 \\
+At least one successful execution & 43/84 & 61/84 & 62/84 \\
+Controller peak RSS, mean MiB & 225.3 & 222.8 & 277.7 \\
+Ollama-process peak RSS, mean MiB & 7,393.8 & 7,501.2 & 7,658.3 \\
+Server-reported model loading, mean seconds & 0.056 & 0.020 & 0.024 \\
+Server-reported prompt + generation, mean seconds & 59.4 & 87.0 & 139.2 \\
 \bottomrule
 \end{tabular}
 \par\smallskip
@@ -241,6 +246,8 @@ Corrections, mean per run & 0.00 & 1.05 & 1.39 \\
 \textbf{Figure 2.} Costs include failed workflows. Sequential ordering, cache state and concurrent local documentation/source checks prevent a causal cold-start latency comparison. Server loading, prompt/generation computation and client-call wall time are separately retained with measurement counts. Process RSS excludes Metal allocations and the Docker VM.
 \end{minipage}
 \end{figure}
+
+Successful execution means at least one program attempt completed; it does not establish a correct answer or a selected report. Controller and summed Ollama-process RSS peaks were sampled in all 84 runs per condition; neither includes total device memory, Metal allocations or the Docker VM. Worker RSS was recorded for 43, 61 and 62 runs respectively; tier/condition means ranged from 108.9 to 155.7 MiB. Missing worker samples are omitted, not zero. Loading and inference counters were present for all 913 calls. These server-reported counters and client clocks are separate observations and are not assumed additive; the small loading times reflect a mostly warm sequential study.
 
 \subsection{Candidate transitions and variants}\label{candidate-transitions-and-variants}
 
@@ -338,6 +345,8 @@ The development sample is small, uses one repeat per cell and has been repeatedl
 
 The frozen results support a limited conclusion: full verification increased selected numerical matches relative to one-shot generation on these inputs, with smaller gains over execution/format recovery and substantially higher token cost. Across all inputs, it yielded 54 selected reports versus 60 for error recovery; for exploration the counts were 5/12 versus 9/12. Additional review can consume budget or reject a candidate without producing a usable replacement. The human sample showed one additional chart pass for full, equal explicit passes and lower exploration scores than recovery. With only three outputs per tier/condition and developer adjudication, it does not establish broad whole-task improvement or that the extra cost is justified. Correlated errors between language models remain possible; numerical agreement cannot establish that the task itself is valid.
 
+Future work should prioritize request-level correctness: independently checking selected row membership and requested measures before spending on report review. A compact factual report could reduce failures at the report interface; reviewer-triggered changes should be evaluated against retained usable candidates to measure regressions. These are proposals for a new development split and prospective evaluation, not changes to the frozen system or claims of tested improvement. A larger independently adjudicated human sample would be needed to reassess whole-task quality and the value of the extra inference cost.
+
 \section{Reproduction and completion}\label{reproduction-and-completion}
 
-README covers installation and use; the evaluation guide covers freezing and scoring. The sample protocol and \texttt{scripts.human\_sample} preserve selection, original returns and the separate summary. Hashed run artifacts and resource ledgers remain local. Downloads exclude raw CSV by default. Both original human returns, the developer\textquotesingle s adjudication and the verified twenty-seven-output summary are retained separately. The report distinguishes full-grid automatic evidence from sample human judgments.
+README documents installation, and the evaluation guide covers freezing and scoring. The source archive includes locked dependencies, tests and report sources; companion files provide run-level and repeat-averaged input results. Original audited runs, references, independent ratings and adjudication remain separate local evidence.

@@ -74,3 +74,12 @@ service-account*.json
 !/report/latex/neurips_2026.sty
 !/report/latex/source-manifest.json
 !/report/latex/template-provenance.json
+
+# A single generated delivery set; rebuild with scripts.prepare_deliverables
+/deliverables/
+# Authored historical evaluation summaries remain versioned after organization
+!/report/archive/
+/report/archive/*
+!/report/archive/development-evidence.json
+!/report/archive/development-evidence-v15.json
+!/report/archive/development-evidence-local-20261115.json

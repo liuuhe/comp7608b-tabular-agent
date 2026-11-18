@@ -5,19 +5,12 @@
 
 ## 当前可复用的验收证据
 
-以下先保留v30b历史小例；当前v33集成验收见本节后半。
-上传data/demo_rentals.csv，说明每行是样本中的一个观测小时，只描述该小样本。
-问题为：
+上传data/demo_rentals.csv，每行代表小样本中的一个观测小时，仅描述这个样本。问题为：
 
 > What is the total number of rentals? Report the valid count, and draw a bar chart of total rentals by weather.
 
-运行runs/20261116-033140-71f64061零修正，79.02秒／16,809 token，内部通过。
-独立核对：总量152、有效记录6；Clear=67/3、Misty=28/1、Rain=57/2，表／图及短报告一致。
-这是一次集成验收，不是任意上传任务的准确率或延迟承诺。
-
-Chrome下载按钮已点击，但原生落盘未确认。页面注册的HTTP导出包含68项，逐字节匹配
-运行目录并排除原CSV。记录.cache/overnight-v30b/browser-validation.json，
-[结果截图](screenshots/v30b-browser-result.jpg)。提交前仍需用正常浏览器手动确认下载。
+手工答案：总量152、有效记录6；Clear=67/3、Misty=28/1、Rain=57/2（总量／有效记录）。
+当前交付目录demo/另存已有真实报告／表／图，标明来源和耗时，只作失败或等待时的备用。
 
 11月16日晚当前源码3a7623a也完成真实上传／分析：
 `runs/20261116-215612-48aae557`，零修正、102.17秒／18,481 token，表／图／短报告正确。
@@ -38,7 +31,7 @@ uv run python scripts/verify_export.py \
 
 | 时间 | 操作与讲解 |
 | --- | --- |
-| pitch 0–2分钟 | 使用下方文字稿；正式结果完成后替换评价状态 |
+| pitch 0–2分钟 | 使用当前三页pitch及下方文字稿，目标1分55秒内讲完 |
 | 互动0–1分钟 | 上传小CSV、说明行含义、输入明确统计／柱图问题并开始运行 |
 | 互动1–3分钟 | 说明计划、样本口径、运行预算；结果出来后核对总量／有效计数和柱图 |
 | 互动3–5分钟 | 请教学团队修改一个明确问题或上传小CSV；说明能观察的状态和结果 |
@@ -94,4 +87,4 @@ adjudicated disagreements. This small sample does not establish broad quality im
 - 人工样本每层／条件仅3份；说明事后调整，不把样本通过率说成252次运行的整题正确率。
 
 较早版本的长讲稿、10页slides及失败／修正案例统一保留在
-[历史演示材料](DEMO_HISTORY_20261116.md)。各历史版本不拼成当前系统的成绩。
+[历史演示材料](archive/DEMO_HISTORY_20261116.md)。各历史版本不拼成当前系统的成绩。

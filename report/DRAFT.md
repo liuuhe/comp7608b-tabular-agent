@@ -1,6 +1,6 @@
 # A Local Tabular Analysis Agent with Bounded Verification and Repair
 
-**Working draft — 18 November 2026.** The frozen 252-run experiment and automatic integrity checks are complete. Both independent initial ratings and Liu He's final adjudication of the 27-output sample are complete. This draft is ready for submission review. The proposal's human reference/family review was changed to a documented external model-assisted audit, and full-grid human scoring was reduced through a separate post-hoc amendment. After initial ratings, Liu He, a system developer, was assigned disputed scores for final adjudication. Neither change establishes human-equivalent reference review or full-grid human quality. Development history is retained in the [archived working draft](../docs/REPORT_DEVELOPMENT_HISTORY_20261116.md).
+**Working draft — 18 November 2026.** The frozen 252-run experiment and automatic integrity checks are complete. Both independent initial ratings and Liu He's final adjudication of the 27-output sample are complete. This draft is ready for submission review. The proposal's human reference/family review was changed to a documented external model-assisted audit, and full-grid human scoring was reduced through a separate post-hoc amendment. After initial ratings, Liu He, a system developer, was assigned disputed scores for final adjudication. Neither change establishes human-equivalent reference review or full-grid human quality. Development history is retained in the [archived working draft](../docs/archive/REPORT_DEVELOPMENT_HISTORY_20261116.md).
 
 ## Abstract
 
@@ -100,7 +100,7 @@ Each tier/condition has only three outputs, potentially sharing families. Human 
 
 ## 4. Development evidence
 
-Development informed the system and task-family audit; repeatedly inspected requests are excluded from formal outcome claims. Complete runs, failed attempts and version-specific costs remain in the [development evidence ledger](../docs/REPORT_DEVELOPMENT_HISTORY_20261116.md), rather than being pooled across changing implementations.
+Development informed the system and task-family audit; repeatedly inspected requests are excluded from formal outcome claims. Complete runs, failed attempts and version-specific costs remain in the [development evidence ledger](../docs/archive/REPORT_DEVELOPMENT_HISTORY_20261116.md), rather than being pooled across changing implementations.
 
 Development exposed four design concerns: a plan can violate request scope while passing recomputation; a replacement plan can lose a needed derivation; valid calculations can fail the report contract or output cap; and same-model review can accept unsupported interpretations. These observations motivated sparse plan updates, earlier calculation checks, fact-bound reports and narrow request checks. The last complete six-task development comparison had eighteen terminal runs, only two matching selected tables among four explicit/chart tasks in each condition, and no human whole-task scores. A subsequent prespecified two-task follow-up retained one corrected ranking table and one unresolved date-filter failure. These diagnostics did not establish held-out improvements.
 
@@ -137,12 +137,19 @@ Table 3 includes every run, including failures. Full used 2.59 times the one-sho
 | Accounted tokens, mean per run | 10,581 | 17,069 | 27,374 |
 | Elapsed seconds, mean per run | 58.7 | 84.9 | 142.5 |
 | Corrections, mean per run | 0.00 | 1.05 | 1.39 |
+| At least one successful execution | 43/84 | 61/84 | 62/84 |
+| Controller peak RSS, mean MiB | 225.3 | 222.8 | 277.7 |
+| Ollama-process peak RSS, mean MiB | 7,393.8 | 7,501.2 | 7,658.3 |
+| Server-reported model loading, mean seconds | 0.056 | 0.020 | 0.024 |
+| Server-reported prompt + generation, mean seconds | 59.4 | 87.0 | 139.2 |
 
 **Table 3.** All eighty-four runs per condition contribute, including failures. Balanced two-repeat coverage makes the run mean equal to averaging repeats within each input first. Across the grid, 913 model calls used 4,622,057 accounted tokens. Every call reported token usage; none required an unknown-usage reservation charge. External audit costs are excluded.
 
 ![All-run token and elapsed-time costs by tier and condition.](../docs/formal-v7-costs.png)
 
 **Figure 2.** Costs include failed workflows. Sequential ordering, cache state and concurrent local documentation/source checks prevent a causal cold-start latency comparison. Server loading, prompt/generation computation and client-call wall time are separately retained with measurement counts. Process RSS excludes Metal allocations and the Docker VM.
+
+Successful execution means at least one program attempt completed; it does not establish a correct answer or a selected report. Controller and summed Ollama-process RSS peaks were sampled in all 84 runs per condition; neither includes total device memory, Metal allocations or the Docker VM. Worker RSS was recorded for 43, 61 and 62 runs respectively; tier/condition means ranged from 108.9 to 155.7 MiB. Missing worker samples are omitted, not zero. Loading and inference counters were present for all 913 calls. These server-reported counters and client clocks are separate observations and are not assumed additive; the small loading times reflect a mostly warm sequential study.
 
 ### 5.3. Candidate transitions and variants
 
@@ -196,9 +203,11 @@ The development sample is small, uses one repeat per cell and has been repeatedl
 
 The frozen results support a limited conclusion: full verification increased selected numerical matches relative to one-shot generation on these inputs, with smaller gains over execution/format recovery and substantially higher token cost. Across all inputs, it yielded 54 selected reports versus 60 for error recovery; for exploration the counts were 5/12 versus 9/12. Additional review can consume budget or reject a candidate without producing a usable replacement. The human sample showed one additional chart pass for full, equal explicit passes and lower exploration scores than recovery. With only three outputs per tier/condition and developer adjudication, it does not establish broad whole-task improvement or that the extra cost is justified. Correlated errors between language models remain possible; numerical agreement cannot establish that the task itself is valid.
 
+Future work should prioritize request-level correctness: independently checking selected row membership and requested measures before spending on report review. A compact factual report could reduce failures at the report interface; reviewer-triggered changes should be evaluated against retained usable candidates to measure regressions. These are proposals for a new development split and prospective evaluation, not changes to the frozen system or claims of tested improvement. A larger independently adjudicated human sample would be needed to reassess whole-task quality and the value of the extra inference cost.
+
 ## 7. Reproduction and completion
 
-[README](../README.md) covers installation and use; [the evaluation guide](../evaluation/README.md) covers freezing and scoring. [The sample protocol](../docs/HUMAN_SAMPLE_PROTOCOL_ZH.md) and `scripts.human_sample` preserve selection, original returns and the separate summary. Hashed run artifacts and resource ledgers remain local. Downloads exclude raw CSV by default. Both original human returns, the developer's adjudication and the verified twenty-seven-output summary are retained separately. The report distinguishes full-grid automatic evidence from sample human judgments.
+[README](../README.md) documents installation, and [the evaluation guide](../evaluation/README.md) covers freezing and scoring. The source archive includes locked dependencies, tests and report sources; companion files provide run-level and repeat-averaged input results. Original audited runs, references, independent ratings and adjudication remain separate local evidence.
 
 ## References
 

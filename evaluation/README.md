@@ -55,7 +55,7 @@ while auditing references. Use the new receipt with `--review` when freezing, as
 
 ## Retained development evidence and scoring protocol
 
-The [15 November local development cohort](../docs/DEV_LOCAL_COMPARISON_20261115_ZH.md) now
+The [15 November local development cohort](../docs/archive/DEV_LOCAL_COMPARISON_20261115_ZH.md) now
 contains all 18 terminal observations, including failures, with its archived pre-fix source and candidate
 configuration archived before the later fixes. Selected numerical matches are 3/4, 3/4 and 4/4; full has three internal passes
 and two matching visualization candidates whose workflows still fail or exhaust the budget.

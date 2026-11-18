@@ -20,7 +20,7 @@
 系统、开发试跑和材料生成可以自动完成。Proposal 中的独立参考答案复核和双人人工评分，
 需要真实团队成员完成。目前没有填写任何人工分数或复核签名。
 
-后续命令与候选实验配置见 [正式实验交接](EXPERIMENT_HANDOFF_ZH.md)，已有结果与待补
+后续命令与候选实验配置见 [正式实验交接](archive/EXPERIMENT_HANDOFF_ZH.md)，已有结果与待补
 部分见 [报告初稿](../report/DRAFT.md)。开发盲评材料分别位于
 `evaluation/private/pilot-three-condition-v12-blind/` 和
 `evaluation/private/pilot-reference-feedback-v13-blind/`；不同版本不合并成实验成绩。

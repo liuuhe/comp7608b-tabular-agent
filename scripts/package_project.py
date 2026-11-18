@@ -41,13 +41,16 @@ MAX_BYTES = 256 * 1024 * 1024
 GUIDE_TEXT = """# Development source snapshot
 
 This is the runnable source and evaluation tooling for the COMP7608B project.
-It is a development snapshot, not a completed formal study or final submission.
+It is a source snapshot; the original full-grid human study was amended, and
+course submission is a separate user action. The generated delivery folder
+contains the report, slides, result tables and demo backup alongside this ZIP.
 The model-assisted reference/family audit and formal freeze are complete in the
 original workspace; all 252 held-out runs and automatic integrity checks are
 complete. Two teammates independently rated a post-hoc 27-output sample, and
 a system developer adjudicated seven disputed scores. The other 225 outputs
 remain without human ratings. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
-status and docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
+status, docs/REQUIREMENTS_AUDIT_ZH.md for requirement coverage, and
+docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
 results are not held-out scores. This source ZIP does not contain the private
 audit, frozen receipt, run artifacts or ratings needed to reproduce those claims.
 
@@ -100,7 +103,7 @@ Follow evaluation/README.md and docs/MODEL_AUDIT_ZH.md afterwards.
 This ZIP contains source, tests, team setup, documentation, a draft report, tiny example
 data and UCI metadata/field descriptions. It excludes installed dependencies/model
 weights, downloaded full datasets, private evaluation answers, human review/rating
-work and historical run directories. Documentation links to those local historical
+work, historical run directories and archived development screenshots. Documentation links to those local historical
 artifacts therefore require the original workspace/evidence archive. They are not
 silently regenerated or represented as included evidence.
 Course handouts and the proposal PDF stay local and are not required to build a snapshot.
@@ -145,6 +148,15 @@ def permitted(name):
         return parts[-1].startswith("test_") and parts[-1].endswith(".py")
     if len(parts) == 2 and parts[0] == "docs":
         return PurePosixPath(name).suffix in {".md", ".png", ".jpg"}
+    if len(parts) == 3 and parts[:2] == ("docs", "archive"):
+        return PurePosixPath(name).suffix == ".md"
+    if len(parts) == 4 and parts[:3] == ("docs", "archive", "assets"):
+        return PurePosixPath(name).suffix in {".png", ".jpg"}
+    if len(parts) == 3 and parts[:2] == ("report", "archive"):
+        return parts[-1] in {
+            "development-evidence.json", "development-evidence-v15.json",
+            "development-evidence-local-20261115.json",
+        }
     if len(parts) == 3 and parts[:2] == ("docs", "screenshots"):
         return PurePosixPath(name).suffix in {".png", ".jpg"}
     if len(parts) == 4 and parts[:2] == ("data", "uci"):
@@ -161,7 +173,8 @@ def source_paths(root):
     candidates.update(name for name in REPORT_SOURCES if (root / name).exists())
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",
-        "docs/*.md", "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
+        "docs/*.md", "docs/archive/*.md", "report/archive/development-evidence*.json",
+        "docs/*.png", "docs/*.jpg", "docs/screenshots/*.png",
         "docs/screenshots/*.jpg", "data/uci/*/*", "evaluation/README.md", "evaluation/family_policy.md",
         "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",

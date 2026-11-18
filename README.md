@@ -5,9 +5,10 @@ COMP7608B 课程项目：上传一份 CSV，用自然语言提出问题，返回
 **当前为可运行的开发原型。主模型已确定为 Qwen3.5-9B Q4；优先在本机完成开发、评价和报告。**
 11月25日提交；报告沿用proposal模板，最多10页（参考文献不计）。12月1日展示：2分钟pitch＋5–6分钟互动。
 参考复核已按用户决定改为外部强模型辅助审计，修订题目的独立复算和实际历史检查已通过。
-配置已冻结，252/252次正式实验及自动完整性检查完成；27份样本的双人人工评分待完成。
+配置已冻结，252/252次正式实验及自动完整性检查完成；27份样本的双人独立评分和最终裁决已完成。
 [自动结果](docs/FORMAL_V7_RESULTS_ZH.md)：full明确题数值27/44、图表14/28；这是数值匹配，不是整题正确率。
-用户已确认缩减为每人相同27份输出（37行），两份新匿名材料已准备，下一步见[评分交接](docs/RATING_COORDINATION_ZH.md)。
+[人工样本结果](docs/HUMAN_SAMPLE_RESULTS_ZH.md)：明确题三条件均1/3；图表为1/3、1/3、2/3；探索均分为0、5.56、3.89／6。
+这是事后27份样本、开发者处理分歧，不能外推全量质量。
 
 当前待办、排期及评价取舍统一见[本地完成计划](docs/LOCAL_COMPLETION_PLAN_ZH.md)。
 队友按需参与，阅读[协作入口](docs/TEAM_HANDOFF_ZH.md)；不要求先接手整个项目。
@@ -32,7 +33,7 @@ CSV → 数据概览 → 分析计划 → 生成聚合代码 → Docker 准备�
 D1/D2定向验证均结束，排序修正成功、日期修复仍失败，记录分别保留。最新真实浏览器小例102秒完成正确表／图／报告；HTTP导出71项逐文件匹配。
 自动化验收使用[scripts/verify_export.py](scripts/verify_export.py)避开系统Save As，
 不用点击下载按钮；原生保存窗口不在该验证范围。当前状态见[最新进度](docs/PROJECT_STATUS_ZH.md)。
-11月18日源码包独立解包安装、867项测试（含真实Docker）及Ruff通过，详见[源码包说明](docs/SOURCE_PACKAGE_ZH.md)。
+11月18日源码包独立解包安装、870项测试（含真实Docker）及Ruff通过，详见[源码包说明](docs/SOURCE_PACKAGE_ZH.md)。
 - 执行：生成代码仅在 Docker 容器中运行，禁网、只读输入并限制资源；每次最多12个工具调用、3次修正。
 
 不支持多表连接、预测建模或因果推断。模型生成与审查仍可能出错；具体限制见[开发状态](docs/PROJECT_STATUS_ZH.md)。
@@ -83,7 +84,7 @@ uv run tabular-agent profile data/demo_rentals.csv
 | [scripts/](scripts/) | 数据下载和源码打包工具 |
 | [data/](data/) | 小型示例、合成测试数据、UCI 来源与字段说明 |
 | [docs/](docs/README.md) | 团队交接、实现说明和历史开发记录 |
-| [report/DRAFT.md](report/DRAFT.md) | 工作报告，已填自动结果，人工结果待补 |
+| [report/DRAFT.md](report/DRAFT.md) | 报告审阅稿，已填自动结果、人工样本及限制 |
 
 ## 测试与配置
 
@@ -143,8 +144,8 @@ uv run python -m evaluation.prepare_heldout
 [评估流程](evaluation/README.md)及[正式实验交接](docs/EXPERIMENT_HANDOFF_ZH.md)，避免覆盖已有工作。
 原proposal规模为30个基础任务和12个变体，三条件、两次重复，共252次；v7已全部完成。
 当前采用外部模型辅助参考审计＋27份随机样本的两位队友独立评分。
-后者是事后协议调整，不能据此声称已对252份输出完成人工评价。整题正确、图表可读性和探索用途
-仍需真实人工结果，不用内部checks_passed代替。见[当前评价安排](docs/EVALUATION_NEXT_STEP_ZH.md)。
+后者是事后协议调整，分歧由系统开发者Liu He裁决；不能据此声称已对252份输出完成人工评价。
+初始一致性和最终样本分数分开保存，不用内部checks_passed代替。见[当前评价安排](docs/EVALUATION_NEXT_STEP_ZH.md)。
 
 完整开发历史保存在[原首页存档](docs/README_DEVELOPMENT_HISTORY_ZH.md)和各DEV文档，
-不与冻结正式成绩混合。提交前工作集中在收评分、完成报告、源码交付及展示排练。
+不与冻结正式成绩混合。提交前工作集中在报告终审、源码交付及展示排练。

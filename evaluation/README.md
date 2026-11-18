@@ -4,19 +4,23 @@ Planning update, 15 November 2026: run locally under Liu He's lead; handing over
 not a prerequisite. The [local completion plan](../docs/LOCAL_COMPLETION_PLAN_ZH.md) records the
 25 November submission. Updated 17 November: the user replaced the planned per-task human reference
 review with an external strong-model audit, through a configurable third-party/relay API. Two other
-teammates will still rate formal outputs independently (names pending). The API is configured as
+teammates independently rated the amended formal sample. The API is configured as
 `gpt-6.1-sol`. After actual development-history review identified overlap and inconsistent family
 judgments, tasks were revised before any Qwen test inference. The current v7 global audit (with actual history included) and all history partitions
 pass; independent task computations are complete. The configuration is frozen; all 252 runs and automatic integrity checks are complete.
-Human ratings remain pending. See [automatic results](../docs/FORMAL_V7_RESULTS_ZH.md) and
-[the coordinator handoff](../docs/RATING_COORDINATION_ZH.md). The model-assisted route has a separate receipt
+Both initial ratings and final adjudication of the 27-output sample are complete. See
+[automatic results](../docs/FORMAL_V7_RESULTS_ZH.md) and [human sample results](../docs/HUMAN_SAMPLE_RESULTS_ZH.md). The model-assisted route has a separate receipt
 and explicit freeze label; it never sets human-review flags. See [the setup guide](../docs/MODEL_AUDIT_ZH.md).
 
 ## Human-sample amendment, 18 November 2026
 
 The user authorized reducing human work after automatic results were inspected: one random test input
 in each dataset × category stratum (nine inputs), all three conditions, fixed repeat zero: **27 outputs**.
-Both raters independently score the same sample (37 CSV rows for this realized sample).
+Both raters independently scored the same sample (37 CSV rows for this realized sample).
+After receiving the initial ratings, the user assigned seven disputed scores to Liu He, a system
+developer, for final adjudication. Original agreement and agreed scores were preserved; developer
+adjudication is a separate subsequent role amendment, with potential bias explicitly disclosed.
+All 27 sample outputs are complete; the remaining 225 have no human ratings.
 Selection uses sorted metadata and `random.Random(42)`; failed/missing outputs are retained without
 replacement. Automatic metrics still cover all 252 runs. Human metrics describe only this sample,
 with three tasks per tier and no population or robustness inference. This is a post-hoc protocol
@@ -45,7 +49,7 @@ Ambiguity, differences, unresolved overlap, invalid output or interruption block
 
 This is a recorded revision to the proposal's human reference review, not evidence that models and
 humans have equivalent accuracy. The existing human-review route remains available below. Formal
-outputs still use the existing two-human-rater protocol. Strong-model reference-audit costs stay
+outputs use the documented amended two-rater sample and subsequent developer adjudication. Strong-model reference-audit costs stay
 separate from costs of the Qwen system under test. No test question is sent through that system
 while auditing references. Use the new receipt with `--review` when freezing, as shown in the guide.
 
@@ -63,7 +67,7 @@ On 16 November the user selected Qwen3.5-9B Q4 as the main model. The default
 is saved as `config/legacy-development-qwen3-8b.json`. Tiers 1/2 prioritize reliable calculations,
 charts and reports. Tier 3 remains an exploration objective with successes, sample limitations
 and failures measured honestly, without requiring perfect completion. The v7 formal source/parameter freeze and model-assisted reference audit are complete;
-the formal grid is complete and human scoring remains pending. Historical cohorts retain their original settings.
+the formal grid and the amended human sample are complete, with limits reported separately. Historical cohorts retain their original settings.
 
 `tasks.json` contains the six proposal development tasks. These are not held-out results.
 `build_references.py` computes independent task-specific answers into ignored `private/` storage.

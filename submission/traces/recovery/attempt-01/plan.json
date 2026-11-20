@@ -1,0 +1,46 @@
+{
+  "analyses": [
+    {
+      "ascending": [
+        true
+      ],
+      "chart": null,
+      "column": "Quantity",
+      "filters": [
+        {
+          "column": "InvoiceNo",
+          "operator": "starts_with",
+          "value": "C"
+        },
+        {
+          "column": "Country",
+          "operator": "ne",
+          "value": ""
+        }
+      ],
+      "group_by": [
+        "Country"
+      ],
+      "id": "a1",
+      "limit": null,
+      "missing": "drop",
+      "operation": "count",
+      "other_column": "",
+      "sort_by": [
+        "Country"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "conversions": [],
+  "derived": [],
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "Count cancelled transaction records by Country: InvoiceNo starts with C. Count records, not distinct invoices; exclude missing Country, sort Country ascending."
+    }
+  ]
+}

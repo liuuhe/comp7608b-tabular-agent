@@ -83,3 +83,6 @@ service-account*.json
 !/report/archive/development-evidence.json
 !/report/archive/development-evidence-v15.json
 !/report/archive/development-evidence-local-20261115.json
+
+# Selected, redacted failure logs are part of the course evidence bundle
+!/submission/traces/*/attempt-*/execution.log

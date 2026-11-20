@@ -1,0 +1,19 @@
+{
+  "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "outputs": [
+        {
+          "chart": false,
+          "table": "a1"
+        }
+      ],
+      "quote": "Count cancelled transaction records by Country: InvoiceNo starts with C. Count records, not distinct invoices; exclude missing Country, sort Country ascending."
+    }
+  ],
+  "semantic_coverage": "unverified",
+  "status": "declared"
+}

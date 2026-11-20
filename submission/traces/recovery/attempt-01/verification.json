@@ -1,0 +1,107 @@
+[
+  {
+    "check": "table_contract",
+    "evidence": "Expected tables ['a1']; received ['a1']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.a1",
+    "evidence": "Independent CSV recomputation; 30 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "chart_coverage",
+    "evidence": "Expected charts []; found []",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_references",
+    "evidence": "All bound values and evidence resolve",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_comparison.finding.1.0",
+    "evidence": "maximum within the complete saved table a1, column value: 7856 at table.a1.29.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report_comparison.finding.2.0",
+    "evidence": "minimum within the complete saved table a1, column value: 1 at table.a1.2.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "visual_readability",
+    "evidence": "Requires human rating at the final display size",
+    "status": "uncovered",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "request_coverage",
+    "evidence": "Plan specifies analysis 'a1' with operation 'count', group_by ['Country'], filters InvoiceNo starts_with C and Country ne '', sort ascending. Results table 'a1' contains 30 rows with valid_count matching value for each country, sorted by Country. All substantive requirements (cancel filter, count records, exclude missing country, sort) are implemented in code and reflected in results.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report.finding.0",
+    "evidence": "rendered_draft.findings[0] correctly reports 'For Country=United Kingdom: nonmissing count of Quantity = 7856 (valid observations: 7856)' matching table.a1.29.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report.finding.1",
+    "evidence": "rendered_draft.findings[1] correctly states the maximum count is 7856 for United Kingdom, citing table.a1.29.value.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report.finding.2",
+    "evidence": "rendered_draft.findings[2] correctly states the minimum count is 1 for Bahrain (and others), citing table.a1.2.value, and notes it is shared.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report.limitation.0",
+    "evidence": "rendered_draft.liminations[0] correctly quotes the declared filters 'InvoiceNo starts with C; Country ne .' from plan.filters.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report_review_coverage",
+    "evidence": "Every finding and limitation has one conclusive semantic review",
+    "status": "pass",
+    "suggestion": "",
+    "target": "verification"
+  },
+  {
+    "check": "request_review_coverage",
+    "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+    "status": "pass",
+    "suggestion": "",
+    "target": "verification"
+  },
+  {
+    "check": "semantic_suitability",
+    "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  }
+]

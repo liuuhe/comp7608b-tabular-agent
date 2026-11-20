@@ -1,0 +1,5 @@
+# Preserve the exact bytes bound by the submission manifest across Git checkouts.
+* -text
+# CSV CRLF and captured runtime text are evidence, not source whitespace defects.
+*.csv whitespace=cr-at-eol
+traces/** -whitespace

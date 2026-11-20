@@ -28,7 +28,8 @@ latexmk -norc -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.te
 ```
 
 输出为`latex/build/main.pdf`；也可在Codex中打开latex目录查看源码及PDF预览。
-11月18日补齐执行／内存／计时和未来改进的审阅稿编译为9页正文＋1页参考文献，全部页面已渲染检查；表／图说明与内容一起排版。
+11月20日按Moodle guideline补充目标用户／proposal对照、运行与隐私要求、失败反馈、trace连接、逐位贡献、AI使用和来源致谢，正文为10页，另有1页参考文献。
+submission/另提供AI声明、可恢复prompts、三类样例、精选真实trace及结果。成员贡献只列已确认完成事项；后续分工不冒充已完成。
 编译成功后仍需检查实际页面、表格、参考文献、页数和所有待填项。如再修改内容需重新
 生成和编译，当前页数不能替代下一版页数检查。生成目录不进入Git。
 

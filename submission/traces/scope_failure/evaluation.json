@@ -1,0 +1,225 @@
+{
+  "candidate_scores": [
+    {
+      "attempt": "attempt-00",
+      "execution_ok": true,
+      "reused_execution": false,
+      "score": {
+        "clarification_responses": 0,
+        "clarifications_requested": 0,
+        "data_correct": false,
+        "expected_behavior": "answer",
+        "plotted_data_correct": false,
+        "protocol_satisfied": true,
+        "reference_reviewed": true,
+        "requires_human_rating": true,
+        "response_behavior": "answer",
+        "specified_chart_type": false
+      }
+    },
+    {
+      "attempt": "attempt-01",
+      "execution_ok": true,
+      "reused_execution": false,
+      "score": {
+        "clarification_responses": 0,
+        "clarifications_requested": 0,
+        "data_correct": false,
+        "expected_behavior": "answer",
+        "plotted_data_correct": false,
+        "protocol_satisfied": true,
+        "reference_reviewed": true,
+        "requires_human_rating": true,
+        "response_behavior": "answer",
+        "specified_chart_type": false
+      }
+    }
+  ],
+  "category": "visualization",
+  "condition": "full",
+  "config_sha256": "daf35bbba74519e4de27c399ed1d63d6cda956f27d08ec19a1bf06711cd3f1f4",
+  "dataset": "bike",
+  "execution": {
+    "any_execution_ok": true,
+    "attempt_count": 2,
+    "execution_seconds": 0.8806157080107369,
+    "selected_execution_ok": true,
+    "successful_attempt_count": 2,
+    "worker_memory_measurements": 2,
+    "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM.",
+    "worker_peak_rss_mb": 79.015625
+  },
+  "family": "bike_weather_summary",
+  "freeze_sha256": "e3b049f425f0b6f492597e0ef60c59590ebf979e25cea2ad3e7b1a7f8e9cbadb",
+  "paired_with": "B06",
+  "repeat": 0,
+  "score": {
+    "clarification_responses": 0,
+    "clarifications_requested": 0,
+    "data_correct": false,
+    "expected_behavior": "answer",
+    "plotted_data_correct": false,
+    "protocol_satisfied": true,
+    "reference_reviewed": true,
+    "requires_human_rating": true,
+    "response_behavior": "answer",
+    "specified_chart_type": false
+  },
+  "split": "test",
+  "summary": {
+    "clarification": "",
+    "clarification_history": [],
+    "clarification_responses": 0,
+    "directory": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f",
+    "error": "Stopped: Verification found unresolved issues",
+    "has_unchecked_candidate": false,
+    "issues": [
+      {
+        "check": "table_contract",
+        "evidence": "Expected tables ['a1', 'a2']; received ['a1', 'a2']",
+        "status": "pass",
+        "suggestion": "",
+        "target": "code"
+      },
+      {
+        "check": "calculation.a1",
+        "evidence": "Independent CSV recomputation; 12 expected rows",
+        "status": "pass",
+        "suggestion": "",
+        "target": "code"
+      },
+      {
+        "check": "calculation.a2",
+        "evidence": "Independent CSV recomputation; 12 expected rows",
+        "status": "pass",
+        "suggestion": "",
+        "target": "code"
+      },
+      {
+        "check": "chart_coverage",
+        "evidence": "Expected charts ['a1']; found ['a1']",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "chart.a1",
+        "evidence": "Compare actual artist arrays/labels with saved table and chart specification",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report_references",
+        "evidence": "All bound values and evidence resolve",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report_comparison.finding.2.0",
+        "evidence": "maximum within the complete saved table a1, column value: 0.752137096774194 at table.a1.6.value",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "visual_readability",
+        "evidence": "Requires human rating at the final display size",
+        "status": "uncovered",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "request_coverage",
+        "evidence": "Plan a1 computes mean of temp grouped by mnth with filters for 2012-01-01 to 2013-01-01. Plan a2 counts valid temp. Chart is line with x=mnth, y=value (derived mean). Filters match request dates. Valid counts are included in both tables.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report.finding.0",
+        "evidence": "Rendered draft correctly reports mean temp and valid_count for mnth=1,2,3 using table.a1 rows.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.finding.1",
+        "evidence": "Rendered draft correctly reports mean temp and valid_count for mnth=7,8,9 using table.a1 rows.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.finding.2",
+        "evidence": "Rendered draft correctly identifies maximum mean temp (0.752137096774194) at mnth=7 and reports it with valid_count 496.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.limitation.0",
+        "evidence": "Limitation text correctly quotes the declared analysis filters for dteday range.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report_review_coverage",
+        "evidence": "Every finding and limitation has one conclusive semantic review",
+        "status": "pass",
+        "suggestion": "",
+        "target": "verification"
+      },
+      {
+        "check": "request_review_coverage",
+        "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+        "status": "pass",
+        "suggestion": "",
+        "target": "verification"
+      },
+      {
+        "check": "semantic_suitability",
+        "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+        "status": "fail",
+        "suggestion": "",
+        "target": "plan"
+      }
+    ],
+    "last_generated_attempt": 1,
+    "last_inspected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/attempt-01",
+    "model_tokens": 66238,
+    "repairs": 1,
+    "resources": {
+      "controller_peak_rss_mb": 133.75,
+      "measurement_errors": [],
+      "model_rss_samples": 909,
+      "ollama_processes_peak_sum_rss_mb": 8105.84375,
+      "sampling_seconds": 0.2,
+      "scope": "Host RSS of visible processes named ollama/llama-server; may include other sessions. Excludes Metal allocations and Docker daemon/VM. Worker peak RSS is recorded separately."
+    },
+    "seconds": 209.0927739169565,
+    "selected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/attempt-01",
+    "status": "failed",
+    "tool_count": 7
+  },
+  "system_fingerprint": "353441c9c07bc29b76157ebd0d2a98affa513df1dc53ce2d4dcea78793d523c1",
+  "task": "V08",
+  "task_specification": {
+    "category": "visualization",
+    "chart": "line",
+    "data_path": "evaluation/private/datasets/V08/data.csv",
+    "dataset": "bike",
+    "documentation_path": "evaluation/private/datasets/V08/documentation.txt",
+    "family": "bike_weather_summary",
+    "id": "V08",
+    "paired_with": "B06",
+    "question": "For 2012, line-chart mean normalized temp by mnth, with valid temp counts, months ascending. Parse dteday and select 2012-01-01 inclusive to 2013-01-01 exclusive. Keep the supplied temperature/41 scale and label it explicitly, not degrees Celsius.",
+    "split": "test",
+    "variant": "mixed_dates",
+    "variant_column": "dteday"
+  },
+  "tasks_sha256": "bf6007893ac0fcfb5b68e6a72e9bdbc0de2283ee66e4f001a74edc2ca5bd7c96",
+  "variant": "mixed_dates"
+}

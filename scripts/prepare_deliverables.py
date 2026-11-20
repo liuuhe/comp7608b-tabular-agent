@@ -5,6 +5,7 @@ import csv
 import io
 import json
 import shutil
+import zipfile
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
@@ -105,6 +106,11 @@ def verify_output(output):
     if (output / "automatic_by_input.csv").read_bytes() != expected or len(csv_rows) != 126:
         raise ValueError("CSV differs from the result summary")
     verify_source(output / "source.zip")
+    with zipfile.ZipFile(output / "source.zip") as archive:
+        if "submission/MANIFEST.json" in archive.namelist():
+            for name in ("results.json", "automatic_by_input.csv"):
+                if archive.read("submission/results/" + name) != (output / name).read_bytes():
+                    raise ValueError("Submission ZIP results differ from the companion results")
     return {"status": "verified_delivery", "directory": str(output.resolve()),
             "files": len(files), "manifest_sha256": digest(output / "MANIFEST.json"),
             "model_calls": 0, "human_outputs": 27, "unrated_outputs": 225}
@@ -193,6 +199,10 @@ def prepare(output, report=None, slides=None):
         build_source(ROOT, output / "source.zip")
         (output / "results.json").write_bytes(encoded(result))
         (output / "automatic_by_input.csv").write_bytes(csv_table(averaged))
+        # The final application ZIP must carry the same evidence, not just sibling files.
+        with zipfile.ZipFile(output / "source.zip") as archive:
+            if "submission/MANIFEST.json" not in archive.namelist():
+                raise ValueError("Prepare the Moodle submission materials before final delivery")
         demo = output / "demo"
         demo.mkdir()
         for name, source in {
@@ -218,9 +228,12 @@ def prepare(output, report=None, slides=None):
             "# Group 39 当前交付材料\n\n"
             "report.pdf为报告；source.zip为可运行源码（解包先读START_HERE.md）；pitch.pptx为12月1日三页展示。\n"
             "results.json及automatic_by_input.csv为补充结果，demo/为注明来源的真实演示备用。\n"
-            "11月25日提交报告与代码；12月1日2分钟pitch＋5–6分钟互动，全体成员提前10分钟到场。\n\n"
+            "成员：Wang Ming、Liu He、He Xiya；题目：A Local Tabular Analysis Agent with Bounded Verification and Repair。\n"
+            "11月25日23:59（香港时间）提交报告与完整ZIP；12月1日2分钟pitch＋5–6分钟互动，全体成员提前10分钟到场。\n"
+            "ZIP内submission/包含AI声明／可找回prompts、贡献、三类示例、结果和五份真实脱敏trace；版本见submission/VERSION.json。\n\n"
             "人工只有27份、每层每条件3份，事后缩样且由开发者裁决分歧；不外推其余225份。\n"
-            "没有密钥、原始评分、身份映射、参考答案、完整UCI或原始运行。源码可安装运行，不冒充完整原始研究归档。\n\n"
+            "没有密钥、原始评分表、匿名输出ID映射、完整参考或原始UCI；成员与职责按指南列出。\n"
+            "源码可安装运行，附精选真实trace，不冒充完整原始研究归档。\n\n"
             "SHA256SUMS列各材料哈希，MANIFEST.json记录清单；从源码项目根目录运行：\n"
             "uv run python -m scripts.prepare_deliverables --verify /本机路径/deliverables\n\n"
             "材料准备不等于已经上传。请审阅报告、实际播放并计时pitch，再按课程入口提交。\n")

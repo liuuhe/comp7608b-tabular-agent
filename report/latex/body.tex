@@ -9,6 +9,8 @@ The system follows the interaction between reasoning and tools exemplified by Re
 
 The main question is: \textbf{under the same model, inputs and resource caps, does verification with bounded repair improve task outcomes enough to justify its latency and token cost?} We separately assess whether a failure is detected, whether a correction succeeds and whether a previously usable result regresses.
 
+Intended users are students and analysts who have a CSV and a descriptive question but limited pandas/programming experience. Their core needs are a usable answer, visible supporting calculations and understandable failure feedback. The proposal\textquotesingle s CSV-to-report workflow, three task tiers, local execution and bounded repair are delivered. Reliable completion of every exploratory request remains unfinished; neither prediction nor multi-table analysis was promised. The planned Qwen3-8B was replaced with Qwen3.5-9B Q4 before freezing. Independent-human reference review became a model-assisted audit, and full-grid double rating became a post-hoc 27-output sample with developer adjudication. Sections 3.2-3.3 explain these evaluation changes and their limits; the core single-table objective remains the same.
+
 \section{System}\label{system}
 
 \subsection{Workflow and common components}\label{workflow-and-common-components}
@@ -54,6 +56,8 @@ Current additional plan/code/chart review issues must name an actual artifact lo
 Each run permits at most twelve tool invocations, three corrections and 100,000 cumulative model tokens. Model output is capped at 6,144 tokens with a 16,384-token context. All stages use Qwen3.5-9B Q4 with thinking disabled, temperature 0.7, top\_p 0.8, top\_k 20, repeat penalty 1 and presence penalty 1.5; the initial seed is 42. The evaluation host is an Apple M5 with ten CPU cores and 24 GiB memory; execution containers use two CPUs and a 2 GiB limit. Model/image digests, dependencies and hardware are recorded in each run.
 
 \texttt{checks\_passed} means applicable automated checks and model review reported no unresolved failure. It is not a human whole-task pass, and uncovered checks remain visible.
+
+Observable operating requirements are bounded workload (one CSV per run, twelve tools, three corrections and the token cap), worker isolation (two CPUs, 2 GiB and 120-second execution timeout), auditable outputs and local handling of normal application data. These caps are enforced rather than latency guarantees; Section 5.2 reports actual cost and timing on the stated hardware. Optional external reference auditing sends task descriptions, documentation and small format examples to the configured service, so its privacy assumptions differ from local inference. The UI shows clarification, failure or unchecked-candidate states with retained diagnostics. Generated programs cannot send mail, make payments or write remotely: repair repeats sandboxed computation and consumes resources. Interrupted external audits may incur a charge and are not silently retried. Changed web requests require a complete new question; persistent conversation memory is not implemented.
 
 \section{Data and evaluation}\label{data-and-evaluation}
 
@@ -118,6 +122,8 @@ Numerical tables use exact agreement for categories/counts and floating-point to
 
 Automatic analysis retains all 252 runs, averaging repeats within each input. Descriptive paired intervals resample task families within each dataset while retaining clean/variant dependence. Automatic numerical outcomes, variants and costs are reported separately from human whole-task judgments.
 
+Model-review criteria require factual support, appropriate scope and coverage of the request; the external audit checks question clarity, family overlap and independently generated reference calculations. Human checks use the explicit task, chart and finding criteria above on the 27 selected outputs. They contextualize model-assisted judgments but do not validate every internal review or external-audit decision. No independent human re-review of all references is claimed.
+
 \subsection{Post-hoc human-sample amendment}\label{post-hoc-human-sample-amendment}
 
 After inspecting automatic outcomes, on 18 November we reduced full-grid double rating to twenty-seven outputs to fit rater availability. This post-hoc amendment fixed selection rules before sampling. All forty-two frozen inputs, including variants, are eligible. Dataset order is Adult, Bike, Retail; tier order is explicit, exploration, visualization; task IDs are sorted within each stratum. Python\textquotesingle s \texttt{random.Random(42)} selects one input per stratum, retaining all three conditions at fixed repeat zero. Selection reads metadata only, with no outcome-based replacement or reseeding. The saved manifest binds candidates, selection, source hashes and anonymous evidence.
@@ -139,6 +145,8 @@ A separate real-Chrome integration uploaded a six-row CSV and requested total re
 The complete 252-run grid finished without selective retries. Integrity checks verified 17,829 saved run files, fixed-grid membership, source/input/environment fingerprints, terminal ledgers and budgets. An initial direct-script launch failed at import before cohort creation or model calls; the module entry ran the unchanged grid, with both logs retained. The following results include failures and budget stops. Sections 5.1-5.4 describe automatic measurements of selected outputs; Section 5.5 reports the separate human sample.
 
 \subsection{Numerical tables and report availability}\label{numerical-tables-and-report-availability}
+
+Tables 1-2 distinguish numerical agreement from report availability; neither metric alone establishes a correct whole-task answer.
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{table}[htbp]\centering
@@ -295,6 +303,8 @@ A mixed-date Bike temperature-chart run never declared date conversion. Both sav
 
 A workclass capital-loss/capital-gain ratio run failed all four execution attempts: the first used an unsupported pandas keyword, the second referenced an absent output column, and the final two repeated a nonexistent pandas constant. No report was selected. More generally, code/draft output-cap truncations numbered 2/2 for one-shot, 6/3 for recovery and 7/3 for full; full also recorded ten semantic-review model-call failures. These are overlapping stage diagnostics, including recovered failures, not a partition of terminal failures. All consumed resources remain in Table 3.
 
+The submission\textquotesingle s trace cases \texttt{recovery} (Retail R01/full/repeat 0), \texttt{scope\_failure} (Bike V08/full/0) and \texttt{execution\_failure} (Adult A02/full/0) retain the actual plans, Python, tool events, logs, available checks and selected/failed states. Provenance files bind originals to redacted copies. These connect controller routing in \texttt{agent.py}, checking in \texttt{verify.py} and execution in \texttt{executor.py} to the outcomes above. A separate \texttt{changed\_request} case records Retail R03, changing the count measure to mean unit price; it is a new complete request, not evidence of conversation memory. Selected examples explain behavior and do not replace full-grid denominators.
+
 \subsection{Human sample and initial agreement}\label{human-sample-and-initial-agreement}
 
 {\def\LTcaptype{none} % do not increment counter
@@ -350,3 +360,9 @@ Future work should prioritize request-level correctness: independently checking 
 \section{Reproduction and completion}\label{reproduction-and-completion}
 
 README documents installation, and the evaluation guide covers freezing and scoring. The source archive includes locked dependencies, tests and report sources; companion files provide run-level and repeat-averaged input results. Original audited runs, references, independent ratings and adjudication remain separate local evidence.
+
+The submission ZIP also includes three named example inputs/access instructions, result tables, five genuine selected traces, a version identifier and recoverable prompts. Full raw UCI data and model weights require the documented downloads. Historical outputs are labeled rather than mocked as fresh inference. An extracted-package test checks the runnable entry points independently of notebooks.
+
+\textbf{Individual contributions.} Liu He led local implementation, the AI-assisted development workflow, experiment execution and evidence integration, and adjudicated the seven disputed scores. Wang Ming independently completed rater 1\textquotesingle s assessment of the 27-output sample. He Xiya independently completed rater 2\textquotesingle s assessment of the same sample.
+
+\textbf{AI assistance and attribution.} OpenAI Codex assisted implementation, debugging, tests, evidence analysis, report/slide drafting and packaging; exact backing versions were not preserved for every turn. Qwen provided application inference and same-model review; the SudoCode-provided \texttt{gpt-6.1-sol} supported external auditing as disclosed above. The ZIP\textquotesingle s AI-use declaration and prompt records identify recoverable messages, redactions and missing records rather than claiming exhaustive history. Students remain responsible for verification and explanation. We acknowledge LangGraph, Ollama/langchain-ollama, pandas/NumPy, Matplotlib, Pydantic, Streamlit, psutil, Docker and the locked supporting libraries, the official NeurIPS style, and the UCI sources {[}5-7{]}. Their implementation/data are reused; no model training, fine-tuning or multimodal capability is claimed.

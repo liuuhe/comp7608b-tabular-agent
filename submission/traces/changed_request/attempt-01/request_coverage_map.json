@@ -1,0 +1,19 @@
+{
+  "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "outputs": [
+        {
+          "chart": false,
+          "table": "a1"
+        }
+      ],
+      "quote": "For InvoiceNo starting with C, compute unweighted mean UnitPrice by Country. Include valid UnitPrice counts, keep zero and negative prices, drop missing Country or UnitPrice, and sort Country ascending."
+    }
+  ],
+  "semantic_coverage": "unverified",
+  "status": "declared"
+}

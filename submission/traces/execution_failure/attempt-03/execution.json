@@ -1,0 +1,5 @@
+{
+  "error": "Traceback (most recent call last):\n  File \"/worker.py\", line 46, in <module>\n    namespace = runpy.run_path(\n                ^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/input/analysis.py\", line 100, in <module>\n    result['value'] = result['value'].replace([pd.NA, pd.NINF, pd.INF], pd.NA)\n                                                      ^^^^^^^\nAttributeError: module 'pandas' has no attribute 'NINF'\n",
+  "ok": false,
+  "seconds": 0.4185869590146467
+}

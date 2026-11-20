@@ -1,0 +1,60 @@
+{
+  "code_sha256": "a4623b2bfdddb4fdd4d2be94b16b5ff5e3acd6240114ba7fd99ca27e8793faa7",
+  "ok": true,
+  "result": {
+    "notes": [
+      {
+        "filters": [],
+        "input_rows": 6,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "total_rentals_count",
+        "prepared_rows": 6,
+        "rows_after_filters": 6,
+        "rows_after_group_keys": 6
+      },
+      {
+        "filters": [],
+        "input_rows": 6,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "rentals_by_weather",
+        "prepared_rows": 6,
+        "rows_after_filters": 6,
+        "rows_after_group_keys": 6
+      }
+    ],
+    "rows_before": 6,
+    "tables": {
+      "rentals_by_weather": [
+        {
+          "valid_count": 1,
+          "value": 28,
+          "weather": "Misty"
+        },
+        {
+          "valid_count": 2,
+          "value": 57,
+          "weather": "Rain"
+        },
+        {
+          "valid_count": 3,
+          "value": 67,
+          "weather": "Clear"
+        }
+      ],
+      "total_rentals_count": [
+        {
+          "valid_count": 6,
+          "value": 152
+        }
+      ]
+    },
+    "worker_contract_version": 3
+  },
+  "results_sha256": "99b0b3f8c0d8dfe3426dcc02eb5c429616c272c836fb47dd85b27a6176f3699e",
+  "runtime": {
+    "peak_memory_mb": 69.8203125,
+    "scope": "Linux analysis worker RSS; excludes Ollama, Docker daemon, VM and controller",
+    "seconds": 0.010040607012342662
+  },
+  "seconds": 0.4514857089961879
+}

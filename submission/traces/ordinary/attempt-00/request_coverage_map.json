@@ -1,0 +1,31 @@
+{
+  "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+  "requirements": [
+    {
+      "analysis_ids": [
+        "total_rentals_count"
+      ],
+      "outputs": [
+        {
+          "chart": false,
+          "table": "total_rentals_count"
+        }
+      ],
+      "quote": "What is the total number of rentals? Report the valid count"
+    },
+    {
+      "analysis_ids": [
+        "rentals_by_weather"
+      ],
+      "outputs": [
+        {
+          "chart": true,
+          "table": "rentals_by_weather"
+        }
+      ],
+      "quote": "draw a bar chart of total rentals by weather"
+    }
+  ],
+  "semantic_coverage": "unverified",
+  "status": "declared"
+}

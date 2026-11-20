@@ -1,0 +1,188 @@
+{
+  "code_sha256": "cb0ebcd4ea460fb29f07c27372e1995441f76c25d1a2459c5a84b3b0501d0953",
+  "ok": true,
+  "result": {
+    "notes": [
+      {
+        "filters": [
+          {
+            "column": "InvoiceNo",
+            "operator": "starts_with",
+            "rows_after": 9288,
+            "rows_before": 541909,
+            "value": "C"
+          }
+        ],
+        "input_rows": 541909,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "a1",
+        "prepared_rows": 9288,
+        "rows_after_filters": 9288,
+        "rows_after_group_keys": 9288
+      }
+    ],
+    "rows_before": 541909,
+    "tables": {
+      "a1": [
+        {
+          "Country": "Australia",
+          "valid_count": 74,
+          "value": 5.976351351351352
+        },
+        {
+          "Country": "Austria",
+          "valid_count": 3,
+          "value": 2.54
+        },
+        {
+          "Country": "Bahrain",
+          "valid_count": 1,
+          "value": 3.81
+        },
+        {
+          "Country": "Belgium",
+          "valid_count": 38,
+          "value": 4.402105263157895
+        },
+        {
+          "Country": "Channel Islands",
+          "valid_count": 10,
+          "value": 34.89
+        },
+        {
+          "Country": "Cyprus",
+          "valid_count": 8,
+          "value": 51.73625
+        },
+        {
+          "Country": "Czech Republic",
+          "valid_count": 5,
+          "value": 1.976
+        },
+        {
+          "Country": "Denmark",
+          "valid_count": 9,
+          "value": 7.933333333333334
+        },
+        {
+          "Country": "EIRE",
+          "valid_count": 302,
+          "value": 32.970993377483445
+        },
+        {
+          "Country": "European Community",
+          "valid_count": 1,
+          "value": 4.25
+        },
+        {
+          "Country": "Finland",
+          "valid_count": 10,
+          "value": 15.841
+        },
+        {
+          "Country": "France",
+          "valid_count": 149,
+          "value": 40.53154362416108
+        },
+        {
+          "Country": "Germany",
+          "valid_count": 453,
+          "value": 9.125518763796908
+        },
+        {
+          "Country": "Greece",
+          "valid_count": 1,
+          "value": 50.0
+        },
+        {
+          "Country": "Hong Kong",
+          "valid_count": 4,
+          "value": 1393.69
+        },
+        {
+          "Country": "Israel",
+          "valid_count": 2,
+          "value": 4.03
+        },
+        {
+          "Country": "Italy",
+          "valid_count": 45,
+          "value": 6.737333333333334
+        },
+        {
+          "Country": "Japan",
+          "valid_count": 37,
+          "value": 4.260810810810811
+        },
+        {
+          "Country": "Malta",
+          "valid_count": 15,
+          "value": 8.054666666666668
+        },
+        {
+          "Country": "Netherlands",
+          "valid_count": 8,
+          "value": 30.6025
+        },
+        {
+          "Country": "Norway",
+          "valid_count": 14,
+          "value": 61.89928571428572
+        },
+        {
+          "Country": "Poland",
+          "valid_count": 11,
+          "value": 4.096363636363637
+        },
+        {
+          "Country": "Portugal",
+          "valid_count": 18,
+          "value": 237.04555555555558
+        },
+        {
+          "Country": "Saudi Arabia",
+          "valid_count": 1,
+          "value": 2.95
+        },
+        {
+          "Country": "Singapore",
+          "valid_count": 7,
+          "value": 1736.9857142857143
+        },
+        {
+          "Country": "Spain",
+          "valid_count": 48,
+          "value": 65.18979166666666
+        },
+        {
+          "Country": "Sweden",
+          "valid_count": 11,
+          "value": 10.094545454545456
+        },
+        {
+          "Country": "Switzerland",
+          "valid_count": 35,
+          "value": 5.123714285714286
+        },
+        {
+          "Country": "USA",
+          "valid_count": 112,
+          "value": 2.068571428571429
+        },
+        {
+          "Country": "United Kingdom",
+          "valid_count": 7856,
+          "value": 50.95106415478615
+        }
+      ]
+    },
+    "worker_contract_version": 3
+  },
+  "results_sha256": "70154c97ac8948aa55647f99afad3208792dcfe5200df6b5e5e81e5ca9399a62",
+  "runtime": {
+    "peak_memory_mb": 223.78125,
+    "scope": "Linux analysis worker RSS; excludes Ollama, Docker daemon, VM and controller",
+    "seconds": 0.6750653809867799
+  },
+  "seconds": 1.112567832984496
+}

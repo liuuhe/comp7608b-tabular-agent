@@ -1,0 +1,279 @@
+{
+  "events": [
+    {
+      "attempt": 0,
+      "event": "calculation_preflight",
+      "failed_checks": [],
+      "verification_tool": 2
+    },
+    {
+      "attempt": 1,
+      "event": "correction",
+      "feedback": "[{\"check\": \"visual_readability\", \"status\": \"uncovered\", \"evidence\": \"Requires human rating at the final display size\", \"suggestion\": \"\", \"target\": \"plan\"}, {\"check\": \"semantic_suitability\", \"status\": \"fail\", \"evidence\": \"Separate same-model review with required per-statement coverage; still heuristic\", \"suggestion\": \"\", \"target\": \"plan\"}]\nVerification found unresolved issues"
+    },
+    {
+      "analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "attempt": 1,
+      "event": "plan_context_reset",
+      "previous_analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "reason": "New plan requires fresh code and execution; prior artifacts remain on disk"
+    },
+    {
+      "attempt": 1,
+      "event": "calculation_preflight",
+      "failed_checks": [],
+      "verification_tool": 5
+    },
+    {
+      "event": "finished",
+      "status": "failed"
+    }
+  ],
+  "model_calls": [
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/000-planning.json",
+      "load_seconds": 0.006859959,
+      "output_token_cap": 6144,
+      "phase": "planning",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 30.363126375013962,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 6551,
+        "output_tokens": 580,
+        "total_tokens": 7131
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/001-code_generation.json",
+      "load_seconds": 0.003109625,
+      "output_token_cap": 6144,
+      "phase": "code_generation",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 11.86543020803947,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 1510,
+        "output_tokens": 176,
+        "total_tokens": 1686
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/002-report_drafting.json",
+      "load_seconds": 0.005490375,
+      "output_token_cap": 6144,
+      "phase": "report_drafting",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 8.610109958972316,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 9302,
+        "output_tokens": 168,
+        "total_tokens": 9470
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/003-semantic_review.json",
+      "load_seconds": 0.001869417,
+      "output_token_cap": 6144,
+      "phase": "semantic_review",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 54.94908137497259,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 13670,
+        "output_tokens": 389,
+        "total_tokens": 14059
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/004-planning.json",
+      "load_seconds": 0.004303,
+      "output_token_cap": 6144,
+      "phase": "planning",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 28.564149916986935,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 8525,
+        "output_tokens": 152,
+        "total_tokens": 8677
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/005-code_generation.json",
+      "load_seconds": 0.002906,
+      "output_token_cap": 6144,
+      "phase": "code_generation",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 10.267368500004523,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 1510,
+        "output_tokens": 176,
+        "total_tokens": 1686
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/006-report_drafting.json",
+      "load_seconds": 0.012103708,
+      "output_token_cap": 6144,
+      "phase": "report_drafting",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 8.76239012501901,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 9302,
+        "output_tokens": 168,
+        "total_tokens": 9470
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261118-020454-642f968f/model_inputs/007-semantic_review.json",
+      "load_seconds": 0.002194625,
+      "output_token_cap": 6144,
+      "phase": "semantic_review",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 54.13742166600423,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 13670,
+        "output_tokens": 389,
+        "total_tokens": 14059
+      }
+    }
+  ],
+  "tokens": 66238,
+  "tool_count": 7,
+  "tools": [
+    {
+      "name": "profile_data",
+      "seconds": 0.017156666959635913,
+      "status": "finished"
+    },
+    {
+      "name": "execute_python",
+      "seconds": 0.47856308304471895,
+      "status": "finished"
+    },
+    {
+      "name": "verify_result",
+      "seconds": 55.11928770801751,
+      "stages": [
+        {
+          "seconds": 0.1526541250059381,
+          "stage": "calculations",
+          "status": "finished"
+        },
+        {
+          "seconds": 54.96663358301157,
+          "stage": "report",
+          "status": "finished"
+        }
+      ],
+      "status": "finished"
+    },
+    {
+      "name": "render_chart",
+      "seconds": 0.043041082972195,
+      "status": "finished"
+    },
+    {
+      "name": "execute_python",
+      "seconds": 0.4607598339789547,
+      "status": "finished"
+    },
+    {
+      "name": "verify_result",
+      "seconds": 54.305819376022555,
+      "stages": [
+        {
+          "seconds": 0.14737183402758092,
+          "stage": "calculations",
+          "status": "finished"
+        },
+        {
+          "seconds": 54.158447541994974,
+          "stage": "report",
+          "status": "finished"
+        }
+      ],
+      "status": "finished"
+    },
+    {
+      "name": "render_chart",
+      "seconds": 0.050551666994579136,
+      "status": "finished"
+    }
+  ]
+}

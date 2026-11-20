@@ -1,0 +1,23 @@
+# AI-use declaration
+
+Group 39: Wang Ming, Liu He, He Xiya. Project: *A Local Tabular Analysis Agent with Bounded Verification and Repair*.
+
+AI assistance was used extensively in both the code and report. OpenAI Codex assisted with implementation, debugging, tests, model/configuration investigations, experiment and rating tooling, analysis of saved evidence, report drafting, slide preparation and packaging. The work was developed through iterative human requests and AI-generated changes; we do not claim that all code or prose was manually authored. Exact backing Codex model/version information was not preserved for every turn and is not reconstructed from guesses.
+
+The application uses local Ollama Qwen3.5-9B Q4 (`qwen3.5:9b-q4_K_M`) for planning, code generation, report drafting and, in the full condition, separate same-model review. Earlier saved development inputs also include prior Qwen configurations; the exact available model settings and record counts are in prompts/coverage.json. These development configurations are not pooled into the frozen formal comparison.
+
+The external reference/family audit used a Chat Completions-compatible SudoCode service, configured to request and reporting `gpt-6.1-sol`. It helped interpret questions, generate independent reference calculations and inspect task-family/development overlap. Returned model identity cannot be verified through the intermediary. It was model-assisted reference checking, not independent human reference review. Audit failures, supplements and prepared requests are preserved where available; a prepared request does not prove that it was sent. This service's one-time costs are separate from the local agent-condition costs.
+
+The final study uses deterministic numerical comparison and a post-hoc human sample. Wang Ming and He Xiya independently rated the same 27 anonymous outputs under explicit criteria; Liu He adjudicated seven disputed scores. These human checks cover the sampled agent outputs, not all 252 outputs, every internal reviewer judgment or every external reference-audit judgment. They do not establish human-equivalent reference review. The report discloses the sample amendment and developer-adjudicator role.
+
+## Submitted prompt records and their limits
+
+prompts/development.jsonl contains recoverable user messages from the available pages of this project's Codex chat, with documented redactions. Clarification answers retain their recorded question/answer context. Prompts are not replaced with a newly invented account of how the project was developed. The snapshot ends during the 20 November materials task; later messages, if any, need a later export.
+
+prompts/model-inputs.jsonl.gz contains available saved application model inputs and external-audit request records, including development and failed attempts. Instructions, schemas and payloads are retained after redaction. Each record gives the original file hash and source location. Templates remain inspectable in src/tabular_agent/prompts.py and the evaluation audit modules. A previous AI response embedded in a later prompt remains part of that later prompt's context; standalone AI responses are not included as a separate requirement.
+
+Private local paths/accounts, email addresses, credential-like strings and quoted private teammate chat are redacted. Public Retail CustomerID example values are masked when represented in structured profile rows. Required team member names, task text, public dataset field names and service/model identities remain for attribution and reproducibility. The redacted copies have different hashes from their originals where edited.
+
+**Missing or unverified records:** deleted/unsaved prompts, work before this chat, any other member's separate AI sessions, and all intermediate instructions generated inside the coding assistant are not represented as a complete history. Exact Codex backing versions are incomplete. The available chat and saved model-input files are supplied rather than claiming exhaustive coverage of every AI interaction. Other members should check whether they have additional project prompts to append before upload. No absent prompt or human review is fabricated.
+
+Verification recorded in this project includes automated checks, real saved Docker/browser integration evidence, deterministic reference comparisons, two human rating returns and human adjudication. The exported receipts distinguish these from final student review and native slide playback. The students remain responsible for checking the submission, explaining the AI-assisted code and report, and presenting the live system; this declaration does not claim that a final group read-through has already occurred.

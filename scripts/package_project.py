@@ -7,6 +7,15 @@ import stat
 import zipfile
 from pathlib import Path, PurePosixPath
 
+try:
+    from .submission_materials import permitted as submission_permitted
+    from .submission_materials import verify as verify_submission
+    from .submission_materials import verify_bytes as verify_submission_bytes
+except ImportError:  # Preserve the documented direct, standard-library entry point.
+    from submission_materials import permitted as submission_permitted
+    from submission_materials import verify as verify_submission
+    from submission_materials import verify_bytes as verify_submission_bytes
+
 FORMAT = "tabular-agent-development-source-v1"
 MANIFEST = "SOURCE_MANIFEST.json"
 GUIDE = "START_HERE.md"
@@ -38,12 +47,23 @@ EXCLUDED = [
     "Course handouts and proposal documents with student details",
 ]
 MAX_BYTES = 256 * 1024 * 1024
-GUIDE_TEXT = """# Development source snapshot
+GUIDE_TEXT = """# Runnable application and submission snapshot
 
 This is the runnable source and evaluation tooling for the COMP7608B project.
 It is a source snapshot; the original full-grid human study was amended, and
 course submission is a separate user action. The generated delivery folder
 contains the report, slides, result tables and demo backup alongside this ZIP.
+The submission/ folder inside the ZIP contains the AI-use declaration, available
+project prompts with missing-record disclosures, confirmed contributions, three
+example entry points, machine-readable results and five genuine redacted traces.
+Its VERSION.json and the root SOURCE_MANIFEST.json identify the submitted bytes.
+Inspect these without private data or model inference:
+
+```bash
+python -m scripts.submission_materials --verify submission
+python -m scripts.submission_examples ordinary
+```
+
 The model-assisted reference/family audit and formal freeze are complete in the
 original workspace; all 252 held-out runs and automatic integrity checks are
 complete. Two teammates independently rated a post-hoc 27-output sample, and
@@ -51,8 +71,9 @@ a system developer adjudicated seven disputed scores. The other 225 outputs
 remain without human ratings. See docs/EVALUATION_NEXT_STEP_ZH.md for the current
 status, docs/REQUIREMENTS_AUDIT_ZH.md for requirement coverage, and
 docs/MODEL_AUDIT_ZH.md for the audit method. Historical development
-results are not held-out scores. This source ZIP does not contain the private
-audit, frozen receipt, run artifacts or ratings needed to reproduce those claims.
+results are not held-out scores. Selected genuine traces and results are included,
+but the full private audit, frozen receipt, complete raw cohort and original ratings
+needed to replay the research are not included.
 
 ## Verify and run
 
@@ -128,8 +149,10 @@ def permitted(name):
         return False
     if PurePosixPath(name).is_absolute() or any(p in {".", ".."} for p in parts):
         return False
+    if parts[0] == "submission":
+        return submission_permitted("/".join(parts[1:]))
     if name in REQUIRED or name in REPORT_SOURCES or name in LEGACY_FILES or name in ARCHIVE_ONLY_FILES or name in {
-        "AGENTS.md",
+        "AGENTS.md", ".ruff.toml",
         GUIDE, MANIFEST, "report/development-evidence.json", "report/development-evidence-v15.json",
         "config/local-stable-v26.json", "report/development-evidence-local-20261115.json",
         "config/model-selection-v28-qwen3-8b.json", "config/model-selection-v28-qwen3-14b.json",
@@ -168,8 +191,14 @@ def permitted(name):
 
 def source_paths(root):
     candidates = set(REQUIRED)
+    if (root / "submission").exists():
+        verify_submission(root / "submission")
+        candidates.update(p.relative_to(root).as_posix()
+                          for p in (root / "submission").rglob("*") if p.is_file())
     if (root / "AGENTS.md").exists():
         candidates.add("AGENTS.md")
+    if (root / ".ruff.toml").exists():
+        candidates.add(".ruff.toml")
     candidates.update(name for name in REPORT_SOURCES if (root / name).exists())
     patterns = [
         "src/tabular_agent/*.py", "scripts/*.py", "evaluation/*.py", "tests/test_*.py",
@@ -214,7 +243,8 @@ def build(root, output):
     if sum(map(len, payload.values())) > MAX_BYTES:
         raise ValueError("Source snapshot exceeds the supported size limit")
     manifest = {
-        "format": FORMAT, "status": "development_snapshot",
+        "format": FORMAT, "status": ("submission_snapshot" if "submission/MANIFEST.json" in payload
+                                       else "development_snapshot"),
         "formal_study_complete": False, "excluded_categories": EXCLUDED,
         "files": {name: {"sha256": digest(data), "bytes": len(data)}
                   for name, data in sorted(payload.items())},
@@ -252,9 +282,11 @@ def verify(path):
             if not permitted(item.filename) or not stat.S_ISREG(mode) or item.flag_bits & 1:
                 raise ValueError(f"Unsupported archive entry: {item.filename}")
         manifest = json.loads(archive.read(MANIFEST))
-        if (manifest.get("format") != FORMAT or manifest.get("status") != "development_snapshot"
+        if (manifest.get("format") != FORMAT or manifest.get("status") not in {"development_snapshot", "submission_snapshot"}
                 or manifest.get("formal_study_complete") is not False):
             raise ValueError("Unsupported source manifest")
+        if manifest["status"] == "submission_snapshot" and "submission/MANIFEST.json" not in names:
+            raise ValueError("Submission snapshot is missing its course materials")
         expected = manifest.get("files")
         if not isinstance(expected, dict) or set(names) != set(expected) | {MANIFEST}:
             raise ValueError("Archive contents differ from the manifest")
@@ -275,9 +307,12 @@ def verify(path):
             data = archive.read(name)
             if record != {"bytes": len(data), "sha256": digest(data)}:
                 raise ValueError(f"Source hash/size mismatch: {name}")
+        if any(n.startswith("submission/") for n in names):
+            verify_submission_bytes({n.removeprefix("submission/"): archive.read(n)
+                                     for n in names if n.startswith("submission/")})
     return {"archive": str(path), "sha256": digest(path.read_bytes()),
             "archive_bytes": path.stat().st_size, "files": len(expected),
-            "status": "verified_development_snapshot", "formal_study_complete": False}
+            "status": "verified_" + manifest["status"], "formal_study_complete": False}
 
 
 def main():

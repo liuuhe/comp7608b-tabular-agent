@@ -1,0 +1,92 @@
+{
+  "case": "changed_request",
+  "files": {
+    "attempt-00/plan.json": {
+      "export_sha256": "01a8c2284737eee94d1195c8679a3872a2f59c1fd2b99348b3d3a4ca50c4266d",
+      "original_sha256": "f3aa62f1d7da6a18b23236d33af6da514e82fb5f0f167bff8e1fb3a0717a7a61",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/analysis.py": {
+      "export_sha256": "cb0ebcd4ea460fb29f07c27372e1995441f76c25d1a2459c5a84b3b0501d0953",
+      "original_sha256": "cb0ebcd4ea460fb29f07c27372e1995441f76c25d1a2459c5a84b3b0501d0953",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-01/execution.json": {
+      "export_sha256": "f0bf9233ab4cf4628b1ea6affffea532a1c8603755b913a1e611c0e019e50ad0",
+      "original_sha256": "c7f8eeb78e87ef3f53ad46a120a543cb1d7a71f7aa142b81870e82ee34ddb812",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/execution.log": {
+      "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-01/generated_code.py": {
+      "export_sha256": "b28361f02f1f658a9b6049d6779895f653248004cc182d582019b0d2e7f1d72e",
+      "original_sha256": "b28361f02f1f658a9b6049d6779895f653248004cc182d582019b0d2e7f1d72e",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-01/plan.json": {
+      "export_sha256": "4a12afd8dddb8e497d51ef0ca31b877a3b49c7d34a60ff0c8e1401f7178a7114",
+      "original_sha256": "4ebcaa2e9295f02528f04481516ff0c5950e9c414ac3e93e956e1f88c3b3abb0",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/preflight_checks.json": {
+      "export_sha256": "4f7b1af65dbf0889a8f4fd3e16d8bac3e5b4baeead87cb26143f81f8a4a54400",
+      "original_sha256": "9394001b5b8954e45e28909b649c74f73c2167dbace7961b60d0b358bb7a018d",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/programmatic_checks.json": {
+      "export_sha256": "a650ff53e89cbaa3106099a66b40c15f5b05868e1f402f59b9ac4b0b625af5b3",
+      "original_sha256": "58b48f8ba6914e01a98678b4588fdab168d1cab06ae1a27e436d792002312441",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/report.md": {
+      "export_sha256": "5a4b4a48d65ca2e4aa4bdcee1abaa17f4d15b70609b9ea9b3101e380441777f4",
+      "original_sha256": "5a4b4a48d65ca2e4aa4bdcee1abaa17f4d15b70609b9ea9b3101e380441777f4",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-01/request_coverage_map.json": {
+      "export_sha256": "0eb381f3cec2dc180ff64476ba8a078e257f3eddf625ed0c7c7ca86f6c06bf52",
+      "original_sha256": "b42e3f3177e51eecd17b19ac795437aef7f8581336e51c89e0cf4738df1fdc06",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-01/tables/a1.csv": {
+      "export_sha256": "f428bbbf55b10d5c67aadfd9a688d9c906efc60bc410929209621505c75d701f",
+      "original_sha256": "f428bbbf55b10d5c67aadfd9a688d9c906efc60bc410929209621505c75d701f",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-01/verification.json": {
+      "export_sha256": "7480abbf75469a3f35dc7628084178cc6256e88bfcf2f88ae567865d1318c9bb",
+      "original_sha256": "02ffc4b1a717b8f1cde9fd974d1adab441f8089c9831bd6bb3b5db271414892c",
+      "redacted_or_selected_fields": true
+    },
+    "evaluation.json": {
+      "export_sha256": "3cd56a79a0793a93951243bfb0c987964721ed0520441a6c41bebd49bb647c8d",
+      "original_sha256": "de5f6039bb3136d7f6a95a853c4a3916effa5397d76284dac92f9e2be2a8f47a",
+      "redacted_or_selected_fields": true
+    },
+    "manifest.json": {
+      "export_sha256": "6643e59a1e701c7e1b5e0589228661a078a3ce26b0fd22ec8df251c0da8126c0",
+      "original_sha256": "92963fd49fd8ff1a244b7110f507c466ea52808e322b4e90803eb9df0183183d",
+      "redacted_or_selected_fields": true
+    },
+    "report.md": {
+      "export_sha256": "2375221bac28e029a641f8b8177edf2dd51218955c01e6cfc7df79557b03de85",
+      "original_sha256": "2375221bac28e029a641f8b8177edf2dd51218955c01e6cfc7df79557b03de85",
+      "redacted_or_selected_fields": false
+    },
+    "summary.json": {
+      "export_sha256": "e92ab51c9bb43281ed202530e83bab42f81c1234e554697eade21e5ec309d649",
+      "original_sha256": "b7934e7927d621619437f63625e1d473384139964f92ad955f1a209097914d79",
+      "redacted_or_selected_fields": true
+    },
+    "trace.json": {
+      "export_sha256": "f003ba22f1dc13ca5f0629e350f3fa4139703a76b317ba275b97f4a45b29466c",
+      "original_sha256": "391f2005ef316a8fe754c7256ac4c555ab3cc442209f6697df8da6039bf004e8",
+      "redacted_or_selected_fields": true
+    }
+  },
+  "scope": "Historical saved evidence; no new inference. Internal passes do not certify task correctness.",
+  "source_run": "evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-193411-c243265f"
+}

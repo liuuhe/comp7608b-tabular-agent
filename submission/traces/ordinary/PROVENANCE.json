@@ -1,0 +1,92 @@
+{
+  "case": "ordinary",
+  "files": {
+    "attempt-00/analysis.py": {
+      "export_sha256": "a4623b2bfdddb4fdd4d2be94b16b5ff5e3acd6240114ba7fd99ca27e8793faa7",
+      "original_sha256": "a4623b2bfdddb4fdd4d2be94b16b5ff5e3acd6240114ba7fd99ca27e8793faa7",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/charts/rentals_by_weather.png": {
+      "export_sha256": "27d10c594f9452dfd48053b46c576a809b32a14250d2b0b4fc18c43e1eb28803",
+      "original_sha256": "27d10c594f9452dfd48053b46c576a809b32a14250d2b0b4fc18c43e1eb28803",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/execution.json": {
+      "export_sha256": "d70f91dd3267eea4fb1190db67f50203177a8a9ec46923bb0576653b65afe67f",
+      "original_sha256": "bd066a4868fb9b2d1d7eaae5d36d08b8cd37880641a4034b0d18c788b64ba158",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-00/execution.log": {
+      "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/generated_code.py": {
+      "export_sha256": "5bcf7af1c1f3045bb53958e72a088bac007b73ceab17fa848f0adcc3c30a86d9",
+      "original_sha256": "5bcf7af1c1f3045bb53958e72a088bac007b73ceab17fa848f0adcc3c30a86d9",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/plan.json": {
+      "export_sha256": "01787d57126a744154c2227ef578ef55b00fedf829cf2c0dba11eeec740c2323",
+      "original_sha256": "ac9e55fe089d6119a2ed2138e68e268b974d28b1ac79a74bc215da97146a344f",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-00/preflight_checks.json": {
+      "export_sha256": "c7c82eb629e0e1ca034cd959e6731984316654654a300a3a031348290dae8f75",
+      "original_sha256": "4509a32ccca5ca7f59bac2b3535db6847cb8175683f256544828bc4f0c1e4ae8",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-00/programmatic_checks.json": {
+      "export_sha256": "0ddc5a5e65cd4dac2ab81b1fcf64c2c88b49c2ce5efe8d95546bf73ff8f2688e",
+      "original_sha256": "7a5f8d8966dcc3b01b4e0b04ca7ef5a57dd48ad30270358b6e231557de44d61f",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-00/report.md": {
+      "export_sha256": "f45a3762b5a58963354756cfdd7d87202c933c8f78555d7ad2b3e903fa7a15b5",
+      "original_sha256": "f45a3762b5a58963354756cfdd7d87202c933c8f78555d7ad2b3e903fa7a15b5",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/request_coverage_map.json": {
+      "export_sha256": "ec784d6a34a454f90bbc8f6eb7ba3be052ae970441e07264376166e18ad087fc",
+      "original_sha256": "c13cf7e809281cd138e57fe98dd42575246362107152a294aceadd04fbcdbd72",
+      "redacted_or_selected_fields": true
+    },
+    "attempt-00/tables/rentals_by_weather.csv": {
+      "export_sha256": "208b1a3e545770746044f598deb96cfae52431bb3fd2f2078822512b6aedb99a",
+      "original_sha256": "208b1a3e545770746044f598deb96cfae52431bb3fd2f2078822512b6aedb99a",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/tables/total_rentals_count.csv": {
+      "export_sha256": "431e37d297ad0e77d8aba42f67ddb022b2fc6836604523a2f846284fc2621bd3",
+      "original_sha256": "431e37d297ad0e77d8aba42f67ddb022b2fc6836604523a2f846284fc2621bd3",
+      "redacted_or_selected_fields": false
+    },
+    "attempt-00/verification.json": {
+      "export_sha256": "792b30168e0a780991b22297795d75b9e820b332dadced820064194a35212b74",
+      "original_sha256": "d27db2a115303578c8e15b2a7ef799eb8151e59696f17fce1ab34206d3b857ea",
+      "redacted_or_selected_fields": true
+    },
+    "manifest.json": {
+      "export_sha256": "73d83bf9d009b3655350068866503bebe59c6f9a97228e467dc3b3418465bf8f",
+      "original_sha256": "98699c5f24a19e8f7638aef6e06145f6002a21e8bdcbc1039179ee2139c596e8",
+      "redacted_or_selected_fields": true
+    },
+    "report.md": {
+      "export_sha256": "7223397aba37b7baa1cd81742f26855983b597ff10011efd5fe96f2d6272a1ab",
+      "original_sha256": "a428c54b8967f768af74a1a75d51ee7084cbec01cd59d911ff0fadcbe77fcb99",
+      "redacted_or_selected_fields": true
+    },
+    "summary.json": {
+      "export_sha256": "0b1750e8c9186d9cc30023a17e679eee7a394a6aba53695753a5d92f647e5f08",
+      "original_sha256": "a1835bbacfa4839b9400809d6004517bbe74d21381df69a276d2f94769b8a0ed",
+      "redacted_or_selected_fields": true
+    },
+    "trace.json": {
+      "export_sha256": "261e3fb4d4f6c0ee2b36480a454f0f246fbe31f0c9cb78602327b8ce71ed9bfd",
+      "original_sha256": "521873cd4e4a28ae7243f2c761f0a281c9d7d2f2ad514a0820edf450f8dc798b",
+      "redacted_or_selected_fields": true
+    }
+  },
+  "scope": "Historical saved evidence; no new inference. Internal passes do not certify task correctness.",
+  "source_run": "runs/20261116-215612-48aae557"
+}

@@ -1,0 +1,65 @@
+{
+  "analyses": [
+    {
+      "ascending": [
+        true
+      ],
+      "chart": null,
+      "column": "rentals",
+      "filters": [],
+      "group_by": [],
+      "id": "total_rentals_count",
+      "limit": null,
+      "missing": "drop",
+      "operation": "sum",
+      "other_column": "",
+      "sort_by": [
+        "valid_count"
+      ]
+    },
+    {
+      "ascending": [
+        true
+      ],
+      "chart": {
+        "kind": "bar",
+        "title": "Total Rentals by Weather",
+        "x": "weather",
+        "x_label": "Weather",
+        "y": "value",
+        "y_label": "Total Rentals"
+      },
+      "column": "rentals",
+      "filters": [],
+      "group_by": [
+        "weather"
+      ],
+      "id": "rentals_by_weather",
+      "limit": null,
+      "missing": "drop",
+      "operation": "sum",
+      "other_column": "",
+      "sort_by": [
+        "value"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "conversions": [],
+  "derived": [],
+  "requirements": [
+    {
+      "analysis_ids": [
+        "total_rentals_count"
+      ],
+      "quote": "What is the total number of rentals? Report the valid count"
+    },
+    {
+      "analysis_ids": [
+        "rentals_by_weather"
+      ],
+      "quote": "draw a bar chart of total rentals by weather"
+    }
+  ]
+}

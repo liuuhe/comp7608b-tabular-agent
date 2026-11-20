@@ -1,0 +1,208 @@
+{
+  "candidate_scores": [
+    {
+      "attempt": "attempt-00",
+      "execution_ok": true,
+      "reused_execution": false,
+      "score": {
+        "clarification_responses": 0,
+        "clarifications_requested": 0,
+        "data_correct": false,
+        "expected_behavior": "answer",
+        "protocol_satisfied": true,
+        "reference_reviewed": true,
+        "requires_answer_rating": true,
+        "response_behavior": "answer"
+      }
+    },
+    {
+      "attempt": "attempt-01",
+      "execution_ok": true,
+      "reused_execution": false,
+      "score": {
+        "clarification_responses": 0,
+        "clarifications_requested": 0,
+        "data_correct": true,
+        "expected_behavior": "answer",
+        "protocol_satisfied": true,
+        "reference_reviewed": true,
+        "requires_answer_rating": true,
+        "response_behavior": "answer"
+      }
+    }
+  ],
+  "category": "explicit",
+  "condition": "full",
+  "config_sha256": "daf35bbba74519e4de27c399ed1d63d6cda956f27d08ec19a1bf06711cd3f1f4",
+  "dataset": "retail",
+  "execution": {
+    "any_execution_ok": true,
+    "attempt_count": 2,
+    "execution_seconds": 2.226848332968075,
+    "selected_execution_ok": true,
+    "successful_attempt_count": 2,
+    "worker_memory_measurements": 2,
+    "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM.",
+    "worker_peak_rss_mb": 223.69921875
+  },
+  "family": "retail_price_cancellation_audit",
+  "freeze_sha256": "e3b049f425f0b6f492597e0ef60c59590ebf979e25cea2ad3e7b1a7f8e9cbadb",
+  "paired_with": null,
+  "repeat": 0,
+  "score": {
+    "clarification_responses": 0,
+    "clarifications_requested": 0,
+    "data_correct": true,
+    "expected_behavior": "answer",
+    "protocol_satisfied": true,
+    "reference_reviewed": true,
+    "requires_answer_rating": true,
+    "response_behavior": "answer"
+  },
+  "split": "test",
+  "summary": {
+    "clarification": "",
+    "clarification_history": [],
+    "clarification_responses": 0,
+    "directory": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04",
+    "error": "",
+    "has_unchecked_candidate": false,
+    "issues": [
+      {
+        "check": "table_contract",
+        "evidence": "Expected tables ['a1']; received ['a1']",
+        "status": "pass",
+        "suggestion": "",
+        "target": "code"
+      },
+      {
+        "check": "calculation.a1",
+        "evidence": "Independent CSV recomputation; 30 expected rows",
+        "status": "pass",
+        "suggestion": "",
+        "target": "code"
+      },
+      {
+        "check": "chart_coverage",
+        "evidence": "Expected charts []; found []",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report_references",
+        "evidence": "All bound values and evidence resolve",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report_comparison.finding.1.0",
+        "evidence": "maximum within the complete saved table a1, column value: 7856 at table.a1.29.value",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report_comparison.finding.2.0",
+        "evidence": "minimum within the complete saved table a1, column value: 1 at table.a1.2.value",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "visual_readability",
+        "evidence": "Requires human rating at the final display size",
+        "status": "uncovered",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "request_coverage",
+        "evidence": "Plan specifies analysis 'a1' with operation 'count', group_by ['Country'], filters InvoiceNo starts_with C and Country ne '', sort ascending. Results table 'a1' contains 30 rows with valid_count matching value for each country, sorted by Country. All substantive requirements (cancel filter, count records, exclude missing country, sort) are implemented in code and reflected in results.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      },
+      {
+        "check": "report.finding.0",
+        "evidence": "rendered_draft.findings[0] correctly reports 'For Country=United Kingdom: nonmissing count of Quantity = 7856 (valid observations: 7856)' matching table.a1.29.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.finding.1",
+        "evidence": "rendered_draft.findings[1] correctly states the maximum count is 7856 for United Kingdom, citing table.a1.29.value.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.finding.2",
+        "evidence": "rendered_draft.findings[2] correctly states the minimum count is 1 for Bahrain (and others), citing table.a1.2.value, and notes it is shared.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report.limitation.0",
+        "evidence": "rendered_draft.liminations[0] correctly quotes the declared filters 'InvoiceNo starts with C; Country ne .' from plan.filters.",
+        "status": "pass",
+        "suggestion": "",
+        "target": "report"
+      },
+      {
+        "check": "report_review_coverage",
+        "evidence": "Every finding and limitation has one conclusive semantic review",
+        "status": "pass",
+        "suggestion": "",
+        "target": "verification"
+      },
+      {
+        "check": "request_review_coverage",
+        "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+        "status": "pass",
+        "suggestion": "",
+        "target": "verification"
+      },
+      {
+        "check": "semantic_suitability",
+        "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+        "status": "pass",
+        "suggestion": "",
+        "target": "plan"
+      }
+    ],
+    "last_generated_attempt": 1,
+    "last_inspected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/attempt-01",
+    "model_tokens": 42841,
+    "repairs": 1,
+    "resources": {
+      "controller_peak_rss_mb": 565.640625,
+      "measurement_errors": [],
+      "model_rss_samples": 724,
+      "ollama_processes_peak_sum_rss_mb": 7546.359375,
+      "sampling_seconds": 0.2,
+      "scope": "Host RSS of visible processes named ollama/llama-server; may include other sessions. Excludes Metal allocations and Docker daemon/VM. Worker peak RSS is recorded separately."
+    },
+    "seconds": 167.63173904101131,
+    "selected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/attempt-01",
+    "status": "checks_passed",
+    "tool_count": 5
+  },
+  "system_fingerprint": "353441c9c07bc29b76157ebd0d2a98affa513df1dc53ce2d4dcea78793d523c1",
+  "task": "R01",
+  "task_specification": {
+    "category": "explicit",
+    "data_path": "data/uci/retail/data.csv",
+    "dataset": "retail",
+    "documentation_path": "data/uci/retail/documentation.txt",
+    "family": "retail_price_cancellation_audit",
+    "id": "R01",
+    "question": "Count cancelled transaction records by Country: InvoiceNo starts with C. Count records, not distinct invoices; exclude missing Country, sort Country ascending.",
+    "split": "test"
+  },
+  "tasks_sha256": "bf6007893ac0fcfb5b68e6a72e9bdbc0de2283ee66e4f001a74edc2ca5bd7c96",
+  "variant": null
+}

@@ -1,0 +1,1 @@
+Each row is one observed hour in this tiny sample. rentals is the number of rentals in that observed hour; weather is a category. Describe this sample only.

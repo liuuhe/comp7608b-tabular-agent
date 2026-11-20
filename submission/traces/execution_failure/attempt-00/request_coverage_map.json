@@ -1,0 +1,31 @@
+{
+  "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+  "requirements": [
+    {
+      "analysis_ids": [
+        "ratio_workclass_capital"
+      ],
+      "outputs": [
+        {
+          "chart": false,
+          "table": "ratio_workclass_capital"
+        }
+      ],
+      "quote": "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, over complete loss/gain pairs. Include paired valid counts, including pairs with zero values."
+    },
+    {
+      "analysis_ids": [
+        "ratio_workclass_capital"
+      ],
+      "outputs": [
+        {
+          "chart": false,
+          "table": "ratio_workclass_capital"
+        }
+      ],
+      "quote": "Treat ?/blank workclass as missing and drop those group keys; sort workclass ascending."
+    }
+  ],
+  "semantic_coverage": "unverified",
+  "status": "declared"
+}

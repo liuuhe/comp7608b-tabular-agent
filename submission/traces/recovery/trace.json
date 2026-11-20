@@ -1,0 +1,267 @@
+{
+  "events": [
+    {
+      "attempt": 0,
+      "event": "calculation_preflight",
+      "failed_checks": [],
+      "verification_tool": 2
+    },
+    {
+      "attempt": 1,
+      "event": "correction",
+      "feedback": "[{\"check\": \"visual_readability\", \"status\": \"uncovered\", \"evidence\": \"Requires human rating at the final display size\", \"suggestion\": \"\", \"target\": \"plan\"}, {\"check\": \"report.finding.0\", \"status\": \"fail\", \"evidence\": \"Draft text: 'For Country=United Kingdom: sum of Quantity = -263033'. Request asked for a count. The draft uses the word 'sum' and provides the sum value, which does not answer the request to 'Count records'.\", \"suggestion\": \"Replace 'sum of Quantity' with 'count of records' and provide the valid_count value (7856) instead of the sum.\", \"target\": \"report\"}, {\"check\": \"report.finding.1\", \"status\": \"fail\", \"evidence\": \"Draft text: 'For Country=Greece: sum of Quantity = -1'. Request asked for a count. The draft uses the word 'sum' and provides the sum value, which does not answer the request to 'Count records'.\", \"suggestion\": \"Replace 'sum of Quantity' with 'count of records' and provide the valid_count value (1) instead of the sum.\", \"target\": \"report\"}, {\"check\": \"plan.a1.operation\", \"status\": \"fail\", \"evidence\": \"Plan declares operation='sum' and column='Quantity'. Request explicitly asks to 'Count cancelled transaction records'. Summing Quantity aggregates units, not record counts. The request distinguishes 'Count records, not distinct invoices', implying a row count is needed.\", \"suggestion\": \"Change plan.a1.operation to 'count' and remove column dependency or use column='' for counting rows.\", \"target\": \"plan\"}, {\"check\": \"semantic_suitability\", \"status\": \"fail\", \"evidence\": \"Separate same-model review with required per-statement coverage; still heuristic\", \"suggestion\": \"\", \"target\": \"plan\"}]\nVerification found unresolved issues"
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "attempt": 1,
+      "event": "plan_context_reset",
+      "previous_analysis_ids": [
+        "a1"
+      ],
+      "reason": "New plan requires fresh code and execution; prior artifacts remain on disk"
+    },
+    {
+      "attempt": 1,
+      "event": "calculation_preflight",
+      "failed_checks": [],
+      "verification_tool": 4
+    },
+    {
+      "event": "finished",
+      "status": "checks_passed"
+    }
+  ],
+  "model_calls": [
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/000-planning.json",
+      "load_seconds": 0.010390708,
+      "output_token_cap": 6144,
+      "phase": "planning",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 11.256193374982104,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 4675,
+        "output_tokens": 208,
+        "total_tokens": 4883
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/001-code_generation.json",
+      "load_seconds": 0.002104375,
+      "output_token_cap": 6144,
+      "phase": "code_generation",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 4.8634202919784,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 969,
+        "output_tokens": 95,
+        "total_tokens": 1064
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/002-report_drafting.json",
+      "load_seconds": 0.008741375,
+      "output_token_cap": 6144,
+      "phase": "report_drafting",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 5.457209583022632,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 5297,
+        "output_tokens": 100,
+        "total_tokens": 5397
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/003-semantic_review.json",
+      "load_seconds": 0.002189792,
+      "output_token_cap": 6144,
+      "phase": "semantic_review",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 57.408818916999735,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 8520,
+        "output_tokens": 746,
+        "total_tokens": 9266
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/004-planning.json",
+      "load_seconds": 0.004073833,
+      "output_token_cap": 6144,
+      "phase": "planning",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 18.06513816595543,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 6662,
+        "output_tokens": 54,
+        "total_tokens": 6716
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/005-code_generation.json",
+      "load_seconds": 0.003936,
+      "output_token_cap": 6144,
+      "phase": "code_generation",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 6.805388666980434,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 969,
+        "output_tokens": 95,
+        "total_tokens": 1064
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/006-report_drafting.json",
+      "load_seconds": 0.008557833,
+      "output_token_cap": 6144,
+      "phase": "report_drafting",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 16.84316074999515,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 5282,
+        "output_tokens": 112,
+        "total_tokens": 5394
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-192116-e469af04/model_inputs/007-semantic_review.json",
+      "load_seconds": 0.003845042,
+      "output_token_cap": 6144,
+      "phase": "semantic_review",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 40.759080832998734,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 8628,
+        "output_tokens": 429,
+        "total_tokens": 9057
+      }
+    }
+  ],
+  "tokens": 42841,
+  "tool_count": 5,
+  "tools": [
+    {
+      "name": "profile_data",
+      "seconds": 0.6393820000230335,
+      "status": "finished"
+    },
+    {
+      "name": "execute_python",
+      "seconds": 1.092638749978505,
+      "status": "finished"
+    },
+    {
+      "name": "verify_result",
+      "seconds": 58.9169150829548,
+      "stages": [
+        {
+          "seconds": 1.486555541981943,
+          "stage": "calculations",
+          "status": "finished"
+        },
+        {
+          "seconds": 57.43035954097286,
+          "stage": "report",
+          "status": "finished"
+        }
+      ],
+      "status": "finished"
+    },
+    {
+      "name": "execute_python",
+      "seconds": 1.223535625031218,
+      "status": "finished"
+    },
+    {
+      "name": "verify_result",
+      "seconds": 42.285228540946264,
+      "stages": [
+        {
+          "seconds": 1.5107681659865193,
+          "stage": "calculations",
+          "status": "finished"
+        },
+        {
+          "seconds": 40.774460374959745,
+          "stage": "report",
+          "status": "finished"
+        }
+      ],
+      "status": "finished"
+    }
+  ]
+}

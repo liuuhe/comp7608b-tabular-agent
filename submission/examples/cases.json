@@ -1,0 +1,18 @@
+{
+  "changed_request": {
+    "data": "data/uci/retail/data.csv",
+    "initial_question": "Count cancelled transaction records by Country: InvoiceNo starts with C. Count records, not distinct invoices; exclude missing Country, sort Country ascending.",
+    "observed": "Two separate actual full-condition runs, each with one correction and a matching selected numerical table. No claim of conversational memory or whole-task human pass.",
+    "question": "For InvoiceNo starting with C, compute unweighted mean UnitPrice by Country. Include valid UnitPrice counts, keep zero and negative prices, drop missing Country or UnitPrice, and sort Country ascending. UnitPrice is GBP per unit; this is a per-line mean of unit prices, not cancellation units or revenue."
+  },
+  "failure": {
+    "data": "data/uci/adult/data.csv",
+    "observed": "Saved full-condition execution failure after initial attempt plus 3 corrections; no selected report. New inference is stochastic and need not repeat the same error.",
+    "question": "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, over complete loss/gain pairs. Include paired valid counts, including pairs with zero values. Treat ?/blank workclass as missing and drop those group keys; sort workclass ascending. A zero denominator gives an undefined value. This is a ratio of observed capital amounts, not a fraction of people; do not use fnlwgt or average person-level ratios."
+  },
+  "ordinary": {
+    "data": "data/demo_rentals.csv",
+    "observed": "152 rentals, 6 valid rows; weather totals Clear=67, Misty=28, Rain=57. Saved checks_passed integration example; not a held-out score.",
+    "question": "What is the total number of rentals? Report the valid count, and draw a bar chart of total rentals by weather."
+  }
+}

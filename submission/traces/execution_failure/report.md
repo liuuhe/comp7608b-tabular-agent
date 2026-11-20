@@ -1,0 +1,16 @@
+No complete checked report is available.
+
+Run status: failed
+
+Unresolved: Stopped: Execution failed: Traceback (most recent call last):
+  File "/worker.py", line 46, in <module>
+    namespace = runpy.run_path(
+                ^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/input/analysis.py", line 100, in <module>
+    result['value'] = result['value'].replace([pd.NA, pd.NINF, pd.INF], pd.NA)
+                                                      ^^^^^^^
+AttributeError: module 'pandas' has no attribute 'NINF'
+

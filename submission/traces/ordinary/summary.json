@@ -1,0 +1,138 @@
+{
+  "clarification": "",
+  "clarification_history": [],
+  "clarification_responses": 0,
+  "directory": "$PROJECT/runs/20261116-215612-48aae557",
+  "error": "",
+  "has_unchecked_candidate": false,
+  "issues": [
+    {
+      "check": "table_contract",
+      "evidence": "Expected tables ['rentals_by_weather', 'total_rentals_count']; received ['rentals_by_weather', 'total_rentals_count']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "request.scalar_sum.rentals",
+      "evidence": "Explicit scalar request 'What is the total number of rentals'; ungrouped sum analyses: ['total_rentals_count']. This checks operation/grouping, not filters or prose correctness.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "calculation.total_rentals_count",
+      "evidence": "Independent CSV recomputation; 1 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.rentals_by_weather",
+      "evidence": "Independent CSV recomputation; 3 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "chart_coverage",
+      "evidence": "Expected charts ['rentals_by_weather']; found ['rentals_by_weather']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "chart.rentals_by_weather",
+      "evidence": "Compare actual artist arrays/labels with saved table and chart specification",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report_references",
+      "evidence": "All bound values and evidence resolve",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report_comparison.finding.1.0",
+      "evidence": "maximum within the complete saved table rentals_by_weather, column value: 67 at table.rentals_by_weather.2.value",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report_comparison.finding.1.1",
+      "evidence": "minimum within the complete saved table rentals_by_weather, column value: 28 at table.rentals_by_weather.0.value",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "visual_readability",
+      "evidence": "Requires human rating at the final display size",
+      "status": "uncovered",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "request_coverage",
+      "evidence": "Plan includes 'total_rentals_count' with operation 'sum' on column 'rentals', filters [], and sort_by ['valid_count'] ascending. Result table shows value=152, valid_count=6. Plan includes 'rentals_by_weather' with operation 'sum' on 'rentals', group_by ['weather'], and chart spec kind='bar', x='weather', y='value'. Results show 3 rows for weather groups. Chart exists at path '$PROJECT/runs/20261116-215612-48aae557/attempt-00/charts/rentals_by_weather.png'. Documentation confirms sample description. All substantive requests (total count, valid count report, bar chart) are mapped to plan analyses and verified in results.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report.finding.0",
+      "evidence": "rendered_draft.findings[0] text: 'sum of rentals = 152 (valid observations: 6).' Matches table.total_rentals_count.0.value (152) and valid_count (6). Evidence list cites correct table cells.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report.finding.1",
+      "evidence": "rendered_draft.findings[1] text: 'The highest sum of rentals in the saved table is 67. For weather=Clear: sum of rentals = 67 (valid observations: 3). The lowest sum of rentals in the saved table is 28. For weather=Misty: sum of rentals = 28 (valid observations: 1).' Matches table.rentals_by_weather.2.value (67), .weather ('Clear'), .valid_count (3) and table.rentals_by_weather.0.value (28), .weather ('Misty'), .valid_count (1). Descriptive comparison within saved output is accurate.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report_review_coverage",
+      "evidence": "Every finding and limitation has one conclusive semantic review",
+      "status": "pass",
+      "suggestion": "",
+      "target": "verification"
+    },
+    {
+      "check": "request_review_coverage",
+      "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+      "status": "pass",
+      "suggestion": "",
+      "target": "verification"
+    },
+    {
+      "check": "semantic_suitability",
+      "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    }
+  ],
+  "last_generated_attempt": 0,
+  "last_inspected_attempt": "$PROJECT/runs/20261116-215612-48aae557/attempt-00",
+  "model_tokens": 18481,
+  "repairs": 0,
+  "resources": {
+    "controller_peak_rss_mb": 141.53125,
+    "measurement_errors": [],
+    "model_rss_samples": 456,
+    "ollama_processes_peak_sum_rss_mb": 6794.359375,
+    "sampling_seconds": 0.2,
+    "scope": "Host RSS of visible processes named ollama/llama-server; may include other sessions. Excludes Metal allocations and Docker daemon/VM. Worker peak RSS is recorded separately."
+  },
+  "seconds": 102.16843641700689,
+  "selected_attempt": "$PROJECT/runs/20261116-215612-48aae557/attempt-00",
+  "status": "checks_passed",
+  "tool_count": 4
+}

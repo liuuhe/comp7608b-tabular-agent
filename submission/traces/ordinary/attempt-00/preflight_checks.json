@@ -1,0 +1,68 @@
+{
+  "issues": [
+    {
+      "check": "table_contract",
+      "evidence": "Expected tables ['rentals_by_weather', 'total_rentals_count']; received ['rentals_by_weather', 'total_rentals_count']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "request.scalar_sum.rentals",
+      "evidence": "Explicit scalar request 'What is the total number of rentals'; ungrouped sum analyses: ['total_rentals_count']. This checks operation/grouping, not filters or prose correctness.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "calculation.total_rentals_count",
+      "evidence": "Independent CSV recomputation; 1 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.rentals_by_weather",
+      "evidence": "Independent CSV recomputation; 3 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    }
+  ],
+  "selection": {
+    "rentals_by_weather": {
+      "expected_valid_count_total_before_limit": 6,
+      "filters": [],
+      "input_rows_after_conversions": 6,
+      "missing_policy_requires_error": false,
+      "missing_target_or_paired_values": 0,
+      "missing_target_values": 0,
+      "operation": "sum",
+      "result_limit": null,
+      "rows_after_filters": 6,
+      "rows_with_complete_group_keys": 6,
+      "rows_with_missing_group_keys": 0,
+      "scope": "Independent expectation from CSV and declared plan; inspect code too. Counts precede result limit/sampling.",
+      "status": "computed",
+      "target_missing_values_retained": 0,
+      "valid_count_definition": "Rows with complete group keys and nonmissing target"
+    },
+    "total_rentals_count": {
+      "expected_valid_count_total_before_limit": 6,
+      "filters": [],
+      "input_rows_after_conversions": 6,
+      "missing_policy_requires_error": false,
+      "missing_target_or_paired_values": 0,
+      "missing_target_values": 0,
+      "operation": "sum",
+      "result_limit": null,
+      "rows_after_filters": 6,
+      "rows_with_complete_group_keys": 6,
+      "rows_with_missing_group_keys": 0,
+      "scope": "Independent expectation from CSV and declared plan; inspect code too. Counts precede result limit/sampling.",
+      "status": "computed",
+      "target_missing_values_retained": 0,
+      "valid_count_definition": "Rows with complete group keys and nonmissing target"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "issues": [
+    {
+      "check": "table_contract",
+      "evidence": "Expected tables ['a1']; received ['a1']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.a1",
+      "evidence": "Independent CSV recomputation; 30 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    }
+  ],
+  "selection": {
+    "a1": {
+      "expected_valid_count_total_before_limit": 9288,
+      "filters": [
+        {
+          "column": "InvoiceNo",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 532621,
+          "input_rows": 541909,
+          "operator": "starts_with",
+          "reference": "plan.filters.a1.0",
+          "retained_rows": 9288,
+          "value": "C"
+        },
+        {
+          "column": "Country",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 0,
+          "input_rows": 9288,
+          "operator": "ne",
+          "reference": "plan.filters.a1.1",
+          "retained_rows": 9288,
+          "value": ""
+        }
+      ],
+      "input_rows_after_conversions": 541909,
+      "missing_policy_requires_error": false,
+      "missing_target_or_paired_values": 0,
+      "missing_target_values": 0,
+      "operation": "sum",
+      "result_limit": null,
+      "rows_after_filters": 9288,
+      "rows_with_complete_group_keys": 9288,
+      "rows_with_missing_group_keys": 0,
+      "scope": "Independent expectation from CSV and declared plan; inspect code too. Counts precede result limit/sampling.",
+      "status": "computed",
+      "target_missing_values_retained": 0,
+      "valid_count_definition": "Rows with complete group keys and nonmissing target"
+    }
+  }
+}

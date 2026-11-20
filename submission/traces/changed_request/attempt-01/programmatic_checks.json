@@ -1,0 +1,51 @@
+[
+  {
+    "check": "table_contract",
+    "evidence": "Expected tables ['a1']; received ['a1']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.a1",
+    "evidence": "Independent CSV recomputation; 30 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "chart_coverage",
+    "evidence": "Expected charts []; found []",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_references",
+    "evidence": "All bound values and evidence resolve",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_comparison.finding.1.0",
+    "evidence": "maximum within the complete saved table a1, column value: 1736.9857142857143 at table.a1.24.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report_comparison.finding.1.1",
+    "evidence": "minimum within the complete saved table a1, column value: 1.976 at table.a1.6.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "visual_readability",
+    "evidence": "Requires human rating at the final display size",
+    "status": "uncovered",
+    "suggestion": "",
+    "target": "plan"
+  }
+]

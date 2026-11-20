@@ -1,0 +1,97 @@
+{
+  "analyses": [
+    {
+      "ascending": [
+        true
+      ],
+      "chart": {
+        "kind": "line",
+        "title": "Mean Normalized Temp by Month (2012)",
+        "x": "mnth",
+        "x_label": "Month",
+        "y": "value",
+        "y_label": "Normalized Temp"
+      },
+      "column": "temp",
+      "filters": [
+        {
+          "column": "dteday",
+          "operator": "ge",
+          "value": "2012-01-01T00:00:00"
+        },
+        {
+          "column": "dteday",
+          "operator": "lt",
+          "value": "2013-01-01T00:00:00"
+        }
+      ],
+      "group_by": [
+        "mnth"
+      ],
+      "id": "a1",
+      "limit": null,
+      "missing": "drop",
+      "operation": "mean",
+      "other_column": "",
+      "sort_by": [
+        "mnth"
+      ]
+    },
+    {
+      "ascending": [
+        true
+      ],
+      "chart": null,
+      "column": "temp",
+      "filters": [
+        {
+          "column": "dteday",
+          "operator": "ge",
+          "value": "2012-01-01T00:00:00"
+        },
+        {
+          "column": "dteday",
+          "operator": "lt",
+          "value": "2013-01-01T00:00:00"
+        }
+      ],
+      "group_by": [
+        "mnth"
+      ],
+      "id": "a2",
+      "limit": null,
+      "missing": "drop",
+      "operation": "count",
+      "other_column": "",
+      "sort_by": [
+        "mnth"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "conversions": [],
+  "derived": [],
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "quote": "For 2012, line-chart mean normalized temp by mnth, with valid temp counts, months ascending."
+    },
+    {
+      "analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "quote": "Parse dteday and select 2012-01-01 inclusive to 2013-01-01 exclusive."
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "Keep the supplied temperature/41 scale and label it explicitly, not degrees Celsius."
+    }
+  ]
+}

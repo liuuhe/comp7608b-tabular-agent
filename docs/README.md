@@ -10,6 +10,7 @@
 按需查看：
 
 - [报告源码与编译](../report/README_ZH.md)、[正文](../report/DRAFT.md)。
+- [提交材料索引](../submission/README.md)：AI声明、贡献、prompts、样例、结果与精选trace。
 - [演示操作与讲稿](DEMO_RUNBOOK_ZH.md)、[队友参与](TEAM_HANDOFF_ZH.md)。
 - [正式自动结果](FORMAL_V7_RESULTS_ZH.md)、[人工样本结果](HUMAN_SAMPLE_RESULTS_ZH.md)。
 - [实现说明](IMPLEMENTATION.md)、[评价工具](../evaluation/README.md)、[强模型辅助审计](MODEL_AUDIT_ZH.md)。

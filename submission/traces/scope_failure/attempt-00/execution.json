@@ -1,0 +1,191 @@
+{
+  "code_sha256": "cb582a03b14786738dbd84e433c3cc877a6758346d6578d12c1e1fe80b913510",
+  "ok": true,
+  "result": {
+    "notes": [
+      {
+        "filters": [
+          {
+            "column": "dteday",
+            "operator": "ge",
+            "rows_after": 7787,
+            "rows_before": 17379,
+            "value": "2012-01-01T00:00:00"
+          },
+          {
+            "column": "dteday",
+            "operator": "lt",
+            "rows_after": 5814,
+            "rows_before": 7787,
+            "value": "2013-01-01T00:00:00"
+          }
+        ],
+        "input_rows": 17379,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "a1",
+        "prepared_rows": 5814,
+        "rows_after_filters": 5814,
+        "rows_after_group_keys": 5814
+      },
+      {
+        "filters": [
+          {
+            "column": "dteday",
+            "operator": "ge",
+            "rows_after": 7787,
+            "rows_before": 17379,
+            "value": "2012-01-01T00:00:00"
+          },
+          {
+            "column": "dteday",
+            "operator": "lt",
+            "rows_after": 5814,
+            "rows_before": 7787,
+            "value": "2013-01-01T00:00:00"
+          }
+        ],
+        "input_rows": 17379,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "a2",
+        "prepared_rows": 5814,
+        "rows_after_filters": 5814,
+        "rows_after_group_keys": 5814
+      }
+    ],
+    "rows_before": 17379,
+    "tables": {
+      "a1": [
+        {
+          "mnth": 1,
+          "valid_count": 486,
+          "value": 0.273086419753086
+        },
+        {
+          "mnth": 2,
+          "valid_count": 461,
+          "value": 0.315227765726681
+        },
+        {
+          "mnth": 3,
+          "valid_count": 495,
+          "value": 0.449373737373737
+        },
+        {
+          "mnth": 4,
+          "valid_count": 479,
+          "value": 0.468434237995825
+        },
+        {
+          "mnth": 5,
+          "valid_count": 496,
+          "value": 0.612338709677419
+        },
+        {
+          "mnth": 6,
+          "valid_count": 480,
+          "value": 0.674916666666667
+        },
+        {
+          "mnth": 7,
+          "valid_count": 496,
+          "value": 0.752137096774194
+        },
+        {
+          "mnth": 8,
+          "valid_count": 496,
+          "value": 0.711935483870968
+        },
+        {
+          "mnth": 9,
+          "valid_count": 480,
+          "value": 0.620416666666667
+        },
+        {
+          "mnth": 10,
+          "valid_count": 472,
+          "value": 0.505847457627119
+        },
+        {
+          "mnth": 11,
+          "valid_count": 479,
+          "value": 0.336492693110647
+        },
+        {
+          "mnth": 12,
+          "valid_count": 494,
+          "value": 0.323481781376518
+        }
+      ],
+      "a2": [
+        {
+          "mnth": 1,
+          "valid_count": 486,
+          "value": 486
+        },
+        {
+          "mnth": 2,
+          "valid_count": 461,
+          "value": 461
+        },
+        {
+          "mnth": 3,
+          "valid_count": 495,
+          "value": 495
+        },
+        {
+          "mnth": 4,
+          "valid_count": 479,
+          "value": 479
+        },
+        {
+          "mnth": 5,
+          "valid_count": 496,
+          "value": 496
+        },
+        {
+          "mnth": 6,
+          "valid_count": 480,
+          "value": 480
+        },
+        {
+          "mnth": 7,
+          "valid_count": 496,
+          "value": 496
+        },
+        {
+          "mnth": 8,
+          "valid_count": 496,
+          "value": 496
+        },
+        {
+          "mnth": 9,
+          "valid_count": 480,
+          "value": 480
+        },
+        {
+          "mnth": 10,
+          "valid_count": 472,
+          "value": 472
+        },
+        {
+          "mnth": 11,
+          "valid_count": 479,
+          "value": 479
+        },
+        {
+          "mnth": 12,
+          "valid_count": 494,
+          "value": 494
+        }
+      ]
+    },
+    "worker_contract_version": 3
+  },
+  "results_sha256": "55a598aa17e025ce505d71d5f8f0ad25405eadffdc3d756e2106f09af05a013e",
+  "runtime": {
+    "peak_memory_mb": 79.015625,
+    "scope": "Linux analysis worker RSS; excludes Ollama, Docker daemon, VM and controller",
+    "seconds": 0.02482607396086678
+  },
+  "seconds": 0.44828454102389514
+}

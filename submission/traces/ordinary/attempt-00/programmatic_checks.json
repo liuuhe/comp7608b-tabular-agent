@@ -1,0 +1,72 @@
+[
+  {
+    "check": "table_contract",
+    "evidence": "Expected tables ['rentals_by_weather', 'total_rentals_count']; received ['rentals_by_weather', 'total_rentals_count']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "request.scalar_sum.rentals",
+    "evidence": "Explicit scalar request 'What is the total number of rentals'; ungrouped sum analyses: ['total_rentals_count']. This checks operation/grouping, not filters or prose correctness.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "calculation.total_rentals_count",
+    "evidence": "Independent CSV recomputation; 1 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.rentals_by_weather",
+    "evidence": "Independent CSV recomputation; 3 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "chart_coverage",
+    "evidence": "Expected charts ['rentals_by_weather']; found ['rentals_by_weather']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "chart.rentals_by_weather",
+    "evidence": "Compare actual artist arrays/labels with saved table and chart specification",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_references",
+    "evidence": "All bound values and evidence resolve",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_comparison.finding.1.0",
+    "evidence": "maximum within the complete saved table rentals_by_weather, column value: 67 at table.rentals_by_weather.2.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report_comparison.finding.1.1",
+    "evidence": "minimum within the complete saved table rentals_by_weather, column value: 28 at table.rentals_by_weather.0.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "visual_readability",
+    "evidence": "Requires human rating at the final display size",
+    "status": "uncovered",
+    "suggestion": "",
+    "target": "plan"
+  }
+]

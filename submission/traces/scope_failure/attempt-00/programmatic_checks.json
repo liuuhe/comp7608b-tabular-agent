@@ -1,0 +1,58 @@
+[
+  {
+    "check": "table_contract",
+    "evidence": "Expected tables ['a1', 'a2']; received ['a1', 'a2']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.a1",
+    "evidence": "Independent CSV recomputation; 12 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.a2",
+    "evidence": "Independent CSV recomputation; 12 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "chart_coverage",
+    "evidence": "Expected charts ['a1']; found ['a1']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "chart.a1",
+    "evidence": "Compare actual artist arrays/labels with saved table and chart specification",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_references",
+    "evidence": "All bound values and evidence resolve",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_comparison.finding.2.0",
+    "evidence": "maximum within the complete saved table a1, column value: 0.752137096774194 at table.a1.6.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "visual_readability",
+    "evidence": "Requires human rating at the final display size",
+    "status": "uncovered",
+    "suggestion": "",
+    "target": "plan"
+  }
+]

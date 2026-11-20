@@ -1,0 +1,99 @@
+{
+  "candidate_scores": [
+    {
+      "attempt": "attempt-00",
+      "execution_ok": false,
+      "score": {
+        "data_correct": false
+      }
+    },
+    {
+      "attempt": "attempt-01",
+      "execution_ok": false,
+      "score": {
+        "data_correct": false
+      }
+    },
+    {
+      "attempt": "attempt-02",
+      "execution_ok": false,
+      "score": {
+        "data_correct": false
+      }
+    },
+    {
+      "attempt": "attempt-03",
+      "execution_ok": false,
+      "score": {
+        "data_correct": false
+      }
+    }
+  ],
+  "category": "explicit",
+  "condition": "full",
+  "config_sha256": "daf35bbba74519e4de27c399ed1d63d6cda956f27d08ec19a1bf06711cd3f1f4",
+  "dataset": "adult",
+  "execution": {
+    "any_execution_ok": false,
+    "attempt_count": 4,
+    "execution_seconds": 1.745088750089053,
+    "selected_execution_ok": false,
+    "successful_attempt_count": 0,
+    "worker_memory_measurements": 0,
+    "worker_memory_scope": "Available worker RSS measurements; failed executions may lack a measurement. Excludes model, controller and Docker VM.",
+    "worker_peak_rss_mb": null
+  },
+  "family": "adult_capital_loss",
+  "freeze_sha256": "e3b049f425f0b6f492597e0ef60c59590ebf979e25cea2ad3e7b1a7f8e9cbadb",
+  "paired_with": null,
+  "repeat": 0,
+  "score": {
+    "clarification_responses": 0,
+    "clarifications_requested": 0,
+    "data_correct": false,
+    "expected_behavior": "answer",
+    "protocol_satisfied": false,
+    "reference_available": true,
+    "response_behavior": "no_output"
+  },
+  "split": "test",
+  "summary": {
+    "clarification": "",
+    "clarification_history": [],
+    "clarification_responses": 0,
+    "directory": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-225300-ddef4902",
+    "error": "Stopped: Execution failed: Traceback (most recent call last):\n  File \"/worker.py\", line 46, in <module>\n    namespace = runpy.run_path(\n                ^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/input/analysis.py\", line 100, in <module>\n    result['value'] = result['value'].replace([pd.NA, pd.NINF, pd.INF], pd.NA)\n                                                      ^^^^^^^\nAttributeError: module 'pandas' has no attribute 'NINF'\n",
+    "has_unchecked_candidate": false,
+    "issues": [],
+    "last_generated_attempt": 3,
+    "last_inspected_attempt": null,
+    "model_tokens": 14635,
+    "repairs": 3,
+    "resources": {
+      "controller_peak_rss_mb": 200.703125,
+      "measurement_errors": [],
+      "model_rss_samples": 258,
+      "ollama_processes_peak_sum_rss_mb": 7748.359375,
+      "sampling_seconds": 0.2,
+      "scope": "Host RSS of visible processes named ollama/llama-server; may include other sessions. Excludes Metal allocations and Docker daemon/VM. Worker peak RSS is recorded separately."
+    },
+    "seconds": 58.02603116701357,
+    "selected_attempt": null,
+    "status": "failed",
+    "tool_count": 5
+  },
+  "system_fingerprint": "353441c9c07bc29b76157ebd0d2a98affa513df1dc53ce2d4dcea78793d523c1",
+  "task": "A02",
+  "task_specification": {
+    "category": "explicit",
+    "data_path": "data/uci/adult/data.csv",
+    "dataset": "adult",
+    "documentation_path": "data/uci/adult/documentation.txt",
+    "family": "adult_capital_loss",
+    "id": "A02",
+    "question": "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, over complete loss/gain pairs. Include paired valid counts, including pairs with zero values. Treat ?/blank workclass as missing and drop those group keys; sort workclass ascending. A zero denominator gives an undefined value. This is a ratio of observed capital amounts, not a fraction of people; do not use fnlwgt or average person-level ratios.",
+    "split": "test"
+  },
+  "tasks_sha256": "bf6007893ac0fcfb5b68e6a72e9bdbc0de2283ee66e4f001a74edc2ca5bd7c96",
+  "variant": null
+}

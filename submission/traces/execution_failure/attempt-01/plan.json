@@ -1,0 +1,41 @@
+{
+  "analyses": [
+    {
+      "ascending": [
+        true
+      ],
+      "chart": null,
+      "column": "capital-gain",
+      "filters": [],
+      "group_by": [
+        "workclass"
+      ],
+      "id": "ratio_workclass_capital",
+      "limit": null,
+      "missing": "drop",
+      "operation": "ratio",
+      "other_column": "capital-loss",
+      "sort_by": [
+        "value"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "conversions": [],
+  "derived": [],
+  "requirements": [
+    {
+      "analysis_ids": [
+        "ratio_workclass_capital"
+      ],
+      "quote": "For each workclass, compute sum(capital-loss)/sum(capital-gain), unweighted, over complete loss/gain pairs. Include paired valid counts, including pairs with zero values."
+    },
+    {
+      "analysis_ids": [
+        "ratio_workclass_capital"
+      ],
+      "quote": "Treat ?/blank workclass as missing and drop those group keys; sort workclass ascending."
+    }
+  ]
+}

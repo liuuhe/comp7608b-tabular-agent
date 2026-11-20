@@ -1,0 +1,23 @@
+{
+  "development_chat_retrieval": "All available pages of the current project chat, 2026-11-20; user messages only.",
+  "development_prompts": 49,
+  "kinds": {
+    "agent_runtime": 2119,
+    "external_audit_prepared_request": 369
+  },
+  "missing_records": [
+    "AI use before this chat or in other members' private sessions is not recoverable here.",
+    "Deleted, unsaved or truncated inputs and the assistant's intermediate generated instructions are not represented as a complete history.",
+    "Exact Codex backing model versions were not preserved for every turn."
+  ],
+  "model_input_records": 2488,
+  "model_settings": {
+    "gpt-6.1-sol": 343,
+    "not_recorded_in_nearby_manifest": 121,
+    "qwen3.5:9b-q4_K_M": 1191,
+    "qwen3.8:27b-q4_K_M": 3,
+    "qwen3:14b": 34,
+    "qwen3:8b": 796
+  },
+  "scope": "Available saved runtime inputs include failures; prepared external requests are not proof of an API call. AI responses used as later prompt context remain part of those prompts."
+}

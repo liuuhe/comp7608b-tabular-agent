@@ -1,6 +1,6 @@
 # A Local Tabular Analysis Agent with Bounded Verification and Repair
 
-**Working draft — 18 November 2026.** The frozen 252-run experiment and automatic integrity checks are complete. Both independent initial ratings and Liu He's final adjudication of the 27-output sample are complete. This draft is ready for submission review. The proposal's human reference/family review was changed to a documented external model-assisted audit, and full-grid human scoring was reduced through a separate post-hoc amendment. After initial ratings, Liu He, a system developer, was assigned disputed scores for final adjudication. Neither change establishes human-equivalent reference review or full-grid human quality. Development history is retained in the [archived working draft](../docs/archive/REPORT_DEVELOPMENT_HISTORY_20261116.md).
+**Submission review draft — 20 November 2026.** The frozen experiment and 27-output human sample are unchanged. This revision adds the Moodle guideline's user/scope comparison, operating requirements, contribution and AI-use disclosures. Recoverable prompts, selected genuine traces and results accompany the source ZIP. Final student review and upload remain separate actions. Development history is retained in the [archived working draft](../docs/archive/REPORT_DEVELOPMENT_HISTORY_20261116.md).
 
 ## Abstract
 
@@ -15,6 +15,8 @@ We study whether verification and bounded correction improve the reliability of 
 The system follows the interaction between reasoning and tools exemplified by ReAct [1] and bounded feedback/refinement approaches such as Self-Refine [2]. LIDA [3] motivates treating visualization as a multi-stage analysis task, while DSBench [4] provides broader context for evaluating data-science agents. Our contribution is an implemented, instrumented comparison in a restricted single-table setting, rather than a new general reasoning algorithm.
 
 The main question is: **under the same model, inputs and resource caps, does verification with bounded repair improve task outcomes enough to justify its latency and token cost?** We separately assess whether a failure is detected, whether a correction succeeds and whether a previously usable result regresses.
+
+Intended users are students and analysts who have a CSV and a descriptive question but limited pandas/programming experience. Their core needs are a usable answer, visible supporting calculations and understandable failure feedback. The proposal's CSV-to-report workflow, three task tiers, local execution and bounded repair are delivered. Reliable completion of every exploratory request remains unfinished; neither prediction nor multi-table analysis was promised. The planned Qwen3-8B was replaced with Qwen3.5-9B Q4 before freezing. Independent-human reference review became a model-assisted audit, and full-grid double rating became a post-hoc 27-output sample with developer adjudication. Sections 3.2-3.3 explain these evaluation changes and their limits; the core single-table objective remains the same.
 
 ## 2. System
 
@@ -58,6 +60,8 @@ Each run permits at most twelve tool invocations, three corrections and 100,000 
 
 `checks_passed` means applicable automated checks and model review reported no unresolved failure. It is not a human whole-task pass, and uncovered checks remain visible.
 
+Observable operating requirements are bounded workload (one CSV per run, twelve tools, three corrections and the token cap), worker isolation (two CPUs, 2 GiB and 120-second execution timeout), auditable outputs and local handling of normal application data. These caps are enforced rather than latency guarantees; Section 5.2 reports actual cost and timing on the stated hardware. Optional external reference auditing sends task descriptions, documentation and small format examples to the configured service, so its privacy assumptions differ from local inference. The UI shows clarification, failure or unchecked-candidate states with retained diagnostics. Generated programs cannot send mail, make payments or write remotely: repair repeats sandboxed computation and consumes resources. Interrupted external audits may incur a charge and are not silently retried. Changed web requests require a complete new question; persistent conversation memory is not implemented.
+
 ## 3. Data and evaluation
 
 ### 3.1. Data and conditions
@@ -90,6 +94,8 @@ Numerical tables use exact agreement for categories/counts and floating-point to
 
 Automatic analysis retains all 252 runs, averaging repeats within each input. Descriptive paired intervals resample task families within each dataset while retaining clean/variant dependence. Automatic numerical outcomes, variants and costs are reported separately from human whole-task judgments.
 
+Model-review criteria require factual support, appropriate scope and coverage of the request; the external audit checks question clarity, family overlap and independently generated reference calculations. Human checks use the explicit task, chart and finding criteria above on the 27 selected outputs. They contextualize model-assisted judgments but do not validate every internal review or external-audit decision. No independent human re-review of all references is claimed.
+
 ### 3.3. Post-hoc human-sample amendment
 
 After inspecting automatic outcomes, on 18 November we reduced full-grid double rating to twenty-seven outputs to fit rater availability. This post-hoc amendment fixed selection rules before sampling. All forty-two frozen inputs, including variants, are eligible. Dataset order is Adult, Bike, Retail; tier order is explicit, exploration, visualization; task IDs are sorted within each stratum. Python's `random.Random(42)` selects one input per stratum, retaining all three conditions at fixed repeat zero. Selection reads metadata only, with no outcome-based replacement or reseeding. The saved manifest binds candidates, selection, source hashes and anonymous evidence.
@@ -111,6 +117,8 @@ A separate real-Chrome integration uploaded a six-row CSV and requested total re
 The complete 252-run grid finished without selective retries. Integrity checks verified 17,829 saved run files, fixed-grid membership, source/input/environment fingerprints, terminal ledgers and budgets. An initial direct-script launch failed at import before cohort creation or model calls; the module entry ran the unchanged grid, with both logs retained. The following results include failures and budget stops. Sections 5.1-5.4 describe automatic measurements of selected outputs; Section 5.5 reports the separate human sample.
 
 ### 5.1. Numerical tables and report availability
+
+Tables 1-2 distinguish numerical agreement from report availability; neither metric alone establishes a correct whole-task answer.
 
 | Selected numerical table | One-shot | Error recovery | Full |
 | --- | ---: | ---: | ---: |
@@ -175,6 +183,8 @@ A mixed-date Bike temperature-chart run never declared date conversion. Both sav
 
 A workclass capital-loss/capital-gain ratio run failed all four execution attempts: the first used an unsupported pandas keyword, the second referenced an absent output column, and the final two repeated a nonexistent pandas constant. No report was selected. More generally, code/draft output-cap truncations numbered 2/2 for one-shot, 6/3 for recovery and 7/3 for full; full also recorded ten semantic-review model-call failures. These are overlapping stage diagnostics, including recovered failures, not a partition of terminal failures. All consumed resources remain in Table 3.
 
+The submission's trace cases `recovery` (Retail R01/full/repeat 0), `scope_failure` (Bike V08/full/0) and `execution_failure` (Adult A02/full/0) retain the actual plans, Python, tool events, logs, available checks and selected/failed states. Provenance files bind originals to redacted copies. These connect controller routing in `agent.py`, checking in `verify.py` and execution in `executor.py` to the outcomes above. A separate `changed_request` case records Retail R03, changing the count measure to mean unit price; it is a new complete request, not evidence of conversation memory. Selected examples explain behavior and do not replace full-grid denominators.
+
 ### 5.5. Human sample and initial agreement
 
 | Sample outcome | One-shot | Error recovery | Full |
@@ -208,6 +218,12 @@ Future work should prioritize request-level correctness: independently checking 
 ## 7. Reproduction and completion
 
 [README](../README.md) documents installation, and [the evaluation guide](../evaluation/README.md) covers freezing and scoring. The source archive includes locked dependencies, tests and report sources; companion files provide run-level and repeat-averaged input results. Original audited runs, references, independent ratings and adjudication remain separate local evidence.
+
+The submission ZIP also includes three named example inputs/access instructions, result tables, five genuine selected traces, a version identifier and recoverable prompts. Full raw UCI data and model weights require the documented downloads. Historical outputs are labeled rather than mocked as fresh inference. An extracted-package test checks the runnable entry points independently of notebooks.
+
+**Individual contributions.** Liu He led local implementation, the AI-assisted development workflow, experiment execution and evidence integration, and adjudicated the seven disputed scores. Wang Ming independently completed rater 1's assessment of the 27-output sample. He Xiya independently completed rater 2's assessment of the same sample.
+
+**AI assistance and attribution.** OpenAI Codex assisted implementation, debugging, tests, evidence analysis, report/slide drafting and packaging; exact backing versions were not preserved for every turn. Qwen provided application inference and same-model review; the SudoCode-provided `gpt-6.1-sol` supported external auditing as disclosed above. The ZIP's AI-use declaration and prompt records identify recoverable messages, redactions and missing records rather than claiming exhaustive history. Students remain responsible for verification and explanation. We acknowledge LangGraph, Ollama/langchain-ollama, pandas/NumPy, Matplotlib, Pydantic, Streamlit, psutil, Docker and the locked supporting libraries, the official NeurIPS style, and the UCI sources [5-7]. Their implementation/data are reused; no model training, fine-tuning or multimodal capability is claimed.
 
 ## References
 

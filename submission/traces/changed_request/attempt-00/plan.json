@@ -1,0 +1,64 @@
+{
+  "analyses": [
+    {
+      "ascending": [
+        true
+      ],
+      "chart": null,
+      "column": "UnitPrice",
+      "filters": [
+        {
+          "column": "InvoiceNo",
+          "operator": "starts_with",
+          "value": "C"
+        },
+        {
+          "column": "Country",
+          "operator": "not_starts_with",
+          "value": ""
+        }
+      ],
+      "group_by": [
+        "Country"
+      ],
+      "id": "a1",
+      "limit": null,
+      "missing": "drop",
+      "operation": "mean",
+      "other_column": "",
+      "sort_by": [
+        "group"
+      ]
+    }
+  ],
+  "assumptions": [],
+  "clarification": "",
+  "conversions": [],
+  "derived": [],
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "For InvoiceNo starting with C, compute unweighted mean UnitPrice by Country."
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "Include valid UnitPrice counts"
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "drop missing Country or UnitPrice"
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "quote": "sort Country ascending"
+    }
+  ]
+}

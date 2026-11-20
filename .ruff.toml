@@ -1,0 +1,3 @@
+# Retain the frozen project's lint rules; saved generated programs are research data.
+extend = "pyproject.toml"
+extend-exclude = ["runs", "evaluation/runs", "evaluation/private", "data/uci", ".cache", ".venv", "submission/traces"]

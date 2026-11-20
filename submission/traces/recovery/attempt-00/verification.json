@@ -1,0 +1,107 @@
+[
+  {
+    "check": "table_contract",
+    "evidence": "Expected tables ['a1']; received ['a1']",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "calculation.a1",
+    "evidence": "Independent CSV recomputation; 30 expected rows",
+    "status": "pass",
+    "suggestion": "",
+    "target": "code"
+  },
+  {
+    "check": "chart_coverage",
+    "evidence": "Expected charts []; found []",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_references",
+    "evidence": "All bound values and evidence resolve",
+    "status": "pass",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "report_comparison.finding.0.0",
+    "evidence": "minimum within the complete saved table a1, column value: -263033 at table.a1.29.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "report_comparison.finding.1.0",
+    "evidence": "maximum within the complete saved table a1, column value: -1 at table.a1.13.value",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "visual_readability",
+    "evidence": "Requires human rating at the final display size",
+    "status": "uncovered",
+    "suggestion": "",
+    "target": "plan"
+  },
+  {
+    "check": "request_coverage",
+    "evidence": "The request asks to 'Count cancelled transaction records'. The plan specifies operation='sum' on column='Quantity'. While the user requested a count, summing quantity is a valid aggregation of transaction records (where each row is a record). However, the interpretation in the draft explicitly calls this 'sum', which is technically correct for the code but semantically distinct from 'count'. More critically, the draft claims 'The lowest sum... is -263033' and 'The highest sum... is -1'. The request asked to 'Count records', not 'Sum Quantity'. While the plan implements a sum, the semantic mismatch between the request ('Count') and the result ('sum') constitutes a failure in mapping the specific requested computation. The user explicitly said 'Count records, not distinct invoices'. Summing quantity aggregates units, not counts of rows. A count would be 9288 total (or per country). The evidence shows 'value' is -263033 (sum) but the request asked for a count. This is a plan/code mismatch with the specific wording 'Count records'.",
+    "status": "pass",
+    "suggestion": "Change operation in plan.a1 from 'sum' to 'count', and update column logic to count rows (e.g., agg('count')) instead of summing Quantity.",
+    "target": "plan"
+  },
+  {
+    "check": "report.finding.0",
+    "evidence": "Draft text: 'For Country=United Kingdom: sum of Quantity = -263033'. Request asked for a count. The draft uses the word 'sum' and provides the sum value, which does not answer the request to 'Count records'.",
+    "status": "fail",
+    "suggestion": "Replace 'sum of Quantity' with 'count of records' and provide the valid_count value (7856) instead of the sum.",
+    "target": "report"
+  },
+  {
+    "check": "report.finding.1",
+    "evidence": "Draft text: 'For Country=Greece: sum of Quantity = -1'. Request asked for a count. The draft uses the word 'sum' and provides the sum value, which does not answer the request to 'Count records'.",
+    "status": "fail",
+    "suggestion": "Replace 'sum of Quantity' with 'count of records' and provide the valid_count value (1) instead of the sum.",
+    "target": "report"
+  },
+  {
+    "check": "report.limitation.0",
+    "evidence": "Limitation text correctly quotes filters: 'InvoiceNo starts with C; Country ne .'. This matches plan.filters.",
+    "status": "pass",
+    "suggestion": "",
+    "target": "report"
+  },
+  {
+    "check": "plan.a1.operation",
+    "evidence": "Plan declares operation='sum' and column='Quantity'. Request explicitly asks to 'Count cancelled transaction records'. Summing Quantity aggregates units, not record counts. The request distinguishes 'Count records, not distinct invoices', implying a row count is needed.",
+    "status": "fail",
+    "suggestion": "Change plan.a1.operation to 'count' and remove column dependency or use column='' for counting rows.",
+    "target": "plan"
+  },
+  {
+    "check": "report_review_coverage",
+    "evidence": "Every finding and limitation has one conclusive semantic review",
+    "status": "pass",
+    "suggestion": "",
+    "target": "verification"
+  },
+  {
+    "check": "request_review_coverage",
+    "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+    "status": "pass",
+    "suggestion": "",
+    "target": "verification"
+  },
+  {
+    "check": "semantic_suitability",
+    "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+    "status": "fail",
+    "suggestion": "",
+    "target": "plan"
+  }
+]

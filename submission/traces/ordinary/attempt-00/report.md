@@ -1,0 +1,4 @@
+- sum of rentals = 152 (valid observations: 6).
+  Evidence: table.total_rentals_count, plan.labels.total_rentals_count.measure, table.total_rentals_count.0.value, table.total_rentals_count.0.valid_count
+- The highest sum of rentals in the saved table is 67. For weather=Clear: sum of rentals = 67 (valid observations: 3). The lowest sum of rentals in the saved table is 28. For weather=Misty: sum of rentals = 28 (valid observations: 1).
+  Evidence: table.rentals_by_weather, plan.labels.rentals_by_weather.measure, table.rentals_by_weather.2.value, plan.labels.rentals_by_weather.group.0, table.rentals_by_weather.2.weather, table.rentals_by_weather.2.valid_count, table.rentals_by_weather.0.value, table.rentals_by_weather.0.weather, table.rentals_by_weather.0.valid_count

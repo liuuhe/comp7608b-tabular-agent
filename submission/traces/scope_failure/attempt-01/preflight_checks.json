@@ -1,0 +1,103 @@
+{
+  "issues": [
+    {
+      "check": "table_contract",
+      "evidence": "Expected tables ['a1', 'a2']; received ['a1', 'a2']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.a1",
+      "evidence": "Independent CSV recomputation; 12 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.a2",
+      "evidence": "Independent CSV recomputation; 12 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    }
+  ],
+  "selection": {
+    "a1": {
+      "expected_valid_count_total_before_limit": 5814,
+      "filters": [
+        {
+          "column": "dteday",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 9592,
+          "input_rows": 17379,
+          "operator": "ge",
+          "reference": "plan.filters.a1.0",
+          "retained_rows": 7787,
+          "value": "2012-01-01T00:00:00"
+        },
+        {
+          "column": "dteday",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 1973,
+          "input_rows": 7787,
+          "operator": "lt",
+          "reference": "plan.filters.a1.1",
+          "retained_rows": 5814,
+          "value": "2013-01-01T00:00:00"
+        }
+      ],
+      "input_rows_after_conversions": 17379,
+      "missing_policy_requires_error": false,
+      "missing_target_or_paired_values": 0,
+      "missing_target_values": 0,
+      "operation": "mean",
+      "result_limit": null,
+      "rows_after_filters": 5814,
+      "rows_with_complete_group_keys": 5814,
+      "rows_with_missing_group_keys": 0,
+      "scope": "Independent expectation from CSV and declared plan; inspect code too. Counts precede result limit/sampling.",
+      "status": "computed",
+      "target_missing_values_retained": 0,
+      "valid_count_definition": "Rows with complete group keys and nonmissing target"
+    },
+    "a2": {
+      "expected_valid_count_total_before_limit": 5814,
+      "filters": [
+        {
+          "column": "dteday",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 9592,
+          "input_rows": 17379,
+          "operator": "ge",
+          "reference": "plan.filters.a2.0",
+          "retained_rows": 7787,
+          "value": "2012-01-01T00:00:00"
+        },
+        {
+          "column": "dteday",
+          "excluded_for_missing_filter_value": 0,
+          "excluded_rows": 1973,
+          "input_rows": 7787,
+          "operator": "lt",
+          "reference": "plan.filters.a2.1",
+          "retained_rows": 5814,
+          "value": "2013-01-01T00:00:00"
+        }
+      ],
+      "input_rows_after_conversions": 17379,
+      "missing_policy_requires_error": false,
+      "missing_target_or_paired_values": 0,
+      "missing_target_values": 0,
+      "operation": "count",
+      "result_limit": null,
+      "rows_after_filters": 5814,
+      "rows_with_complete_group_keys": 5814,
+      "rows_with_missing_group_keys": 0,
+      "scope": "Independent expectation from CSV and declared plan; inspect code too. Counts precede result limit/sampling.",
+      "status": "computed",
+      "target_missing_values_retained": 0,
+      "valid_count_definition": "Rows with complete group keys and nonmissing target"
+    }
+  }
+}

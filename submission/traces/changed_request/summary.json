@@ -1,0 +1,124 @@
+{
+  "clarification": "",
+  "clarification_history": [],
+  "clarification_responses": 0,
+  "directory": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-193411-c243265f",
+  "error": "",
+  "has_unchecked_candidate": false,
+  "issues": [
+    {
+      "check": "table_contract",
+      "evidence": "Expected tables ['a1']; received ['a1']",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "calculation.a1",
+      "evidence": "Independent CSV recomputation; 30 expected rows",
+      "status": "pass",
+      "suggestion": "",
+      "target": "code"
+    },
+    {
+      "check": "chart_coverage",
+      "evidence": "Expected charts []; found []",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report_references",
+      "evidence": "All bound values and evidence resolve",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report_comparison.finding.1.0",
+      "evidence": "maximum within the complete saved table a1, column value: 1736.9857142857143 at table.a1.24.value",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report_comparison.finding.1.1",
+      "evidence": "minimum within the complete saved table a1, column value: 1.976 at table.a1.6.value",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "visual_readability",
+      "evidence": "Requires human rating at the final display size",
+      "status": "uncovered",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "request_coverage",
+      "evidence": "The request to compute unweighted mean UnitPrice by Country for InvoiceNo starting with 'C', including valid counts, keeping zero/negative prices, dropping missing values, and sorting ascending is fully addressed by analysis 'a1' in the results. The table contains 30 rows with correct column names ('Country', 'value', 'valid_count'), accurate filtering (9288 rows retained from 541909), and proper handling of missing data (dropna=True).",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    },
+    {
+      "check": "report.finding.0",
+      "evidence": "The rendered finding states: 'For Country=Singapore: mean of UnitPrice = 1736.9857142857143 (valid observations: 7). For Country=Czech Republic: mean of UnitPrice = 1.976 (valid observations: 5).' These values match table.a1.24 and table.a1.6 exactly, with correct valid_count references.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report.finding.1",
+      "evidence": "The rendered finding states: 'The highest mean of UnitPrice in the saved table is 1736.9857142857143. For Country=Singapore... The lowest mean... is 1.976. For Country=Czech Republic...' This correctly identifies the maximum (Singapore) and minimum (Czech Republic) within the saved output, consistent with numeric_summaries.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report.limitation.0",
+      "evidence": "The limitation states: 'Declared analysis filters: InvoiceNo starts with C.' This accurately reflects plan.filters.a1.0 without overclaiming scope.",
+      "status": "pass",
+      "suggestion": "",
+      "target": "report"
+    },
+    {
+      "check": "report_review_coverage",
+      "evidence": "Every finding and limitation has one conclusive semantic review",
+      "status": "pass",
+      "suggestion": "",
+      "target": "verification"
+    },
+    {
+      "check": "request_review_coverage",
+      "evidence": "One conclusive whole-request coverage verdict is present; still a model judgment",
+      "status": "pass",
+      "suggestion": "",
+      "target": "verification"
+    },
+    {
+      "check": "semantic_suitability",
+      "evidence": "Separate same-model review with required per-statement coverage; still heuristic",
+      "status": "pass",
+      "suggestion": "",
+      "target": "plan"
+    }
+  ],
+  "last_generated_attempt": 1,
+  "last_inspected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-193411-c243265f/attempt-01",
+  "model_tokens": 26319,
+  "repairs": 1,
+  "resources": {
+    "controller_peak_rss_mb": 496.59375,
+    "measurement_errors": [],
+    "model_rss_samples": 404,
+    "ollama_processes_peak_sum_rss_mb": 7483.421875,
+    "sampling_seconds": 0.2,
+    "scope": "Host RSS of visible processes named ollama/llama-server; may include other sessions. Excludes Metal allocations and Docker daemon/VM. Worker peak RSS is recorded separately."
+  },
+  "seconds": 93.43163499998627,
+  "selected_attempt": "$PROJECT/evaluation/runs/formal-qwen35-9b-v7-20261117/20261117-193411-c243265f/attempt-01",
+  "status": "checks_passed",
+  "tool_count": 3
+}

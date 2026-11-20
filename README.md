@@ -1,10 +1,12 @@
 # Tabular Analysis Agent
 
 COMP7608B Group 39：上传一份CSV，用自然语言请求统计、图表或探索性分析，获得报告、表格、图像、代码和执行记录。
+成员：Wang Ming、Liu He、He Xiya。报告题目：*A Local Tabular Analysis Agent with Bounded Verification and Repair*。
 本机运行Qwen3.5-9B Q4；LangGraph管理规划、工具调用、验证及有限修正，Docker隔离生成代码。
 
-11月25日提交报告与代码；12月1日展示，2分钟pitch＋5–6分钟互动。报告沿用NeurIPS 2026模板，正文最多10页，参考文献不计。
+11月25日23:59（香港时间）提交报告与完整submission ZIP；Group 39已分配12月1日展示，2分钟pitch＋5–6分钟互动。报告沿用NeurIPS 2026模板，正文最多10页，参考文献不计。
 **252次正式运行及27份双人独立评分／最终裁决已完成。** 自动数值匹配与小样本人工质量分别报告，系统仍会失败。
+11月20日按Moodle guideline补齐了[提交材料](submission/README.md)：AI声明／可恢复prompts、逐位贡献、三类样例、结果及五份真实脱敏trace。提交版本和精确文件哈希见`submission/VERSION.json`及ZIP的`SOURCE_MANIFEST.json`。
 
 ## 从哪里开始
 
@@ -27,6 +29,9 @@ uv run streamlit run app.py --server.address 127.0.0.1
 
 如果Ollama服务尚未启动，在另一个终端运行`ollama serve`。本机使用Colima时，在上述Docker相关命令前加`DOCKER_CONTEXT=colima`。
 默认配置为`config/development.json`，全部阶段关闭thinking；不要误用历史`pilot-*`配置。
+依赖约束见`pyproject.toml`，确切解析版本见`uv.lock`（使用`--frozen`）；包括LangGraph 1.2.18、pandas 2.3.3、langchain-ollama 1.1.0。
+实测环境为Apple M5、24 GiB内存，Docker worker为2 CPU／2 GiB；这不是最低硬件保证。正常应用使用本机Ollama与Docker，无需付费API或API Key。
+仅可选的外部参考审计需要第三方API及可能的费用；配置方法见[审计说明](docs/MODEL_AUDIT_ZH.md)，密钥只放本机`.env.judge`，不随包提交。
 
 打开<http://127.0.0.1:8501>，上传[data/demo_rentals.csv](data/demo_rentals.csv)，输入：
 
@@ -34,6 +39,7 @@ uv run streamlit run app.py --server.address 127.0.0.1
 
 手工可核对总量152、有效记录6；Clear=67、Misty=28、Rain=57。
 一次已有真实集成运行耗时102.17秒，这不是任意任务的延迟承诺。教学团队可以修改问题或上传小CSV。
+改条件／追问时，保留CSV并提交包含必要上下文的完整新问题；网页不会自动继承上一轮对话。
 自动浏览器验收不点击下载按钮，按[AGENTS.md](AGENTS.md)使用`scripts/verify_export.py`；原生Save As由使用者操作。
 
 ## 系统范围
@@ -45,6 +51,21 @@ uv run streamlit run app.py --server.address 127.0.0.1
 
 检查通过不能保证计划或解释正确。不支持多表连接、预测建模或因果推断；探索能力有限。
 具体实现见[实现说明](docs/IMPLEMENTATION.md)，正式数值、人工样本及限制见[结果导航](docs/PROJECT_STATUS_ZH.md)。
+
+## 样例与已完成评价
+
+以下命令可离线核对提交材料、结果与真实trace，不调用模型：
+
+```bash
+python -m scripts.submission_materials --verify submission
+python -m scripts.submission_examples ordinary
+python -m scripts.submission_examples changed_request
+python -m scripts.submission_examples failure
+```
+
+在已安装项目依赖且服务就绪时，加`--run`才会进行新的本地推理，例如`uv run python -m scripts.submission_examples ordinary --run`。
+三类输入／访问方法及预期行为见[样例说明](submission/examples/README.md)。结果在`submission/results/`，成功、纠错及失败记录在`submission/traces/`。
+这些是已有结果，不能冒充现场新推理。新研究的评价命令、复核与冻结步骤见[evaluation/README.md](evaluation/README.md)，不把新下载／重建的参考冒充原实验回放。
 
 ## 测试与数据
 

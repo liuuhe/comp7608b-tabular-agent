@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1826, in apply
+    result = self._python_apply_general(f, self._selected_obj)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1887, in _python_apply_general
+    values, mutated = self._grouper.apply_groupwise(f, data, self.axis)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/ops.py", line 928, in apply_groupwise
+    res = f(group)
+          ^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1811, in f
+    return func(g, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: <lambda>() got an unexpected keyword argument 'include'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/worker.py", line 46, in <module>
+    namespace = runpy.run_path(
+                ^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/input/analysis.py", line 97, in <module>
+    result = grouped[['capital-gain', 'capital-loss']].apply(lambda g: pd.Series({'value': g['capital-gain'].sum() / g['capital-loss'].sum(), 'valid_count': len(g)}), include=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1848, in apply
+    return self._python_apply_general(f, self._obj_with_exclusions)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1887, in _python_apply_general
+    values, mutated = self._grouper.apply_groupwise(f, data, self.axis)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/ops.py", line 928, in apply_groupwise
+    res = f(group)
+          ^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1811, in f
+    return func(g, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: <lambda>() got an unexpected keyword argument 'include'

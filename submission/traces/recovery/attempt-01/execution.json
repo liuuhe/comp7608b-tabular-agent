@@ -1,0 +1,195 @@
+{
+  "code_sha256": "a836dac83f54e35bc1baa6469ef69bb1066d459cabd61ae4de65c79d8473dfa1",
+  "ok": true,
+  "result": {
+    "notes": [
+      {
+        "filters": [
+          {
+            "column": "InvoiceNo",
+            "operator": "starts_with",
+            "rows_after": 9288,
+            "rows_before": 541909,
+            "value": "C"
+          },
+          {
+            "column": "Country",
+            "operator": "ne",
+            "rows_after": 9288,
+            "rows_before": 9288,
+            "value": ""
+          }
+        ],
+        "input_rows": 541909,
+        "missing_analysis_inputs": 0,
+        "prepared_input": "a1",
+        "prepared_rows": 9288,
+        "rows_after_filters": 9288,
+        "rows_after_group_keys": 9288
+      }
+    ],
+    "rows_before": 541909,
+    "tables": {
+      "a1": [
+        {
+          "Country": "Australia",
+          "valid_count": 74,
+          "value": 74
+        },
+        {
+          "Country": "Austria",
+          "valid_count": 3,
+          "value": 3
+        },
+        {
+          "Country": "Bahrain",
+          "valid_count": 1,
+          "value": 1
+        },
+        {
+          "Country": "Belgium",
+          "valid_count": 38,
+          "value": 38
+        },
+        {
+          "Country": "Channel Islands",
+          "valid_count": 10,
+          "value": 10
+        },
+        {
+          "Country": "Cyprus",
+          "valid_count": 8,
+          "value": 8
+        },
+        {
+          "Country": "Czech Republic",
+          "valid_count": 5,
+          "value": 5
+        },
+        {
+          "Country": "Denmark",
+          "valid_count": 9,
+          "value": 9
+        },
+        {
+          "Country": "EIRE",
+          "valid_count": 302,
+          "value": 302
+        },
+        {
+          "Country": "European Community",
+          "valid_count": 1,
+          "value": 1
+        },
+        {
+          "Country": "Finland",
+          "valid_count": 10,
+          "value": 10
+        },
+        {
+          "Country": "France",
+          "valid_count": 149,
+          "value": 149
+        },
+        {
+          "Country": "Germany",
+          "valid_count": 453,
+          "value": 453
+        },
+        {
+          "Country": "Greece",
+          "valid_count": 1,
+          "value": 1
+        },
+        {
+          "Country": "Hong Kong",
+          "valid_count": 4,
+          "value": 4
+        },
+        {
+          "Country": "Israel",
+          "valid_count": 2,
+          "value": 2
+        },
+        {
+          "Country": "Italy",
+          "valid_count": 45,
+          "value": 45
+        },
+        {
+          "Country": "Japan",
+          "valid_count": 37,
+          "value": 37
+        },
+        {
+          "Country": "Malta",
+          "valid_count": 15,
+          "value": 15
+        },
+        {
+          "Country": "Netherlands",
+          "valid_count": 8,
+          "value": 8
+        },
+        {
+          "Country": "Norway",
+          "valid_count": 14,
+          "value": 14
+        },
+        {
+          "Country": "Poland",
+          "valid_count": 11,
+          "value": 11
+        },
+        {
+          "Country": "Portugal",
+          "valid_count": 18,
+          "value": 18
+        },
+        {
+          "Country": "Saudi Arabia",
+          "valid_count": 1,
+          "value": 1
+        },
+        {
+          "Country": "Singapore",
+          "valid_count": 7,
+          "value": 7
+        },
+        {
+          "Country": "Spain",
+          "valid_count": 48,
+          "value": 48
+        },
+        {
+          "Country": "Sweden",
+          "valid_count": 11,
+          "value": 11
+        },
+        {
+          "Country": "Switzerland",
+          "valid_count": 35,
+          "value": 35
+        },
+        {
+          "Country": "USA",
+          "valid_count": 112,
+          "value": 112
+        },
+        {
+          "Country": "United Kingdom",
+          "valid_count": 7856,
+          "value": 7856
+        }
+      ]
+    },
+    "worker_contract_version": 3
+  },
+  "results_sha256": "2ce52ad15c53b75d6878ba92eb0a575968b8a66bf990c40ce1bb1865a6b40791",
+  "runtime": {
+    "peak_memory_mb": 223.69921875,
+    "scope": "Linux analysis worker RSS; excludes Ollama, Docker daemon, VM and controller",
+    "seconds": 0.6791185440379195
+  },
+  "seconds": 1.1721304159727879
+}

@@ -1,0 +1,53 @@
+{
+  "note": "Quotes and analysis links are checked; completeness and suitability require semantic assessment.",
+  "requirements": [
+    {
+      "analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "outputs": [
+        {
+          "chart": true,
+          "table": "a1"
+        },
+        {
+          "chart": false,
+          "table": "a2"
+        }
+      ],
+      "quote": "For 2012, line-chart mean normalized temp by mnth, with valid temp counts, months ascending."
+    },
+    {
+      "analysis_ids": [
+        "a1",
+        "a2"
+      ],
+      "outputs": [
+        {
+          "chart": true,
+          "table": "a1"
+        },
+        {
+          "chart": false,
+          "table": "a2"
+        }
+      ],
+      "quote": "Parse dteday and select 2012-01-01 inclusive to 2013-01-01 exclusive."
+    },
+    {
+      "analysis_ids": [
+        "a1"
+      ],
+      "outputs": [
+        {
+          "chart": true,
+          "table": "a1"
+        }
+      ],
+      "quote": "Keep the supplied temperature/41 scale and label it explicitly, not degrees Celsius."
+    }
+  ],
+  "semantic_coverage": "unverified",
+  "status": "declared"
+}

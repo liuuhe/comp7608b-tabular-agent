@@ -1,0 +1,140 @@
+{
+  "events": [
+    {
+      "attempt": 0,
+      "event": "calculation_preflight",
+      "failed_checks": [],
+      "verification_tool": 2
+    },
+    {
+      "event": "finished",
+      "status": "checks_passed"
+    }
+  ],
+  "model_calls": [
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/runs/20261116-215612-48aae557/model_inputs/000-planning.json",
+      "load_seconds": 0.006738083,
+      "output_token_cap": 6144,
+      "phase": "planning",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 25.852813875011634,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 3975,
+        "output_tokens": 331,
+        "total_tokens": 4306
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/runs/20261116-215612-48aae557/model_inputs/001-code_generation.json",
+      "load_seconds": 0.005975292,
+      "output_token_cap": 6144,
+      "phase": "code_generation",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 11.486201708030421,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 1175,
+        "output_tokens": 175,
+        "total_tokens": 1350
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/runs/20261116-215612-48aae557/model_inputs/002-report_drafting.json",
+      "load_seconds": 0.009062042,
+      "output_token_cap": 6144,
+      "phase": "report_drafting",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 14.914530291978735,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 4447,
+        "output_tokens": 97,
+        "total_tokens": 4544
+      }
+    },
+    {
+      "done_reason": "stop",
+      "input_artifact": "$PROJECT/runs/20261116-215612-48aae557/model_inputs/003-semantic_review.json",
+      "load_seconds": 0.0029075,
+      "output_token_cap": 6144,
+      "phase": "semantic_review",
+      "sampling": {
+        "presence_penalty": 1.5,
+        "repeat_penalty": 1.0,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "seconds": 49.11392879195046,
+      "status": "finished",
+      "thinking": false,
+      "usage": {
+        "input_tokens": 7771,
+        "output_tokens": 510,
+        "total_tokens": 8281
+      }
+    }
+  ],
+  "tokens": 18481,
+  "tool_count": 4,
+  "tools": [
+    {
+      "name": "profile_data",
+      "seconds": 0.007294750015717,
+      "status": "finished"
+    },
+    {
+      "name": "execute_python",
+      "seconds": 0.4755720410030335,
+      "status": "finished"
+    },
+    {
+      "name": "verify_result",
+      "seconds": 49.13278287497815,
+      "stages": [
+        {
+          "seconds": 0.0014332089922390878,
+          "stage": "calculations",
+          "status": "finished"
+        },
+        {
+          "seconds": 49.13134966598591,
+          "stage": "report",
+          "status": "finished"
+        }
+      ],
+      "status": "finished"
+    },
+    {
+      "name": "render_chart",
+      "seconds": 0.050883667019661516,
+      "status": "finished"
+    }
+  ]
+}

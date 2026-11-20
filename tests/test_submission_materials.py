@@ -69,6 +69,17 @@ def test_private_identifiers_are_redacted_without_changing_prompt_criteria():
     assert value["sample"][0]["CustomerID"] == 12345
 
 
+def test_external_endpoint_and_service_directory_are_anonymized_but_model_is_retained():
+    value = {"endpoint": "https://api.vendor.example/v1/chat/completions",
+             "source": "evaluation/private/model-audit-vendor-20261117-v7/requests/R01.json",
+             "model": "gpt-6.1-sol"}
+    result = redact(value)
+    assert result["endpoint"] == "[EXTERNAL_API_ENDPOINT]"
+    assert "model-audit-api-20261117-v7" in result["source"]
+    assert "vendor" not in json.dumps(result)
+    assert result["model"] == "gpt-6.1-sol"
+
+
 @pytest.mark.parametrize("name", ["../.env", "prompts/secret.key", "traces/ordinary/data.csv",
                                   "traces/ordinary/attempt-00/input/data.csv", "traces/unknown/trace.json"])
 def test_only_curated_paths_are_exportable(name):

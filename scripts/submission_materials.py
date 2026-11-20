@@ -9,7 +9,8 @@ from collections import Counter
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "group39-20261120-submission-v1"
+VERSION = "group39-20261120-submission-v2"
+SUPPORTED_VERSIONS = {"group39-20261120-submission-v1", VERSION}
 COHORT = Path("evaluation/runs/formal-qwen35-9b-v7-20261117")
 FREEZE = Path("config/frozen-experiment-model-audit-v7.json")
 CASES = {
@@ -53,6 +54,9 @@ def redact_text(text):
     text = re.sub(r"https://github\.com/liuuhe/[^\s\"')>]+", "[REPOSITORY_URL]", text)
     text = re.sub(r"wxid_[A-Za-z0-9_]+", "[PRIVATE_ACCOUNT]", text)
     text = re.sub(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", "[EMAIL_REDACTED]", text)
+    text = re.sub(r"https://api\.[A-Za-z0-9.-]+/v1(?:/chat/completions)?",
+                  "[EXTERNAL_API_ENDPOINT]", text)
+    text = re.sub(r"model-audit-[a-z]+-(?=\d{8})", "model-audit-api-", text)
     return SECRET.sub("[CREDENTIAL_REDACTED]", text)
 
 
@@ -108,7 +112,7 @@ def verify_bytes(files):
         if SECRET.search(data.decode(errors="ignore")):
             raise ValueError("Credential-like text must not be exported")
     version = json.loads(files["VERSION.json"])
-    if version.get("submission_version") != VERSION:
+    if version.get("submission_version") not in SUPPORTED_VERSIONS:
         raise ValueError("Unknown submission version")
     result = json.loads(files["results/results.json"])
     if (len(result["automatic_runs"]) != 252 or len(result["human_sample"]["per_output"]) != 27
@@ -127,7 +131,7 @@ def verify_bytes(files):
         prefix = f"traces/{case}/"
         if not {prefix + n for n in ("PROVENANCE.json", "summary.json", "trace.json")} <= files.keys():
             raise ValueError("Missing genuine case trace")
-    return {"status": "verified_submission_materials", "version": VERSION,
+    return {"status": "verified_submission_materials", "version": version["submission_version"],
             "files": len(files), "model_input_records": len(records),
             "development_prompts": coverage["development_prompts"], "cases": len(CASES)}
 
@@ -163,14 +167,14 @@ def export(output, user_prompts, results):
         if path.is_symlink() or not path.is_file():
             raise ValueError("Evidence must be a regular saved file")
         data = path.read_bytes()
-        sources[path.relative_to(ROOT).as_posix()] = sha(data)
+        sources[redact_text(path.relative_to(ROOT).as_posix())] = sha(data)
         return data
 
     messages = read(user_prompts)["messages"]
     development = []
     for message in sorted(messages, key=lambda m: (m["startedAt"], m["id"])):
         text = message["text"]
-        notes = ["Local paths, account identifiers, email addresses and credential-like strings redacted."]
+        notes = ["Local paths, account identifiers, email addresses, external API endpoints and credential-like strings redacted."]
         if "slowly\n2026/11/10" in text:
             begin, end = text.split("slowly\n2026/11/10", 1)
             text = begin + "[QUOTED PRIVATE TEAM CHAT REMOVED]\n" + end[end.rfind("我觉得我们先把本地的项目"):]
@@ -210,7 +214,7 @@ def export(output, user_prompts, results):
                         break
         counts[kind] += 1
         models[model or "not_recorded_in_nearby_manifest"] += 1
-        records.append({"source": name, "original_sha256": sha(raw), "kind": kind,
+        records.append({"source": redact_text(name), "original_sha256": sha(raw), "kind": kind,
                         "model_setting": model, "request": redact(data)})
     content = b"".join((json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n").encode() for r in records)
     write("prompts/model-inputs.jsonl.gz", gzip.compress(content, compresslevel=9, mtime=0))

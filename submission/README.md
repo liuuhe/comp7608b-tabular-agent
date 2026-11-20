@@ -4,7 +4,7 @@
 
 **Members:** Wang Ming, Liu He, He Xiya
 
-**Version:** group39-20261120-submission-v1 (see VERSION.json and the ZIP's SOURCE_MANIFEST.json).
+**Version:** group39-20261120-submission-v2 (see VERSION.json and the ZIP's SOURCE_MANIFEST.json).
 
 This folder accompanies the runnable application at the archive root. It contains the AI-use declaration, recoverable project prompts, individual contributions, source attribution, ordinary/changed/failure examples, numerical results and five genuine saved case traces. The final report PDF is submitted alongside the application ZIP. A repository link does not replace the source snapshot.
 

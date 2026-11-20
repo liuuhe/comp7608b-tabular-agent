@@ -13,3 +13,5 @@ python -c 'import gzip,json; p=gzip.open("submission/prompts/model-inputs.jsonl.
 Read coverage.json and AI_USE.md for record counts, redactions and omissions. The current formal templates are in src/tabular_agent/prompts.py; external reference/family/history contracts are in evaluation/audit_contract.py and associated audit modules. These files explain prompt construction; they do not replace the saved input records.
 
 AI replies are not required as standalone submission material. Some replies appear inside later request payloads because the agent used them as context; removing that context would alter the recorded prompt. Original prompts are not edited in the research archive. Sensitive paths, accounts and example identifiers are removed only in these copies, and hash provenance records that change.
+
+External API endpoint strings and service-identifying directory names are anonymized in these copies. Source aliases retain the original input hashes; original local research records are unchanged.

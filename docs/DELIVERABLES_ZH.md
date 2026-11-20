@@ -1,7 +1,7 @@
 # 当前交付文件
 
 **11月20日更新：** 已按Moodle guideline补齐AI声明／可恢复项目prompts、逐位贡献、三类示例及ZIP内结果／trace。
-`source.zip`里的`submission/`集中提供这些材料；提交版本为`group39-20261120-submission-v1`。缺失prompts如实披露，不虚构记录；学生仍需审阅并实际提交。
+`source.zip`里的`submission/`集中提供这些材料；提交版本为`group39-20261120-submission-v2`。缺失prompts如实披露，不虚构记录；学生仍需审阅并实际提交。
 
 本机只维护一个当前目录：`deliverables/`。不要从dist/archive或report/archive挑选旧文件提交。
 该目录由工具生成并被Git忽略；源代码和报告源码仍在原位置维护。

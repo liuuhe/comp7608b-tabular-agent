@@ -1,5 +1,7 @@
 # 强模型辅助复核：使用说明
 
+本文外部审计目录名采用匿名别名；本机原始记录未重命名，实际路径与原始哈希保留在私有回执。历史命令需按本机实际路径使用，新的研究应选新的目录。
+
 2026-11-17：按用户决定，把“用户逐题人工复核”改为外部强模型辅助复核。
 两位队友在正式实验后独立评分的安排继续保留。API已配置，当前v7全局检查及三个数据集的
 实际开发历史复核均通过，49项题目／参考复核已完成；已冻结并启动252次正式实验，人工评分待完成。报告须说明相对proposal的调整，
@@ -37,7 +39,7 @@ API服务商如果使用标准Chat Completions兼容协议即可接入；原生A
 
 ## 本机配置
 
-当前电脑的`config/judge.local.json`已配置SudoCode地址与模型名，`.env.judge`已设好密钥。
+当前电脑的`config/judge.local.json`已配置外部模型API地址与模型名，`.env.judge`已设好密钥。
 不要复制或分享密钥。新clone机器才需要复制模板：
 
 ```bash
@@ -75,7 +77,7 @@ JUDGE_API_KEY=你的真实密钥
 
 ## 接入验收结果
 
-历史D1接入包为`evaluation/private/model-audit-sudocode-20261117-v3/`。首次D1复核通过：
+历史D1接入包为`evaluation/private/model-audit-api-20261117-v3/`。首次D1复核通过：
 API返回模型ID`gpt-6.1-sol`，请求耗时25.65秒，输入1281／输出1006 token；美元费用
 未知，因为尚未配置单价。独立代码在本地Docker中执行，22行结果与完整参考表一致，
 `rtol=1e-4, atol=1e-6`，没有差异；题意判断为clear，无问题项。这只是接口与计算管线
@@ -89,17 +91,17 @@ API返回模型ID`gpt-6.1-sol`，请求耗时25.65秒，输入1281／输出1006 
 ```bash
 uv run python -m evaluation.model_audit prepare \
   --judge-config config/judge.local.json \
-  --output evaluation/private/model-audit-sudocode-new
+  --output evaluation/private/model-audit-api-new
 uv run python -m evaluation.model_audit preview \
-  evaluation/private/model-audit-sudocode-new --id D1
+  evaluation/private/model-audit-api-new --id D1
 ```
 
 当前v3包中的D1已运行，不必重复。完成的新包可用下面命令只验收一题：
 
 ```bash
 DOCKER_CONTEXT=colima uv run python -m evaluation.model_audit run \
-  evaluation/private/model-audit-sudocode-new --ids D1 --max-calls 1
-uv run python -m evaluation.model_audit summary evaluation/private/model-audit-sudocode-new
+  evaluation/private/model-audit-api-new --ids D1 --max-calls 1
+uv run python -m evaluation.model_audit summary evaluation/private/model-audit-api-new
 ```
 
 核对结果请看v3包的`SUMMARY_ZH.md`、`results/D1/provider.json`、`audit.json`和
@@ -115,8 +117,8 @@ token及请求耗时照常记录。后续如补录价格，保存独立账本，
 
 ```bash
 DOCKER_CONTEXT=colima uv run python -m evaluation.model_audit run \
-  evaluation/private/model-audit-sudocode-20261117-v7 --max-calls 49
-uv run python -m evaluation.model_audit summary evaluation/private/model-audit-sudocode-20261117-v7
+  evaluation/private/model-audit-api-20261117-v7 --max-calls 49
+uv run python -m evaluation.model_audit summary evaluation/private/model-audit-api-20261117-v7
 ```
 
 已结束的题会校验其证据后跳过，不额外消费API。默认`--max-calls 1`，整批必须显式放大。
@@ -141,7 +143,7 @@ v7已完成，最终回执为`evaluation/private/model-review-v7.json`，冻结�
 
 ```bash
 uv run python -m evaluation.audit_code_lines receipt \
-  --pack evaluation/private/model-audit-sudocode-20261117-v7 \
+  --pack evaluation/private/model-audit-api-20261117-v7 \
   --snapshot evaluation/private/model-audit-v7-source-snapshot/snapshot.json \
   --supplements evaluation/private/model-audit-v7-supplements \
   --history evaluation/private/model-audit-v7-history-bundle.json \

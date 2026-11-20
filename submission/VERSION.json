@@ -33,5 +33,5 @@
   "cohort_sha256": "5ab245d928a1a800db1029e5d398c1eaa26068f64be43b4aadbbf042d366164f",
   "freeze_sha256": "e3b049f425f0b6f492597e0ef60c59590ebf979e25cea2ad3e7b1a7f8e9cbadb",
   "scope": "Documentation and selected submission materials updated; frozen agent and study unchanged. SOURCE_MANIFEST.json identifies exact final archive bytes.",
-  "submission_version": "group39-20261120-submission-v1"
+  "submission_version": "group39-20261120-submission-v2"
 }

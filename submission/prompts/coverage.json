@@ -1,6 +1,6 @@
 {
   "development_chat_retrieval": "All available pages of the current project chat, 2026-11-20; user messages only.",
-  "development_prompts": 49,
+  "development_prompts": 50,
   "kinds": {
     "agent_runtime": 2119,
     "external_audit_prepared_request": 369
